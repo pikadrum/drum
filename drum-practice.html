@@ -428,6 +428,36 @@ header #tLabelBtn>span:first-child{font-size:12px}
 .stepper{display:inline-flex;align-items:center;gap:3px}
 .stepper input{width:46px;text-align:center}
 .stepBtn{min-width:28px;padding:2px 6px;font-weight:700;font-family:var(--mono)}
+/* ---- ドラムのミキサー：数字だけ、押すとスライダー ---- */
+.kstrip.kcompact .kmid input[type=range]{display:none}
+.kstrip.kcompact .kmid{justify-content:center}
+.kstrip.kcompact .vmeter{width:12px;border-radius:4px}
+.kstrip .kvbtn{width:100%;padding:2px 0;font-size:11px;font-family:var(--mono);background:var(--btn);border:1px solid var(--line);border-radius:5px;color:var(--fg);cursor:pointer}
+.kstrip .kvbtn::after{display:none}
+#kitPop{position:fixed;z-index:40;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 10px;background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 26px rgba(0,0,0,.4)}
+#kitPop[hidden]{display:none!important}
+#kitPop .kpName{font-size:11px;color:var(--dim);white-space:nowrap}
+#kitPop input{writing-mode:vertical-lr;direction:rtl;width:30px;height:150px;margin:0}
+#kitPop .kpv{font-size:14px;font-weight:700}
+/* ---- 音量欄：数字を隠して、スライダーを広く ---- */
+.volGroup .volv{display:none}
+.volGroup .volWrap input[type=range]{flex:1;min-width:0;width:auto}
+#valBubble{position:fixed;z-index:45;pointer-events:none;padding:4px 10px;border-radius:8px;background:var(--accent);color:var(--onAccent);font-size:13px;font-weight:700;font-family:var(--mono);white-space:nowrap;box-shadow:0 6px 16px rgba(0,0,0,.35)}
+#valBubble[hidden]{display:none!important}
+/* ---- タッチ操作を前提にした配置 ---- */
+.volPop{top:auto;bottom:calc(100% + 4px)}           /* パートの音量スライダーは行の上に出す（指で隠れない） */
+#strips .volPop input[type=range]{width:190px;height:28px}
+.stepPop{top:calc(100% + 10px)}
+.stepPop button{min-width:56px;min-height:42px;font-size:16px}
+#bpmPop{top:calc(100% + 10px)}
+#bpmPop input{height:30px}
+input[type=range]::-webkit-slider-thumb{cursor:pointer}
+@media (pointer:coarse){
+  .tStep{min-width:42px;min-height:38px}
+  .kstrip .kvbtn{min-height:28px}
+  .vgMute{min-height:30px}
+  .fader button.fn{min-height:26px}
+}
 </style>
 </head>
 <body>
@@ -653,7 +683,7 @@ header #tLabelBtn>span:first-child{font-size:12px}
     <section>
       <h2>表示</h2>
       <div class="row"><label for="barsPerRow">1段の小節数</label><span class="stepper"><button class="stepBtn" data-for="barsPerRow" data-d="-1" aria-label="1段の小節数を減らす">−</button><input type="number" id="barsPerRow" min="1" max="8" value="4"><button class="stepBtn" data-for="barsPerRow" data-d="1" aria-label="1段の小節数を増やす">＋</button></span></div>
-      <div class="row"><label for="rows">段数</label><span class="stepper"><button class="stepBtn" data-for="rows" data-d="-1" aria-label="段数を減らす">−</button><input type="number" id="rows" min="1" max="4" value="2"><button class="stepBtn" data-for="rows" data-d="1" aria-label="段数を増やす">＋</button></span></div>
+      <div class="row"><label for="rows">段数</label><span class="stepper"><button class="stepBtn" data-for="rows" data-d="-1" aria-label="段数を減らす">−</button><input type="number" id="rows" min="1" max="6" value="2"><button class="stepBtn" data-for="rows" data-d="1" aria-label="段数を増やす">＋</button></span></div>
       <div class="row"><label for="zoom">譜面の大きさ</label><input type="range" id="zoom" min="60" max="130" value="100"></div>
       <div class="row"><label for="headSize">音符の玉の大きさ</label><input type="range" id="headSize" min="70" max="140" value="100"></div>
       <div class="row"><label for="ball">バウンドボール</label><input type="checkbox" id="ball" checked></div>
@@ -1512,14 +1542,15 @@ function renderStrips(){
     s.mBtn=m; s.sBtn=so; return [m,so];
   };
   const mkVol=(s,vv)=>{ const vol=document.createElement("input"); vol.type="range"; vol.min=0; vol.max=127; vol.value=Math.round(s.vol*127);
-    magnetize(vol,()=>song.strips.filter(x=>x!==s&&x.kind===s.kind).map(x=>Math.round(x.vol*127))); vol.id="vol-"+s.key; vol.setAttribute("aria-label",s.name+"の音量");
+    magnetize(vol,()=>song.strips.filter(x=>x!==s&&x.kind===s.kind).map(x=>Math.round(x.vol*127)));
+    if (typeof attachBubble==="function"&&s.kind==="inst") attachBubble(vol,v=>s.name+" "+v); vol.id="vol-"+s.key; vol.setAttribute("aria-label",s.name+"の音量");
     vol.oninput=()=>{ s.vol=vol.value/127; vv.textContent=vol.value; ensureNodes(); midiVol(s); }; vv.textContent=vol.value;
     const one=()=>{ vol.value=Math.round((s.vol0!==undefined?s.vol0:s.vol)*127); vol.dispatchEvent(new Event("input")); };
     vol.ondblclick=one; vv.ondblclick=one; vv.title="ダブルクリックで初期値に戻す"; return vol; };
   const compact=!!$("drumVol");
   for (const s of song.strips){
     if (s.kind==="drum"&&compact) continue; // ドラム全体の音量は左の「音量」欄にまとめて表示
-    const vv=document.createElement(compact&&s.kind==="inst"?"button":"span"); vv.className="vv";
+    const vv=document.createElement(compact&&(s.kind==="inst"||s.kind==="piece")?"button":"span"); vv.className="vv";
     if (s.kind==="inst"){
       const row=document.createElement("div"); row.className="strip"; s.el=row; s.vertical=false;
       const dot=document.createElement("span"); dot.className="dot"; dot.style.background=s.color;
@@ -1547,6 +1578,9 @@ function renderStrips(){
       const mid=document.createElement("div"); mid.className="kmid";
       const meter=document.createElement("div"); meter.className="vmeter"; const bar=document.createElement("i"); meter.appendChild(bar); s.bar=bar;
       const vol=mkVol(s,vv); mid.append(meter,vol);
+      if (compact){ // 数字だけ表示し、押すと縦のスライダーを出す
+        col.classList.add("kcompact"); vv.classList.add("kvbtn"); vv.title="押すと音量のスライダーを表示（ダブルクリックで初期値）";
+        vv.onclick=e=>{ e.stopPropagation(); openKitPop(s,vol,vv); }; }
       const btns=document.createElement("div"); btns.className="kbtns"; btns.append(...mkBtns(s)); if(compact) s.mBtn.hidden=true;
       if (compact&&s.kind==="piece"){ const key=keyMap()[s.part]; /* 試し打ちのキー（設定で変更可） */ const kk=document.createElement("span"); kk.className="kkey"; kk.textContent=key?key.toUpperCase():""; kk.title=key?`パソコンのキー「${key.toUpperCase()}」で試し打ち`:""; btns.appendChild(kk); }
       col.append(nm,mid,vv,btns); kit.appendChild(col);
@@ -1676,7 +1710,7 @@ function layout(){
   const top=40, units=16+S.rowGap, kitH=0, hs=h;
   let worst=0; for(let b=0;b<song.bars.length;b+=S.barsPerRow){ let sum=0; for(let c=0;c<S.barsPerRow;c++) sum+=barMap(Math.min(song.bars.length-1,b+c)).total; worst=Math.max(worst,sum); }
   const byH=(hs-top-10)/(S.rows*units), byW=(w-36)/(worst*1.35/W32+6);
-  const sp=Math.max(5,Math.min(18,byH,byW))*S.zoom/100;
+  const sp=Math.max(5,Math.min(30,byH,byW))*S.zoom/100; // 小節が少ないときは大きく表示できるよう上限を広げた
   // グリッド表示では縦方向だけ画面の高さいっぱいに広げる（横の詰まり具合は譜面と同じ）
   const vs=(S.view==="grid"&&!PRINT_BASES)?Math.max(sp,Math.min(byH*S.zoom/100,sp*2.4)):sp;
   let head=sp*6, gl=null;
@@ -2408,6 +2442,41 @@ $("vgMetro").onclick=()=>{ $("metro").checked=!$("metro").checked; $("metro").di
 $("metro").addEventListener("change",syncMuteBtns);
 $("vgCount").onclick=()=>{ $("countin").checked=!$("countin").checked; $("countin").dispatchEvent(new Event("change")); syncMuteBtns(); };
 document.addEventListener("pointerdown",e=>{ if(e.target.closest&&(e.target.closest(".volPop")||e.target.closest(".vbtn"))) return; document.querySelectorAll(".volPop").forEach(p=>p.hidden=true); });
+// ---- ドラムのミキサー：数字を押すと出る縦スライダー（スクロール欄の外に出す） ----
+function openKitPop(s,vol,anchor){
+  let p=$("kitPop");
+  if (!p){ p=document.createElement("div"); p.id="kitPop"; p.hidden=true;
+    p.innerHTML='<span class="kpName"></span><span class="kpv mono"></span><input type="range" min="0" max="127" aria-label="音量">'; // 値は上（指で隠れない）
+    document.body.appendChild(p);
+    const inp=p.querySelector("input"); attachBubble(inp,v=>(p._s?p._s.name+" ":"")+v);
+    magnetize(inp,()=>p._s?song.strips.filter(x=>x!==p._s&&x.kind===p._s.kind).map(x=>Math.round(x.vol*127)):[]);
+    inp.addEventListener("input",()=>{ if(!p._vol) return; p._vol.value=inp.value; p._vol.dispatchEvent(new Event("input")); p.querySelector(".kpv").textContent=inp.value; });
+    document.addEventListener("pointerdown",e=>{ if(!p.hidden&&!p.contains(e.target)&&!(e.target.closest&&e.target.closest(".kvbtn"))) p.hidden=true; });
+  }
+  if (!p.hidden&&p._s===s){ p.hidden=true; return; }
+  p._s=s; p._vol=vol; const inp=p.querySelector("input"); inp.value=vol.value;
+  p.querySelector(".kpv").textContent=vol.value; p.querySelector(".kpName").textContent=s.name;
+  p.hidden=false; const r=anchor.getBoundingClientRect(), w=p.offsetWidth, h=p.offsetHeight;
+  p.style.left=Math.max(4,Math.min(innerWidth-w-4,r.left+r.width/2-w/2))+"px"; p.style.top=Math.max(4,r.top-h-8)+"px";
+}
+// ---- 音量欄：数字は出さず、スライダーを触っている間だけ、指で隠れない上の方に値を出す ----
+function attachBubble(inp,fmt){
+  let b=$("valBubble"); if(!b){ b=document.createElement("div"); b.id="valBubble"; b.hidden=true; document.body.appendChild(b); }
+  let tmr=null;
+  // 指で隠れない位置：横のスライダーはつまみの上、縦のスライダーはつまみの左（入らなければ右）
+  const show=()=>{ clearTimeout(tmr); const r=inp.getBoundingClientRect(), mn=+inp.min||0, mx=+inp.max||100, f=(+inp.value-mn)/((mx-mn)||1);
+    b.textContent=fmt(+inp.value); b.hidden=false; const bw=b.offsetWidth, bh=b.offsetHeight;
+    if (getComputedStyle(inp).writingMode.startsWith("vertical")){ const y=r.bottom-9-f*(r.height-18);
+      let x=r.left-bw-16; if(x<4) x=r.right+16; b.style.left=Math.min(innerWidth-bw-4,x)+"px"; b.style.top=Math.max(4,Math.min(innerHeight-bh-4,y-bh/2))+"px"; }
+    else { const x=r.left+9+f*(r.width-18); b.style.left=Math.max(4,Math.min(innerWidth-bw-4,x-bw/2))+"px"; b.style.top=Math.max(4,r.top-bh-26)+"px"; } };
+  const hide=()=>{ clearTimeout(tmr); tmr=setTimeout(()=>{ b.hidden=true; },700); };
+  inp.addEventListener("pointerdown",show); inp.addEventListener("input",show); inp.addEventListener("focus",show);
+  inp.addEventListener("pointerup",hide); inp.addEventListener("pointercancel",hide); inp.addEventListener("blur",hide); inp.addEventListener("change",hide);
+}
+// メトロノームのフェーダー・ドラムの縦スライダー・パートの音量スライダーにも
+const FN={metroVol:"全体",mvBar:"アクセント",mvBeat:"4分",mv8:"8分",mvT:"3連",mv16:"16分"};
+document.querySelectorAll(".fader input").forEach(inp=>attachBubble(inp,v=>(FN[inp.dataset.k]||"")+" "+v));
+[["masterVol",v=>"全体 "+v],["drumVol",v=>"ドラム "+v],["backVol",v=>"ドラム以外 "+v+"%"],["countVol",v=>"カウント "+v+"%"],["metroVol",v=>"メトロノーム "+v+"%"]].forEach(([id,fmt])=>{ if($(id)) attachBubble($(id),fmt); });
 function applyVelBox(){ const open=S.velOpen!==false; $("velBox").classList.toggle("closed",!open); $("velToggle").textContent=open?"▶":"◀ 強さ"; $("velToggle").title=open?"叩いた強さのグラフを隠す":"叩いた強さのグラフを出す"; }
 $("velToggle").onclick=()=>{ S.velOpen=S.velOpen===false; saveSettings(); applyVelBox(); };
 S.velOpen=!!currentInput; applyVelBox(); // 起動時：MIDI入力がつながるまでは畳んでおく
@@ -2508,13 +2577,21 @@ function seekBars(delta){
 // 拡大縮小：段数と1段の小節数を組み合わせた段階（上ほど拡大）
 const ZOOM_LEVELS=[[1,2],[2,2],[2,3],[2,4],[3,4],[4,4],[4,6],[4,8]];
 let zoomAcc=0;
+// 拡大縮小：1段の小節数を変え、段数は画面の高さいっぱいに入るだけ並べる（上下に余白を残さない）
+const BPR_STEPS=[1,2,3,4,6,8];
+function fitRows(){
+  const keep=S.rows; S.rows=1; layout(); const rowH=G.sp*(16+S.rowGap); S.rows=keep;
+  return Math.max(1,Math.min(6,Math.round((G.hs-G.top-10)/rowH))); // 半分以上あまるなら1段増やして、少し小さくしてでも埋める
+}
 function zoomStep(dir){ // dir: -1=拡大（表示を減らす）, +1=縮小（表示を増やす）
-  const total=S.rows*S.barsPerRow;
-  let idx=ZOOM_LEVELS.findIndex(l=>l[0]===S.rows&&l[1]===S.barsPerRow);
-  if (idx<0){ idx=ZOOM_LEVELS.findIndex(l=>l[0]*l[1]>=total); if(idx<0) idx=ZOOM_LEVELS.length-1; }
-  const ni=Math.max(0,Math.min(ZOOM_LEVELS.length-1,idx+dir)); if(ni===idx&&ZOOM_LEVELS[idx][0]===S.rows&&ZOOM_LEVELS[idx][1]===S.barsPerRow) return;
+  let idx=BPR_STEPS.findIndex(b=>b>=S.barsPerRow); if(idx<0) idx=BPR_STEPS.length-1;
+  if (BPR_STEPS[idx]!==S.barsPerRow&&dir<0) idx++; // 中途半端な値のときの調整
+  const ni=Math.max(0,Math.min(BPR_STEPS.length-1,idx+dir));
   const cur=barAt(st.playing?Math.max(st.startPos,songNow()):st.pos);
-  [S.rows,S.barsPerRow]=ZOOM_LEVELS[ni]; S.autoBars=false; if($("autoBars")) $("autoBars").checked=false;
+  const prevRows=S.rows, prevBpr=S.barsPerRow;
+  S.barsPerRow=BPR_STEPS[ni]; S.rows=fitRows();
+  if (S.rows===prevRows&&S.barsPerRow===prevBpr) return;
+  S.autoBars=false; if($("autoBars")) $("autoBars").checked=false;
   $("rows").value=S.rows; $("barsPerRow").value=S.barsPerRow; saveSettings();
   st.viewPage=Math.floor(cur/perPage());
   flash(`${S.rows}段 × ${S.barsPerRow}小節`,"--ok",null);

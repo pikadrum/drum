@@ -469,7 +469,10 @@ main #partsCol,main.sideRight #partsCol{width:auto}
 #dockBody{height:min(38vh,250px);min-height:120px;overflow:hidden;border-top:1px solid var(--line)}
 #dock.fold #dockBody{display:none}
 #dock[data-tab="drum"] #partsCol{display:none}
-#dock[data-tab="mix"] #kitBar{display:none}
+#dock:not([data-tab="drum"]) #kitBar{display:none}
+/* 音量タブ：全体の音量・メトロノーム／パートタブ：パートのミキサー */
+#dock[data-tab="vol"] #partsCol>.partHead,#dock[data-tab="vol"] #partsCol>#strips{display:none}
+#dock[data-tab="mix"] #partsCol>.volGroup,#dock[data-tab="mix"] #partsCol>.metroRow,#dock[data-tab="mix"] #partsCol>#extTrimRow{display:none}
 #dockBody #kitBar{height:100%;border-top:0;padding:6px 8px}
 #dockBody #partsCol{height:100%;width:auto;border:0;overflow-y:auto;padding:8px 10px;display:flex;flex-direction:column;gap:8px;order:0}
 #sideSwap{display:none}
@@ -499,11 +502,8 @@ main #partsCol,main.sideRight #partsCol{width:auto}
   #dockBody{height:min(46vh,220px)}
   #dockBody #partsCol{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-content:start;gap:8px 14px}
   #dock[data-tab="drum"] #dockBody #partsCol{display:none}
-  #dockBody #partsCol>.volGroup,#dockBody #partsCol>.metroRow{grid-column:1}
-  #dockBody #partsCol>.partHead,#dockBody #partsCol>#strips,#dockBody #partsCol>#extTrimRow{grid-column:2}
-  #dockBody #partsCol>.volGroup{grid-row:1 / span 2}
-  #dockBody #partsCol>.partHead{grid-row:1}
-  #dockBody #partsCol>#strips{grid-row:2 / span 3}
+  #dockBody #partsCol>.partHead{grid-column:1 / -1}
+  #dockBody #partsCol>#strips{grid-column:1 / -1;display:grid;grid-template-columns:1fr 1fr;column-gap:14px}
 }
 /* 譜面の上のボタンも触りやすく */
 .barNav{width:40px;height:80px}
@@ -522,6 +522,8 @@ main #partsCol,main.sideRight #partsCol{width:auto}
 #bpmPop{flex-direction:column;align-items:stretch;gap:8px}
 #bpmOrig{font-size:13px;padding:6px}
 @media (max-width:380px){ #tLabelBtn{display:none!important} }
+#mmMenuBtn{width:100%;padding:10px;font-size:15px;font-weight:700;background:var(--accent);color:var(--onAccent);border-color:var(--accent)}
+#mMenu .popMenu button[aria-pressed="true"]{background:var(--accent);color:var(--onAccent);border-color:var(--accent);font-weight:700}
 </style>
 </head>
 <body>
@@ -748,7 +750,7 @@ main #partsCol,main.sideRight #partsCol{width:auto}
       <h2>表示</h2>
       <div class="row"><label for="barsPerRow">1段の小節数</label><span class="stepper"><button class="stepBtn" data-for="barsPerRow" data-d="-1" aria-label="1段の小節数を減らす">−</button><input type="number" id="barsPerRow" min="1" max="8" value="4"><button class="stepBtn" data-for="barsPerRow" data-d="1" aria-label="1段の小節数を増やす">＋</button></span></div>
       <div class="row"><label for="autoBars">画面の向きで段数・小節数を自動（縦：4段×2小節、横：2段×4小節）</label><input type="checkbox" id="autoBars" checked></div>
-      <div class="row"><label for="rows">段数</label><span class="stepper"><button class="stepBtn" data-for="rows" data-d="-1" aria-label="段数を減らす">−</button><input type="number" id="rows" min="1" max="4" value="2"><button class="stepBtn" data-for="rows" data-d="1" aria-label="段数を増やす">＋</button></span></div>
+      <div class="row"><label for="rows">段数</label><span class="stepper"><button class="stepBtn" data-for="rows" data-d="-1" aria-label="段数を減らす">−</button><input type="number" id="rows" min="1" max="6" value="2"><button class="stepBtn" data-for="rows" data-d="1" aria-label="段数を増やす">＋</button></span></div>
       <div class="row"><label for="zoom">譜面の大きさ</label><input type="range" id="zoom" min="60" max="130" value="100"></div>
       <div class="row"><label for="headSize">音符の玉の大きさ</label><input type="range" id="headSize" min="70" max="140" value="100"></div>
       <div class="row"><label for="ball">バウンドボール</label><input type="checkbox" id="ball" checked></div>
@@ -898,7 +900,10 @@ main #partsCol,main.sideRight #partsCol{width:auto}
   const menu=document.createElement("div"); menu.id="mMenu"; menu.hidden=true; menu.setAttribute("role","menu");
   const songGrp=$$("songSel").closest(".group"), viewGrp=$$("viewBtn").closest(".group"), setGrp=$$("toggleAside").closest(".group");
   const cap=t=>{ const h=document.createElement("div"); h.className="mCap"; h.textContent=t; return h; };
-  menu.append(cap("曲・練習パターン"),songGrp,cap("画面"),viewGrp,setGrp);
+  // 一番上：メトロノーム専用モード
+  const mmM=document.createElement("button"); mmM.id="mmMenuBtn"; mmM.textContent="♩ メトロノーム専用モード";
+  mmM.onclick=()=>{ setMenu(false); const b=$$("mmBtn"); if(b) b.click(); };
+  menu.append(mmM,cap("曲・練習パターン"),songGrp,cap("画面"),viewGrp,setGrp);
   document.body.appendChild(menu);
   window.setMenu=open=>{ menu.hidden=!open; mb.setAttribute("aria-expanded",String(open)); if(open){ $$("viewMenu").hidden=false; } };
   mb.addEventListener("click",e=>{ e.stopPropagation(); setMenu(menu.hidden); });
@@ -907,16 +912,19 @@ main #partsCol,main.sideRight #partsCol{width:auto}
   const dock=document.createElement("div"); dock.id="dock";
   const tabs=document.createElement("div"); tabs.id="dockTabs"; tabs.setAttribute("role","tablist");
   const mkTab=(id,label)=>{ const b=document.createElement("button"); b.id=id; b.textContent=label; b.setAttribute("role","tab"); tabs.appendChild(b); return b; };
-  const tDrum=mkTab("tabDrum","ドラム"), tMix=mkTab("tabMix","音量・パート");
+  const tVol=mkTab("tabVol","音量"), tDrum=mkTab("tabDrum","ドラム"), tMix=mkTab("tabMix","パート");
   const tFold=document.createElement("button"); tFold.id="dockFold"; tFold.title="下の欄をたたむ／ひらく"; tFold.setAttribute("aria-label","下の欄をたたむ／ひらく"); tabs.appendChild(tFold);
   const body=document.createElement("div"); body.id="dockBody";
   body.append($$("kitBar"),$$("partsCol"));
   dock.append(tabs,body); main.appendChild(dock);
+  // 下の欄の状態（タブ・たたみ）は、次に開いたときもそのまま
+  const DK="drumScopeDockM"; let saved={}; try{ saved=JSON.parse(localStorage.getItem(DK)||"{}"); }catch(e){}
   window.setDock=(tab,fold)=>{ if(tab) dock.dataset.tab=tab; if(fold!==undefined) dock.classList.toggle("fold",fold);
-    tDrum.setAttribute("aria-selected",String(dock.dataset.tab==="drum")); tMix.setAttribute("aria-selected",String(dock.dataset.tab==="mix"));
+    try{ localStorage.setItem(DK,JSON.stringify({tab:dock.dataset.tab,fold:dock.classList.contains("fold")})); }catch(e){}
+    tVol.setAttribute("aria-selected",String(dock.dataset.tab==="vol")); tDrum.setAttribute("aria-selected",String(dock.dataset.tab==="drum")); tMix.setAttribute("aria-selected",String(dock.dataset.tab==="mix"));
     tFold.textContent=dock.classList.contains("fold")?"▲":"▼"; window.dispatchEvent(new Event("resize")); };
-  tDrum.onclick=()=>setDock("drum",false); tMix.onclick=()=>setDock("mix",false); tFold.onclick=()=>setDock(null,!dock.classList.contains("fold"));
-  setDock("drum", window.innerHeight<500); // 横向き（高さが低い）ときは最初たたんでおく
+  tVol.onclick=()=>setDock("vol",false); tDrum.onclick=()=>setDock("drum",false); tMix.onclick=()=>setDock("mix",false); tFold.onclick=()=>setDock(null,!dock.classList.contains("fold"));
+  setDock(["vol","drum","mix"].includes(saved.tab)?saved.tab:"vol", !!saved.fold); // 最初は「音量」をひらいた状態
 })();
 // ================= パーツ定義（TD-17の初期ノート割り当て） =================
 // pos：第1線=0。1つ上がるごとに線→間→線…
@@ -1801,7 +1809,7 @@ function layout(){
   const top=40, units=16+S.rowGap, kitH=0, hs=h;
   let worst=0; for(let b=0;b<song.bars.length;b+=S.barsPerRow){ let sum=0; for(let c=0;c<S.barsPerRow;c++) sum+=barMap(Math.min(song.bars.length-1,b+c)).total; worst=Math.max(worst,sum); }
   const byH=(hs-top-10)/(S.rows*units), byW=(w-36)/(worst*1.35/W32+6);
-  const sp=Math.max(5,Math.min(18,byH,byW))*S.zoom/100;
+  const sp=Math.max(5,Math.min(30,byH,byW))*S.zoom/100; // 小節が少ないときは大きく表示できるよう上限を広げた
   // グリッド表示では縦方向だけ画面の高さいっぱいに広げる（横の詰まり具合は譜面と同じ）
   const vs=(S.view==="grid"&&!PRINT_BASES)?Math.max(sp,Math.min(byH*S.zoom/100,sp*2.4)):sp;
   let head=sp*6, gl=null;
@@ -2654,13 +2662,21 @@ function seekBars(delta){
 // 拡大縮小：段数と1段の小節数を組み合わせた段階（上ほど拡大）
 const ZOOM_LEVELS=[[1,2],[2,2],[2,3],[2,4],[3,4],[4,4],[4,6],[4,8]];
 let zoomAcc=0;
+// 拡大縮小：1段の小節数を変え、段数は画面の高さいっぱいに入るだけ並べる（上下に余白を残さない）
+const BPR_STEPS=[1,2,3,4,6,8];
+function fitRows(){
+  const keep=S.rows; S.rows=1; layout(); const rowH=G.sp*(16+S.rowGap); S.rows=keep;
+  return Math.max(1,Math.min(6,Math.round((G.hs-G.top-10)/rowH))); // 半分以上あまるなら1段増やして、少し小さくしてでも埋める
+}
 function zoomStep(dir){ // dir: -1=拡大（表示を減らす）, +1=縮小（表示を増やす）
-  const total=S.rows*S.barsPerRow;
-  let idx=ZOOM_LEVELS.findIndex(l=>l[0]===S.rows&&l[1]===S.barsPerRow);
-  if (idx<0){ idx=ZOOM_LEVELS.findIndex(l=>l[0]*l[1]>=total); if(idx<0) idx=ZOOM_LEVELS.length-1; }
-  const ni=Math.max(0,Math.min(ZOOM_LEVELS.length-1,idx+dir)); if(ni===idx&&ZOOM_LEVELS[idx][0]===S.rows&&ZOOM_LEVELS[idx][1]===S.barsPerRow) return;
+  let idx=BPR_STEPS.findIndex(b=>b>=S.barsPerRow); if(idx<0) idx=BPR_STEPS.length-1;
+  if (BPR_STEPS[idx]!==S.barsPerRow&&dir<0) idx++; // 中途半端な値のときの調整
+  const ni=Math.max(0,Math.min(BPR_STEPS.length-1,idx+dir));
   const cur=barAt(st.playing?Math.max(st.startPos,songNow()):st.pos);
-  [S.rows,S.barsPerRow]=ZOOM_LEVELS[ni]; S.autoBars=false; if($("autoBars")) $("autoBars").checked=false;
+  const prevRows=S.rows, prevBpr=S.barsPerRow;
+  S.barsPerRow=BPR_STEPS[ni]; S.rows=fitRows();
+  if (S.rows===prevRows&&S.barsPerRow===prevBpr) return;
+  S.autoBars=false; if($("autoBars")) $("autoBars").checked=false;
   $("rows").value=S.rows; $("barsPerRow").value=S.barsPerRow; saveSettings();
   st.viewPage=Math.floor(cur/perPage());
   flash(`${S.rows}段 × ${S.barsPerRow}小節`,"--ok",null);
