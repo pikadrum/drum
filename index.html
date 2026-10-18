@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ドラム練習スコープ（仮）</title>
+<meta name="description" content="電子ドラム向けの、ブラウザで動くドラム練習ソフト。MIDIファイルを読み込んでドラム譜を表示し、叩いたタイミングと強さを判定します。">
+<style>
+:root{--bg:#14171c;--panel:#1c2027;--line:#2e343e;--fg:#e8eaee;--dim:#9aa1ad;--accent:#f2a33a;--onAccent:#1a1205;--btn:#262b34}
+@media (prefers-color-scheme:light){:root{--bg:#f6f7f9;--panel:#ffffff;--line:#d9dde3;--fg:#1c2027;--dim:#5b6370;--accent:#d9782a;--onAccent:#ffffff;--btn:#eceef2}}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI","Hiragino Sans","Yu Gothic UI",Meiryo,sans-serif;line-height:1.6}
+main{max-width:640px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-area-inset-left))}
+h1{font-size:24px;margin:0 0 4px;letter-spacing:.04em}
+.lead{color:var(--dim);margin:0 0 22px;font-size:14px}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:480px){.choices{grid-template-columns:1fr}}
+a.choice{display:flex;flex-direction:column;gap:4px;padding:18px 16px;border-radius:14px;border:1px solid var(--line);background:var(--panel);color:var(--fg);text-decoration:none;transition:border-color .15s,transform .15s}
+a.choice:hover,a.choice:focus-visible{border-color:var(--accent);outline:none;transform:translateY(-1px)}
+a.choice b{font-size:18px}
+a.choice span{font-size:13px;color:var(--dim)}
+a.choice.rec{border:2px solid var(--accent)}
+a.choice.rec b::after{content:"　おすすめ";font-size:12px;color:var(--accent);font-weight:700}
+#auto{margin:16px 0 0;padding:10px 14px;border-radius:10px;background:var(--btn);font-size:14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+#auto[hidden]{display:none}
+#auto button{font:inherit;font-size:13px;padding:5px 12px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer}
+h2{font-size:14px;letter-spacing:.08em;color:var(--dim);margin:30px 0 8px}
+ul{margin:0;padding-left:20px;font-size:14px}
+li{margin:3px 0}
+a{color:var(--accent)}
+.note{font-size:13px;color:var(--dim)}
+footer{margin-top:34px;font-size:12px;color:var(--dim);border-top:1px solid var(--line);padding-top:12px}
+</style>
+</head>
+<body>
+<main>
+  <h1>ドラム練習スコープ（仮）</h1>
+  <p class="lead">電子ドラム向けの、ブラウザで動くドラム練習ソフトです。MIDIファイルを読み込んでドラム譜を表示し、叩いたタイミングと強さを判定します。</p>
+
+  <div class="choices">
+    <a class="choice" id="goPC" href="drum-practice.html"><b>パソコン版</b><span>大きな画面・キーボード向け</span></a>
+    <a class="choice" id="goMobile" href="drum-practice-mobile.html"><b>スマホ・タブレット版</b><span>タッチ操作向け</span></a>
+  </div>
+  <div id="auto" hidden><span id="autoMsg"></span><button id="stay" type="button">ここで選ぶ</button></div>
+
+  <h2>はじめに</h2>
+  <ul>
+    <li>Google Chrome や Microsoft Edge などのブラウザで使えます。</li>
+    <li>電子ドラム（TD-17など）をUSBでつなぐ場合、開いたときに「MIDIデバイスの操作と再プログラム」の許可を求められたら「許可」を選んでください。つながない場合は、どちらを選んでも使えます。</li>
+    <li>iPhone・iPad のブラウザは電子ドラムとの接続に対応していないため、再生と譜面の表示のみ使えます。</li>
+  </ul>
+
+  <h2>練習用の曲（著作権フリーのオリジナル曲）</h2>
+  <ul>
+    <li><a href="01_Rock_8beat_120.mid" download>ロック 8ビート（♩=120）</a></li>
+    <li><a href="02_Funk_16beat_100.mid" download>ファンク 16ビート（♩=100）</a></li>
+    <li><a href="03_Blues_Shuffle_92.mid" download>ブルース シャッフル（♩=92）</a></li>
+    <li><a href="04_Jazz_Swing_150.mid" download>ジャズ 4ビート（♩=150）</a></li>
+    <li><a href="05_HardRock_168.mid" download>ハードロック（♩=168）</a></li>
+  </ul>
+  <p class="note">保存した曲は、ソフトの曲の選択欄の先頭「📂 MIDIファイルを開く…」から読み込めます。</p>
+
+  <h2>説明・利用規約</h2>
+  <ul>
+    <li><a href="読んで.txt">読んで.txt（注意事項・音色のクレジット・利用規約）</a></li>
+  </ul>
+
+  <footer>本ソフトは個人が制作した非公式ツールであり、ローランド株式会社とは関係ありません。「V-Drums」「TD-17」は同社の商標です。<br>配布者：pikadrum（ピカドラム）</footer>
+</main>
+<script>
+// 開いた端末に合わせて、おすすめの版を光らせ、3秒後に自動で開く。
+// 「ここで選ぶ」を押すと止まる。手で選んだ版は覚えておき、次回からはそちらを自動で開く。
+(function(){
+  var mobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ||
+               (navigator.maxTouchPoints > 1 && Math.min(screen.width, screen.height) < 900);
+  var saved = null; try { saved = localStorage.getItem("drumScopeEntry"); } catch (e) {}
+  var pick = saved === "pc" || saved === "mobile" ? saved : (mobile ? "mobile" : "pc");
+  var link = document.getElementById(pick === "mobile" ? "goMobile" : "goPC");
+  link.classList.add("rec");
+  ["goPC","goMobile"].forEach(function(id){
+    document.getElementById(id).addEventListener("click", function(){
+      try { localStorage.setItem("drumScopeEntry", id === "goPC" ? "pc" : "mobile"); } catch (e) {}
+    });
+  });
+  if (/[?&]select\b/.test(location.search)) return; // index.html?select なら自動で開かない
+  var box = document.getElementById("auto"), msg = document.getElementById("autoMsg"), n = 3, timer;
+  var name = pick === "mobile" ? "スマホ・タブレット版" : "パソコン版";
+  function tick(){
+    if (n <= 0) { location.replace(link.getAttribute("href")); return; }
+    msg.textContent = n + "秒後に" + name + "を開きます";
+    n--; timer = setTimeout(tick, 1000);
+  }
+  box.hidden = false; tick();
+  document.getElementById("stay").onclick = function(){ clearTimeout(timer); box.hidden = true; };
+})();
+</script>
+</body>
+</html>
