@@ -52,7 +52,8 @@ MIDI楽曲ファイルを読み込んで、ドラム譜の表示や再生など�
 　名前を押すとミュート、叩くとミキサーが強さに合わせて光ります。
 　テンポ変更（−／＋、長押しで細かく）、ループ練習（ループボタンで曲全体、
 　譜面をなぞって1小節から）ができます。
-　音色は内蔵音・高音質音色・パソコンのMIDI音源・電子ドラム本体から選べます。
+　音色は内蔵音・高音質音色（3種類）・パソコンのMIDI音源・電子ドラム本体から
+　選べます。
 　MIDIファイルがなくても、内蔵の練習パターン（入門〜中級の21種類、
 　どれも8小節以上・ベースとピアノの伴奏つき）で練習できます。
 　練習パターンを選ぶと伴奏はミュート（音量80）で始まり、
@@ -148,11 +149,20 @@ https://docs.google.com/forms/d/e/1FAIpQLScFlxnOCoQHnpJGOL4SXxdwA6PArkBT3FwHMHZk
   ライセンス：クリエイティブ・コモンズ 表示 3.0（CC BY 3.0）
   　　　　　　https://creativecommons.org/licenses/by/3.0/deed.ja
 
+設定で「Musyng Kite」「FatBoy」を選んだときは、次の音源を使用します。
+
+  音源　　　：Musyng Kite Soundfont、FatBoy Soundfont
+  配布元　　：midi-js-soundfonts（Benjamin Gleitzman）
+  ライセンス：クリエイティブ・コモンズ 表示-継承 3.0（CC BY-SA 3.0）
+  　　　　　　https://creativecommons.org/licenses/by-sa/3.0/deed.ja
+
 音色データは改変せず、配布元から読み込んで使用しています。
 
 Sound samples: "FluidR3_GM" by Frank Wen, via midi-js-soundfonts
 by Benjamin Gleitzman (https://github.com/gleitz/midi-js-soundfonts),
 licensed under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/).
+"Musyng Kite" and "FatBoy" soundfonts via midi-js-soundfonts,
+licensed under CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0/).
 No modifications were made.
 
 
@@ -161,7 +171,7 @@ No modifications were made.
 --------------------------------------------------
 本ソフトウェア（付属の練習用MIDI曲を含む）は、以下の条件のもとで
 自由にご利用いただけます。
-（上記の「高音質」音色データは、本規約ではなく CC BY 3.0 に従います）
+（上記の「高音質」音色データは、本規約ではなく、それぞれのライセンスに従います）
 
 1. 無償でのご利用
    本ソフトウェアは完全に無償（無料）でご利用いただけます。
