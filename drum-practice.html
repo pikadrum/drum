@@ -141,6 +141,8 @@ th{color:var(--dim);font-weight:500}
 .mmLight.acc.on{background:var(--miss);border-color:var(--miss);color:#fff}
 .mmLight.quiet{border-style:dashed;opacity:.5}
 .mmLight.rest{border-style:dashed;opacity:.6}
+.mmBeat{flex-direction:column;gap:4px;border-radius:14px;padding:4px 6px 6px} /* 細かい音の点は丸の下に並べる（6連でも横に広がらない） */
+.mmDots{gap:3px}
 .mmLight.quiet.on{background:transparent;color:var(--accent)}
 #mmStatus{text-align:center;color:var(--dim);font-size:13px;min-height:1.4em}
 .mmGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(330px,100%),1fr));gap:8px 22px}
@@ -549,7 +551,7 @@ details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var
         <option value="rim">リムショット</option><option value="hat">ハイハット</option><option value="beep">ピー（やわらかい電子音）</option><option value="pi">ピッ（高い電子音）</option><option value="pa">パッ（明るい電子音）</option><option value="pu">プッ（低い電子音）</option><option value="ka">カッ（硬いクリック）</option><option value="tick">チッ（短いクリック）</option>
       </select></div>
       <div class="row chk"><label for="mAccent" title="頭（1拍目）の音を変える">頭の音を変える</label><input type="checkbox" id="mAccent" checked></div>
-      <div class="faderBank" data-master="0" aria-label="メトロノームの音量（アクセント・4分・8分・3連・16分）"></div>
+      <div class="faderBank" data-master="0" aria-label="メトロノームの音量（アクセント・4分・8分・3連・16分・6連）"></div>
       <div class="row" hidden><label for="mSub">拍の間の音</label><select id="mSub">
         <option value="1">なし</option><option value="2">半拍（8分）</option><option value="3">3連</option><option value="4">16分</option>
       </select></div>
@@ -609,7 +611,7 @@ details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var
         </div>
         <div class="mmLights" id="mmLights"></div>
         <div id="mmStatus"></div>
-        <div class="mmSec"><h3>リズムと音 <label class="mmLink" title="オン：通常画面のメトロノームと同じ音色・音量を使う／オフ：専用モードだけの設定を使う"><input type="checkbox" id="mmLink" checked> 通常画面のメトロノーム設定と連動する</label></h3>
+        <div class="mmSec"><h3>リズムと音 <label class="mmLink" title="オン：通常画面のメトロノームと同じ音色・音量を使う／オフ：専用モードだけの設定を使う"><input type="checkbox" id="mmLink"> 通常画面のメトロノーム設定と連動する</label></h3>
           <div class="mmGrid">
             <div class="row"><label for="mmBeats">拍子</label><span style="display:flex;gap:4px;align-items:center"><select id="mmBeats"></select>／<select id="mmUnit"><option>4</option><option>8</option><option>2</option></select></span></div>
             <div class="row" hidden><label for="mmSub">拍の間の音</label><select id="mmSub"><option value="1">なし</option><option value="2">半拍（8分）</option><option value="3">3連</option><option value="4">16分</option></select></div>
@@ -617,7 +619,7 @@ details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var
             <div class="row"><label for="mmAccent">頭（1拍目）の音を変える</label><input type="checkbox" id="mmAccent"></div>
             <div hidden><input type="range" id="mmVol" min="0" max="200"><span id="mmVolV"></span><input type="range" id="mmvBar" min="0" max="100"><span id="mmvBarV"></span><input type="range" id="mmvBeat" min="0" max="100"><span id="mmvBeatV"></span><input type="range" id="mmvSub" min="0" max="100"><span id="mmvSubV"></span></div>
           </div>
-          <div class="faderBank big" data-master="1" aria-label="メトロノームの音量（全体・アクセント・4分・8分・3連・16分）"></div>
+          <div class="faderBank big" data-master="1" aria-label="メトロノームの音量（全体・アクセント・4分・8分・3連・16分・6連）"></div>
           <div class="mmStdBtns"><button id="mmStdLoad" title="「標準に設定」で保存した音色・音量に戻す（未設定ならソフトの初期値）">標準に戻す</button><button id="mmStdSave" title="いまの音色・頭の音・フェーダーの音量を「標準」として保存">標準に設定</button></div>
           <div class="mmGrid" hidden>
           </div>
@@ -814,9 +816,9 @@ details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var
           <p style="margin:8px 0 2px"><b>■ メトロノーム</b></p>
           <ul>
             <li>音色は11種類（クリック・ウッドブロック・カウベル・ピッ・パッ・プッなど）です。</li>
-            <li>ヤマハのメトロノームのように、アクセント・4分・8分・3連・16分の音量を縦のフェーダーで個別に調整して、重ねて鳴らせます。名前を押すとミュートです。4分・8分・16分の「裏」を押すと、裏拍だけを鳴らせます（4分は2・4拍目、8分は「1ト2ト」のト、16分は2つ目と4つ目）。</li>
+            <li>ヤマハのメトロノームのように、アクセント・4分・8分・3連・16分・6連の音量を縦のフェーダーで個別に調整して、重ねて鳴らせます。名前を押すとミュートです。4分・8分・16分の「裏」を押すと、裏拍だけを鳴らせます（4分は2・4拍目、8分は「1ト2ト」のト、16分は2つ目と4つ目）。</li>
             <li>専用モードでは、よく使うテンポ（80〜180）のボタン、タップテンポ（4分・8分・3連・16分で叩ける）、無音の小節（クワイエット練習）、自動テンポアップ、叩いたずれをms単位で表示するタイミング判定が使えます。</li>
-            <li>専用モードの音色・音量は、通常画面と連動させるか、専用モードだけの設定にするかを選べます。「標準に設定」で好みの設定を保存し、「標準に戻す」でいつでも戻せます。</li>
+            <li>専用モードの音色・音量は、はじめは専用モードだけの設定です（「通常画面のメトロノーム設定と連動する」にチェックを入れると、通常画面と同じ設定になります）。「標準に設定」で好みの設定を保存し、「標準に戻す」でいつでも戻せます。</li>
           </ul>
           <p style="margin:8px 0 2px"><b>■ 譜面の編集と出力</b></p>
           <ul>
@@ -853,7 +855,7 @@ details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var
       <h2>このソフトのURL</h2>
       <div class="qrBox"><div class="qrImg" role="img" aria-label="配布先URL（https://pikadrum.github.io/drum/）のQRコード"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><rect width="37" height="37" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM12 4h3v1h-3zM22 4h1v1h-1zM26 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h2v1h-2zM16 5h1v1h-1zM20 5h4v1h-4zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM13 6h2v1h-2zM16 6h2v1h-2zM19 6h3v1h-3zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h3v1h-3zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h5v1h-5zM18 7h3v1h-3zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h3v1h-3zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h3v1h-3zM20 8h3v1h-3zM26 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h2v1h-2zM15 9h5v1h-5zM21 9h1v1h-1zM23 9h2v1h-2zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h7v1h-7zM12 11h3v1h-3zM16 11h1v1h-1zM18 11h1v1h-1zM21 11h1v1h-1zM4 12h1v1h-1zM8 12h1v1h-1zM10 12h4v1h-4zM15 12h1v1h-1zM17 12h5v1h-5zM24 12h6v1h-6zM32 12h1v1h-1zM6 13h1v1h-1zM11 13h2v1h-2zM15 13h1v1h-1zM21 13h2v1h-2zM26 13h7v1h-7zM7 14h2v1h-2zM10 14h3v1h-3zM14 14h6v1h-6zM21 14h1v1h-1zM26 14h1v1h-1zM32 14h1v1h-1zM4 15h1v1h-1zM6 15h3v1h-3zM11 15h2v1h-2zM16 15h2v1h-2zM19 15h4v1h-4zM24 15h4v1h-4zM29 15h1v1h-1zM31 15h2v1h-2zM4 16h1v1h-1zM6 16h1v1h-1zM10 16h2v1h-2zM13 16h2v1h-2zM16 16h2v1h-2zM21 16h1v1h-1zM23 16h1v1h-1zM25 16h1v1h-1zM31 16h1v1h-1zM4 17h1v1h-1zM6 17h2v1h-2zM11 17h1v1h-1zM14 17h2v1h-2zM17 17h2v1h-2zM20 17h3v1h-3zM25 17h8v1h-8zM4 18h2v1h-2zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM24 18h3v1h-3zM28 18h3v1h-3zM32 18h1v1h-1zM4 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM14 19h3v1h-3zM18 19h1v1h-1zM21 19h2v1h-2zM25 19h1v1h-1zM27 19h2v1h-2zM31 19h2v1h-2zM7 20h1v1h-1zM10 20h6v1h-6zM17 20h3v1h-3zM21 20h2v1h-2zM24 20h2v1h-2zM31 20h1v1h-1zM4 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM21 21h2v1h-2zM25 21h5v1h-5zM31 21h2v1h-2zM6 22h2v1h-2zM9 22h4v1h-4zM14 22h1v1h-1zM17 22h3v1h-3zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM30 22h1v1h-1zM32 22h1v1h-1zM6 23h4v1h-4zM12 23h1v1h-1zM14 23h4v1h-4zM21 23h4v1h-4zM26 23h3v1h-3zM31 23h2v1h-2zM4 24h2v1h-2zM8 24h1v1h-1zM10 24h4v1h-4zM15 24h3v1h-3zM19 24h1v1h-1zM21 24h1v1h-1zM23 24h7v1h-7zM32 24h1v1h-1zM12 25h1v1h-1zM14 25h1v1h-1zM16 25h4v1h-4zM22 25h3v1h-3zM28 25h1v1h-1zM32 25h1v1h-1zM4 26h7v1h-7zM12 26h2v1h-2zM16 26h1v1h-1zM19 26h1v1h-1zM21 26h4v1h-4zM26 26h1v1h-1zM28 26h3v1h-3zM32 26h1v1h-1zM4 27h1v1h-1zM10 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM18 27h2v1h-2zM21 27h1v1h-1zM23 27h2v1h-2zM28 27h1v1h-1zM31 27h2v1h-2zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM12 28h2v1h-2zM16 28h4v1h-4zM21 28h1v1h-1zM23 28h7v1h-7zM4 29h1v1h-1zM6 29h3v1h-3zM10 29h1v1h-1zM13 29h1v1h-1zM16 29h1v1h-1zM19 29h2v1h-2zM23 29h1v1h-1zM25 29h1v1h-1zM32 29h1v1h-1zM4 30h1v1h-1zM6 30h3v1h-3zM10 30h1v1h-1zM13 30h3v1h-3zM17 30h3v1h-3zM23 30h3v1h-3zM29 30h4v1h-4zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h1v1h-1zM16 31h2v1h-2zM19 31h1v1h-1zM21 31h1v1h-1zM24 31h1v1h-1zM27 31h1v1h-1zM29 31h1v1h-1zM31 31h2v1h-2zM4 32h7v1h-7zM12 32h3v1h-3zM16 32h1v1h-1zM18 32h1v1h-1zM20 32h2v1h-2zM23 32h3v1h-3zM28 32h1v1h-1zM31 32h1v1h-1z"/></svg></div><div class="help">スマホやタブレットのカメラで読み取ると、このソフトを開けます。<br><a href="https://pikadrum.github.io/drum/" target="_blank" rel="noopener">https://pikadrum.github.io/drum/</a></div></div>
     </section>
-    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/18 14:37</div>
+    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/18 14:52</div>
     </div>
   </aside>
 </main>
@@ -893,7 +895,7 @@ function loadSettings(){
   return JSON.parse(JSON.stringify(DEFAULT_SETTINGS));
 }
 // メトロノーム専用モードを「連動しない」にしているときは、専用モードの値を S に入れて使い、保存時は通常画面の値に戻して保存する
-var mmSwap=null; const MMK=["metroVol","mSound","mAccent","mvBar","mvBeat","mv8","mvT","mv16","mSub","mvSub","mMute","mUra"];
+var mmSwap=null; const MMK=["metroVol","mSound","mAccent","mvBar","mvBeat","mv8","mvT","mv16","mv6","mSub","mvSub","mMute","mUra"];
 const pickMM=o=>{ const r={}; MMK.forEach(k=>r[k]=k==="mMute"?{...(o[k]||{})}:o[k]); return r; };
 // 部品が書き換える先：専用モードを「連動しない」で開いているあいだ、通常画面側の部品は通常画面の値（mmSwap）を使う
 function mT(el){ return (mmSwap&&!(el&&el.closest&&el.closest("#metroMode")))?mmSwap:S; }
@@ -1163,7 +1165,7 @@ const mvv=k=>(S.mMute&&S.mMute[k])?0:(+S[k]||0);
 /* 「裏」：4分・8分・16分のフェーダーの「裏」を押すと、その音符の偶数番目だけ鳴らす（4分＝2・4拍目、8分＝「ト」、16分＝2・4つ目） */
 const mvU=k=>!!(S.mUra&&S.mUra[k]);
 function subLevels(){ const L=new Map(), a=(f,v)=>{ if(v>0) L.set(f,Math.max(L.get(f)||0,v)); };
-  (mvU("mv8")?[0.5]:[0,0.5]).forEach(f=>a(f,mvv("mv8"))); (mvU("mv16")?[0.25,0.75]:[0,0.25,0.5,0.75]).forEach(f=>a(f,mvv("mv16"))); [0,1/3,2/3].forEach(f=>a(f,mvv("mvT"))); return [...L.entries()]; }
+  (mvU("mv8")?[0.5]:[0,0.5]).forEach(f=>a(f,mvv("mv8"))); (mvU("mv16")?[0.25,0.75]:[0,0.25,0.5,0.75]).forEach(f=>a(f,mvv("mv16"))); [0,1/3,2/3].forEach(f=>a(f,mvv("mvT"))); [0,1,2,3,4,5].forEach(i=>a(i/6,mvv("mv6"))); return [...L.entries()]; }
 /* 1拍ぶんに鳴らす音：[拍の中の位置, 種類, 音量] の一覧。idx は小節の中の何拍目か（0から） */
 function beatPlan(idx,bar){ const out=[], hv=bar&&S.mAccent?mvv("mvBar"):mvv("mvBeat"), head=hv>0&&!(mvU("mvBeat")&&idx%2===0);
   if (head) out.push([0,bar?"bar":"beat"]);
@@ -2403,8 +2405,8 @@ const mmId=id=>"mm"+id.slice(1); // mvBar → mmvBar
 function syncMv(){ ["mvBar","mvBeat","mvSub"].forEach(id=>{ $(id).value=S[id]; const m=$(mmId(id)); if(m){ m.value=S[id]; $(mmId(id)+"V").textContent=S[id]+"%"; } }); }
 ["mvBar","mvBeat","mvSub"].forEach(id=>{ [$(id),$(mmId(id))].forEach(el=>{ if(!el) return; el.oninput=()=>{ S[id]=+el.value; saveSettings(); syncMv(); }; }); });
 syncMv();
-// ---- ヤマハのメトロノーム風の縦フェーダー（全体・アクセント・4分・8分・3連・16分） ----
-const FADERS=[["metroVol","全体",200],["mvBar","アクセント",100],["mvBeat","4分",100],["mv8","8分",100],["mvT","3連",100],["mv16","16分",100]];
+// ---- ヤマハのメトロノーム風の縦フェーダー（全体・アクセント・4分・8分・3連・16分・6連） ----
+const FADERS=[["metroVol","全体",200],["mvBar","アクセント",100],["mvBeat","4分",100],["mv8","8分",100],["mvT","3連",100],["mv16","16分",100],["mv6","6連",100]];
 function syncFaders(){ document.querySelectorAll(".fader input").forEach(inp=>{ const o=mT(inp), k=inp.dataset.k, v=+o[k]||0, mu=!!(o.mMute&&o.mMute[k]), col=inp.closest(".fader"); if(+inp.value!==v) inp.value=v;
   col.querySelector(".fv").textContent=v; col.classList.toggle("off",v===0||mu); col.classList.toggle("muted",mu);
   const fn=col.querySelector(".fn"); fn.classList.toggle("on",mu); fn.setAttribute("aria-pressed",String(mu));
@@ -2451,8 +2453,8 @@ function testMetro(){ audio(); if(ctx.state==="suspended") ctx.resume(); const t
   for(let i=0;i<4;i++){ for(const [fr,k,lv] of beatPlan(i,i===0)) click(t0+i*bd+fr*bd,k,undefined,lv); } }
 $("mTest").onclick=testMetro;
 // 標準：クリック音、頭（1拍目）の音を変える、拍の間の音なし（1拍ずつ）
-const METRO_DEFAULT={metroVol:20,mSound:"click",mAccent:true,mSub:1,mvBar:100,mvBeat:75,mvSub:45,mv8:0,mvT:0,mv16:0,mUra:{}};
-const STD_KEYS=["metroVol","mSound","mAccent","mvBar","mvBeat","mv8","mvT","mv16","mUra"];
+const METRO_DEFAULT={metroVol:20,mSound:"click",mAccent:true,mSub:1,mvBar:100,mvBeat:75,mvSub:45,mv8:0,mvT:0,mv16:0,mv6:0,mUra:{}};
+const STD_KEYS=["metroVol","mSound","mAccent","mvBar","mvBeat","mv8","mvT","mv16","mv6","mUra"];
 function metroStd(){ return {...METRO_DEFAULT,...(S.mStd||{}),mMute:{}}; }
 $("mReset").onclick=()=>{
   Object.assign(S,metroStd()); saveSettings();
@@ -2543,7 +2545,7 @@ function attachBubble(inp,fmt){
   inp.addEventListener("pointerup",hide); inp.addEventListener("pointercancel",hide); inp.addEventListener("blur",hide); inp.addEventListener("change",hide);
 }
 // メトロノームのフェーダー・ドラムの縦スライダー・パートの音量スライダーにも
-const FN={metroVol:"全体",mvBar:"アクセント",mvBeat:"4分",mv8:"8分",mvT:"3連",mv16:"16分"};
+const FN={metroVol:"全体",mvBar:"アクセント",mvBeat:"4分",mv8:"8分",mvT:"3連",mv16:"16分",mv6:"6連"};
 document.querySelectorAll(".fader input").forEach(inp=>attachBubble(inp,v=>(FN[inp.dataset.k]||"")+" "+v));
 [["masterVol",v=>"全体 "+v],["drumVol",v=>"ドラム "+v],["backVol",v=>"ドラム以外 "+v+"%"],["countVol",v=>"カウント "+v+"%"],["metroVol",v=>"メトロノーム "+v+"%"]].forEach(([id,fmt])=>{ if($(id)) attachBubble($(id),fmt); });
 function applyVelBox(){ const open=S.velOpen!==false; $("velBox").classList.toggle("closed",!open); $("velToggle").textContent=open?"▶":"◀ 強さ"; $("velToggle").title=open?"叩いた強さのグラフを隠す":"叩いた強さのグラフを出す"; }
@@ -3359,7 +3361,7 @@ function mmLights(){ const box=$("mmLights"); box.innerHTML=""; mm.els=[]; const
     const d=document.createElement("div"); d.className="mmLight"+(i===0&&S.mAccent?" acc":"")+(mvU("mvBeat")&&i%2===0?" rest":""); /* 4分の「裏」のとき、鳴らさない拍は点線 */ d.textContent=i+1; grp.appendChild(d);
     const row={0:d};
     if (subs.length){ const dots=document.createElement("div"); dots.className="mmDots";
-      subs.forEach(fr=>{ const e=document.createElement("span"); e.className="mmDot"+(Math.abs(fr*3-Math.round(fr*3))<1e-6&&Math.abs(fr*2-Math.round(fr*2))>1e-6?" tri":""); dots.appendChild(e); row[fr.toFixed(4)]=e; });
+      subs.forEach(fr=>{ const e=document.createElement("span"); e.className="mmDot"+(Math.abs(fr*6-Math.round(fr*6))<1e-6&&Math.abs(fr*4-Math.round(fr*4))>1e-6?" tri":""); dots.appendChild(e); row[fr.toFixed(4)]=e; });
       grp.appendChild(dots); }
     mm.els.push(row); box.appendChild(grp); } }
 function mmQuiet(bar){ if(!S.mQuiet||S.mQuiet==="0") return false; const [a,b]=S.mQuiet.split("-").map(Number); return (bar%(a+b))>=a; }
@@ -3439,7 +3441,7 @@ function mmOpen(){
   const bs=$("mmBeats"); if(!bs.options.length){ for(let i=1;i<=12;i++){ const o=document.createElement("option"); o.value=i; o.textContent=i; bs.appendChild(o); } }
   bs.value=S.mBeats; $("mmUnit").value=String(S.mUnit); $("mmSub").value=String(S.mSub); $("mmSound").value=S.mSound; $("mmAccent").checked=S.mAccent;
   $("mmVol").value=S.metroVol; $("mmVolV").textContent=S.metroVol+"%"; $("mmQuiet").value=S.mQuiet; $("mmUpEvery").value=String(S.mUpEvery); $("mmUpStep").value=String(S.mUpStep); $("mmUpMax").value=S.mUpMax;
-  $("mmLink").checked=S.mmLink!==false; if(S.mmLink===false) mmSwapIn();
+  $("mmLink").checked=S.mmLink===true; if(S.mmLink!==true) mmSwapIn(); /* 連動は初期値オフ */
   mmLights(); $("mmBtn").classList.add("on");
 }
 function refreshMetroUI(){
