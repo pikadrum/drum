@@ -522,7 +522,7 @@ main #partsCol,main.sideRight #partsCol{width:auto}
 }
 #bpmPop{flex-direction:column;align-items:stretch;gap:8px}
 #bpmOrig{font-size:13px;padding:6px}
-@media (max-width:380px){ #tLabelBtn{display:none!important} }
+@media (max-width:340px){ #tLabelBtn{display:none!important} } /* テンポの表示を細くしたので、狭い画面でも出す */
 #mmMenuBtn{width:100%;padding:10px;font-size:15px;font-weight:700;background:var(--accent);color:var(--onAccent);border-color:var(--accent)}
 #mMenu .popMenu button[aria-pressed="true"]{background:var(--accent);color:var(--onAccent);border-color:var(--accent);font-weight:700}
 /* ---- チャンネル番号：順番どおりなら隠し、マウスを乗せる・長押しで表示 ---- */
@@ -562,6 +562,13 @@ body.mmOn #dock,body.mmOn header{display:none} /* 専用モード中は上のメ
 #metroMode .faderBank.big .fv{font-size:12px}
 #metroMode .faderBank.big .fu{font-size:11px;padding:1px 7px}
 .mmSec{padding:8px 10px;gap:6px}
+/* 縦画面の上のメニューを1行に：テンポの文字と音符記号は出さず、数字欄も細く */
+header #tLabelBtn>span:first-child{display:none}
+header #tLabelBtn{padding:2px 4px;justify-content:center;min-width:0}
+header #origBpm{white-space:pre;font-size:10px;line-height:1.2;text-align:center}
+header .tempoBox #bpm{width:44px;padding:3px 1px;font-size:16px}
+header .tStep{min-width:28px;padding:4px 5px}
+#mmAccGrid button{width:36px;height:34px}
 /* 拍のランプ：細かい音の点は丸の下に並べ、16分や6連でも1段に収める */
 .mmLights{flex-wrap:nowrap;gap:4px;align-items:flex-start}
 .mmBeat{flex-direction:column;gap:3px;padding:3px 4px 4px;border-radius:12px;min-width:0}
@@ -578,7 +585,7 @@ body.mmOn #dock,body.mmOn header{display:none} /* 専用モード中は上のメ
   #metroMode .faderBank.big input[type=range]{height:96px}
 }
 /* 設定の折りたたみ説明とQRコード、フェーダーの「裏」、アクセントの位置 */
-.mmLight,.mmDots{cursor:pointer}.mmDots{padding:4px 0}.mmDot.acc{border-color:var(--miss)}.mmDot.acc.on{background:var(--miss);border-color:var(--miss)}.mmLight.acc{border-color:var(--miss)}.mmCard>*{flex-shrink:0} /* 縦に詰まって重ならないように */.mmChk{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end}.mmChk label{display:inline-flex;align-items:center;gap:4px;cursor:pointer;white-space:nowrap}.mmAccHint{text-align:center;font-size:11px;margin-top:-4px}.mmSubPre{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap}.mmSubPre button{min-width:52px;padding:5px 8px;font-weight:700}
+.mmDots{padding:2px 0}.mmDot.acc{border-color:var(--miss)}.mmDot.acc.on{background:var(--miss);border-color:var(--miss)}.mmLight.acc{border-color:var(--miss)}.mmCard>*{flex-shrink:0} /* 縦に詰まって重ならないように */.mmChk{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end}.mmChk label{display:inline-flex;align-items:center;gap:4px;cursor:pointer;white-space:nowrap}.mmAccBox>summary{cursor:pointer;color:var(--accent);font-size:13px;text-align:center;padding:2px 0}.mmAccBox[open]>summary{margin-bottom:6px}#mmAccGrid table{width:auto;border-collapse:separate;border-spacing:3px;margin:0 auto}#mmAccGrid td,#mmAccGrid th{border:none;padding:0}#mmAccGrid th{font-size:12px;color:var(--dim);font-weight:500;padding:0 4px}#mmAccGrid button{width:40px;height:34px;min-width:0;padding:0;font-size:14px;color:var(--miss)}#mmAccGrid button.on{border-color:var(--miss);background:var(--sunk)}.mmAccBtns{display:flex;gap:8px;justify-content:center;margin:6px 0}.mmAccBtns button{font-size:12px;padding:4px 10px}.mmSubPre{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap}.mmSubPre button{min-width:52px;padding:5px 8px;font-weight:700}
 .fader .fu{font-size:10px;padding:1px 5px;border-radius:5px;border:1px solid var(--line);background:transparent;color:var(--dim);cursor:pointer;min-width:0;line-height:1.4}.fader .fu.on{background:var(--accent);border-color:var(--accent);color:var(--onAccent)}.fader .fuSp{visibility:hidden;border-color:transparent}.fader .fuSp::after{content:"裏"}.faderBank.big .fu{font-size:12px;padding:2px 8px}
 details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var(--accent);list-style:none;padding:2px 0;user-select:none}details.tip>summary::-webkit-details-marker{display:none}details.tip>summary::before{content:"▸ "}details.tip[open]>summary::before{content:"▾ "}details.tip>.help,details.tip>div{margin-top:2px}details.fold>summary{cursor:pointer;list-style:none;user-select:none}details.fold>summary::-webkit-details-marker{display:none}details.fold>summary h2{display:inline}details.fold>summary::after{content:"　▸ 開く";font-size:11px;color:var(--accent)}details.fold[open]>summary::after{content:"　▾ 閉じる"}details.fold[open]>summary{margin-bottom:6px}.qrBox{display:flex;gap:14px;align-items:center;flex-wrap:wrap}.qrBox>.help{flex:1;min-width:140px;word-break:break-all}.qrImg{width:132px;flex:none;border-radius:6px;overflow:hidden;background:#fff}.qrImg svg{display:block;width:100%;height:auto}
 </style>
@@ -703,7 +710,7 @@ details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var
         </div>
         <div class="mmLights" id="mmLights"></div>
         <div id="mmStatus"></div>
-        <div class="help mmAccHint">丸や点を押すと、アクセントの位置を変えられます</div>
+        <details id="mmAccBox" class="mmAccBox"><summary>アクセントの位置を決める</summary><div id="mmAccGrid"></div><div class="mmAccBtns"><button id="mmAccDef" type="button">1拍目だけにする</button><button id="mmAccNone" type="button">すべて外す</button></div><div class="help">●をつけた位置は「アクセント」のフェーダーの音量で鳴ります。ほかの位置は、4分・8分などそれぞれのフェーダーの音量です。列は、いま鳴らしている音符の位置（頭＝拍の頭、½＝8分の裏、¼・¾＝16分、⅓・⅔＝3連、⅙・⅚＝6連）。</div></details>
         <div class="mmSubPre" aria-label="拍の間の音をまとめて設定"><span class="help">まとめて設定</span><button data-p="4">4分</button><button data-p="8">8分</button><button data-p="3">3連</button><button data-p="16">16分</button><button data-p="6">6連</button></div>
         <div class="faderBank big" data-master="1" aria-label="メトロノームの音量（全体・アクセント・4分・8分・3連・16分・6連）"></div>
         <div class="mmSec"><h3>リズムと音 <label class="mmLink" title="オン：通常画面のメトロノームと同じ音色・音量を使う／オフ：専用モードだけの設定を使う"><input type="checkbox" id="mmLink"> 通常画面のメトロノーム設定と連動する</label></h3>
@@ -912,7 +919,7 @@ details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var
           <ul>
             <li>音色は11種類（クリック・ウッドブロック・カウベル・ピッ・パッ・プッなど）です。</li>
             <li>ヤマハのメトロノームのように、アクセント・4分・8分・3連・16分・6連の音量を縦のフェーダーで個別に調整して、重ねて鳴らせます。名前を押すとミュートです。4分・8分・16分の「裏」を押すと、裏拍だけを鳴らせます（4分は2・4拍目、8分は「1ト2ト」のト、16分は2つ目と4つ目）。</li>
-            <li>専用モードでは、拍のランプの丸や点を押すと、その位置にアクセント（「アクセント」のフェーダーの音量）をつけたり外したりできます。たとえば16分の裏だけにアクセントをつけられます。アクセントは音量だけを変えます。音の種類は「頭（1拍目）」「各拍の頭」のチェックで、1拍目・各拍の頭・拍の間の音をそれぞれ違う音にできます。ミキサーの上の「4分」「8分」「3連」「16分」「6連」を押すと、その音符を鳴らすようにフェーダーをまとめて設定します。</li>
+            <li>専用モードの「アクセントの位置を決める」を開くと、拍ごと・拍の中の位置ごとのボタンが並び、押した位置にアクセント（「アクセント」のフェーダーの音量）をつけたり外したりできます。たとえば16分の裏だけにアクセントをつけられます。アクセントは音量だけを変えます。音の種類は「頭（1拍目）」「各拍の頭」のチェックで、1拍目・各拍の頭・拍の間の音をそれぞれ違う音にできます。ミキサーの上の「4分」「8分」「3連」「16分」「6連」を押すと、その音符を鳴らすようにフェーダーをまとめて設定します。</li>
             <li>専用モードでは、よく使うテンポ（80〜180）のボタン、タップテンポ（4分・8分・3連・16分で叩ける）、無音の小節（クワイエット練習）、自動テンポアップ、叩いたずれをms単位で表示するタイミング判定が使えます。</li>
             <li>専用モードの音色・音量は、はじめは専用モードだけの設定です（「通常画面のメトロノーム設定と連動する」にチェックを入れると、通常画面と同じ設定になります）。「標準に設定」で好みの設定を保存し、「標準に戻す」でいつでも戻せます。</li>
           </ul>
@@ -951,7 +958,7 @@ details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var
       <h2>このソフトのURL</h2>
       <div class="qrBox"><div class="qrImg" role="img" aria-label="配布先URL（https://pikadrum.github.io/drum/）のQRコード"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><rect width="37" height="37" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM12 4h3v1h-3zM22 4h1v1h-1zM26 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h2v1h-2zM16 5h1v1h-1zM20 5h4v1h-4zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM13 6h2v1h-2zM16 6h2v1h-2zM19 6h3v1h-3zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h3v1h-3zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h5v1h-5zM18 7h3v1h-3zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h3v1h-3zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h3v1h-3zM20 8h3v1h-3zM26 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h2v1h-2zM15 9h5v1h-5zM21 9h1v1h-1zM23 9h2v1h-2zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h7v1h-7zM12 11h3v1h-3zM16 11h1v1h-1zM18 11h1v1h-1zM21 11h1v1h-1zM4 12h1v1h-1zM8 12h1v1h-1zM10 12h4v1h-4zM15 12h1v1h-1zM17 12h5v1h-5zM24 12h6v1h-6zM32 12h1v1h-1zM6 13h1v1h-1zM11 13h2v1h-2zM15 13h1v1h-1zM21 13h2v1h-2zM26 13h7v1h-7zM7 14h2v1h-2zM10 14h3v1h-3zM14 14h6v1h-6zM21 14h1v1h-1zM26 14h1v1h-1zM32 14h1v1h-1zM4 15h1v1h-1zM6 15h3v1h-3zM11 15h2v1h-2zM16 15h2v1h-2zM19 15h4v1h-4zM24 15h4v1h-4zM29 15h1v1h-1zM31 15h2v1h-2zM4 16h1v1h-1zM6 16h1v1h-1zM10 16h2v1h-2zM13 16h2v1h-2zM16 16h2v1h-2zM21 16h1v1h-1zM23 16h1v1h-1zM25 16h1v1h-1zM31 16h1v1h-1zM4 17h1v1h-1zM6 17h2v1h-2zM11 17h1v1h-1zM14 17h2v1h-2zM17 17h2v1h-2zM20 17h3v1h-3zM25 17h8v1h-8zM4 18h2v1h-2zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM24 18h3v1h-3zM28 18h3v1h-3zM32 18h1v1h-1zM4 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM14 19h3v1h-3zM18 19h1v1h-1zM21 19h2v1h-2zM25 19h1v1h-1zM27 19h2v1h-2zM31 19h2v1h-2zM7 20h1v1h-1zM10 20h6v1h-6zM17 20h3v1h-3zM21 20h2v1h-2zM24 20h2v1h-2zM31 20h1v1h-1zM4 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM21 21h2v1h-2zM25 21h5v1h-5zM31 21h2v1h-2zM6 22h2v1h-2zM9 22h4v1h-4zM14 22h1v1h-1zM17 22h3v1h-3zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM30 22h1v1h-1zM32 22h1v1h-1zM6 23h4v1h-4zM12 23h1v1h-1zM14 23h4v1h-4zM21 23h4v1h-4zM26 23h3v1h-3zM31 23h2v1h-2zM4 24h2v1h-2zM8 24h1v1h-1zM10 24h4v1h-4zM15 24h3v1h-3zM19 24h1v1h-1zM21 24h1v1h-1zM23 24h7v1h-7zM32 24h1v1h-1zM12 25h1v1h-1zM14 25h1v1h-1zM16 25h4v1h-4zM22 25h3v1h-3zM28 25h1v1h-1zM32 25h1v1h-1zM4 26h7v1h-7zM12 26h2v1h-2zM16 26h1v1h-1zM19 26h1v1h-1zM21 26h4v1h-4zM26 26h1v1h-1zM28 26h3v1h-3zM32 26h1v1h-1zM4 27h1v1h-1zM10 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM18 27h2v1h-2zM21 27h1v1h-1zM23 27h2v1h-2zM28 27h1v1h-1zM31 27h2v1h-2zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM12 28h2v1h-2zM16 28h4v1h-4zM21 28h1v1h-1zM23 28h7v1h-7zM4 29h1v1h-1zM6 29h3v1h-3zM10 29h1v1h-1zM13 29h1v1h-1zM16 29h1v1h-1zM19 29h2v1h-2zM23 29h1v1h-1zM25 29h1v1h-1zM32 29h1v1h-1zM4 30h1v1h-1zM6 30h3v1h-3zM10 30h1v1h-1zM13 30h3v1h-3zM17 30h3v1h-3zM23 30h3v1h-3zM29 30h4v1h-4zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h1v1h-1zM16 31h2v1h-2zM19 31h1v1h-1zM21 31h1v1h-1zM24 31h1v1h-1zM27 31h1v1h-1zM29 31h1v1h-1zM31 31h2v1h-2zM4 32h7v1h-7zM12 32h3v1h-3zM16 32h1v1h-1zM18 32h1v1h-1zM20 32h2v1h-2zM23 32h3v1h-3zM28 32h1v1h-1zM31 32h1v1h-1z"/></svg></div><div class="help">スマホやタブレットのカメラで読み取ると、このソフトを開けます。<br><a href="https://pikadrum.github.io/drum/" target="_blank" rel="noopener">https://pikadrum.github.io/drum/</a></div></div>
     </section>
-    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/18 15:14</div>
+    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/18 18:31</div>
     </div>
   </aside>
 </main>
@@ -1258,7 +1265,7 @@ function selectSong(val){
   if (song.leadBars>0&&S.skipLead) flash(`空白の${song.leadBars===1?"1小節目":"最初の"+song.leadBars+"小節"}を飛ばして再生します`,"--ok",null);
   $("bpm").value=$("bpmRange").value=Math.round(song.baseBpm);
   $("bpm").dataset.exact=song.baseBpm;
-  $("origBpm").textContent="原曲 ♩="+fmtBpm(song.baseBpm)+(song.tempoChanges?"（変化あり）":"");
+  $("origBpm").textContent="原曲"+fmtBpm(song.baseBpm);
   $("loopA").value=1; $("loopB").value=Math.min(4,song.bars.length); $("loop").checked=false; st.loopManual=false; if($("loopBtn")) applyLoopBtn();
   try{ if(kind==="ex") localStorage.setItem("drumScopeLastSong",val); }catch(e){}
   /* 練習パターンに切り替えたときは伴奏（ドラム以外）をミュート・音量80にする。MIDIファイルに戻すと元の設定に戻す */
@@ -2394,7 +2401,7 @@ function drawFrame(){
   drawSeek(now);
   drawKitView();
   if (song.tempoChanges){ let t=song.tempos[0]; for(const x of song.tempos){ if(x.sec<=Math.max(0,now)) t=x; else break; }
-    const txt="原曲 ♩="+fmtBpm(song.baseBpm)+"　いま ♩="+fmtBpm(60e6/t.uspq*bpmTarget()/song.baseBpm);
+    const txt="原曲"+fmtBpm(song.baseBpm)+"\nいま"+fmtBpm(60e6/t.uspq*bpmTarget()/song.baseBpm);
     if ($("origBpm").textContent!==txt) $("origBpm").textContent=txt; }
   updateMeters();
 }
@@ -2570,6 +2577,8 @@ document.querySelectorAll(".faderBank").forEach(bank=>{
     bank.appendChild(col); });
 });
 syncFaders();
+$("mmAccDef").onclick=()=>{ S.mAccPos=[...ACC_DEF]; saveSettings(); mmLights(); };
+$("mmAccNone").onclick=()=>{ S.mAccPos=[]; saveSettings(); mmLights(); };
 /* 「まとめて設定」：押した音符だけを鳴らすようにフェーダーをそろえる（アクセントと全体はそのまま） */
 document.querySelectorAll(".mmSubPre button").forEach(b=>b.onclick=()=>{ const p=b.dataset.p, sub=45, base=(+S.mvBeat||0)>0?S.mvBeat:75;
   Object.assign(S,{mvBeat:base,mv8:p==="8"?sub:0,mvT:p==="3"?sub:0,mv16:p==="16"?sub:0,mv6:p==="6"?sub:0,mUra:{}});
@@ -2583,7 +2592,10 @@ $("mSound").value=S.mSound; $("mSound").onchange=()=>{ const o=mT($("mSound")); 
 $("mSub").value=String(S.mSub); $("mSub").onchange=()=>{ S.mSub=+$("mSub").value; saveSettings(); };
 $("mAccent").checked=S.mAccent; $("mAccent").onchange=()=>{ mT($("mAccent")).mAccent=$("mAccent").checked; saveSettings(); };
 $("mBeatSnd").checked=S.mBeatSnd!==false; $("mBeatSnd").onchange=()=>{ mT($("mBeatSnd")).mBeatSnd=$("mBeatSnd").checked; saveSettings(); };
-$("metroBox").open=!!S.metroOpen; $("metroBox").addEventListener("toggle",()=>{ S.metroOpen=$("metroBox").open; saveSettings(); });
+$("metroBox").open=!!S.metroOpen; $("metroBox").addEventListener("toggle",()=>{ S.metroOpen=$("metroBox").open; saveSettings();
+  /* 開いたら、隠れないように欄の中をスクロールして見えるようにする */
+  if ($("metroBox").open) requestAnimationFrame(()=>{ const box=$("metroBox"); let e=box.parentElement; while(e&&!(e.scrollHeight>e.clientHeight+2&&/(auto|scroll)/.test(getComputedStyle(e).overflowY))) e=e.parentElement;
+    if (!e) return; const r=box.getBoundingClientRect(), c=e.getBoundingClientRect(); if (r.bottom>c.bottom||r.top<c.top) e.scrollTop+=r.top-c.top-4; }); });
 // カウントの音量：メトロノームの音量に対する倍率。メトロノームを小さくしてもカウントだけ聞こえるよう、最低限の大きさを確保
 function countGain(){ return "count"; }
 $("countVol").value=S.countVol; $("countVolV").textContent=S.countVol+"%";
@@ -2592,17 +2604,15 @@ $("countTest").onclick=()=>{ audio(); if(ctx.state==="suspended") ctx.resume(); 
   for(let i=0;i<4;i++) click(t0+i*bd,i===0?"bar":"beat",cg); };
 function testMetro(){ audio(); if(ctx.state==="suspended") ctx.resume(); const t0=ctx.currentTime+0.05, bd=60/(+$("bpm").value||100);
   for(let i=0;i<4;i++){ for(const [fr,k,lv] of beatPlan(i,i===0)) click(t0+i*bd+fr*bd,k,undefined,lv); } }
-$("mTest").onclick=testMetro;
+$("mTest").onclick=()=>sideTest();
 // 標準：クリック音、頭（1拍目）の音を変える、拍の間の音なし（1拍ずつ）
 const METRO_DEFAULT={metroVol:20,mSound:"click",mAccent:true,mBeatSnd:true,mSub:1,mvBar:100,mvBeat:75,mvSub:45,mv8:0,mvT:0,mv16:0,mv6:0,mUra:{},mAccPos:["0:0.0000"]};
 const STD_KEYS=["metroVol","mSound","mAccent","mBeatSnd","mvBar","mvBeat","mv8","mvT","mv16","mv6","mUra","mAccPos"];
 function metroStd(){ return {...METRO_DEFAULT,...(S.mStd||{}),mMute:{}}; }
+/* 通常画面の「標準に戻す」「試しに鳴らす」は、専用モードを「連動しない」で開いていても通常画面の設定に対して働く */
+function sideTest(){ if(!mmSwap){ testMetro(); return; } const keep=pickMM(S); Object.assign(S,mmSwap); try{ testMetro(); } finally { Object.assign(S,keep); } }
 $("mReset").onclick=()=>{
-  Object.assign(S,metroStd()); saveSettings();
-  $("metroVol").value=S.metroVol; showMetroVol(); if(metroGain) metroGain.gain.value=metroLevel();
-  $("mSound").value=S.mSound; $("mAccent").checked=S.mAccent; $("mBeatSnd").checked=S.mBeatSnd!==false; $("mSub").value=String(S.mSub);
-  ["mvBar","mvBeat","mvSub"].forEach(id=>$(id).value=S[id]); if(typeof syncMv==="function") syncMv(); if(typeof syncFaders==="function") syncFaders();
-  testMetro();
+  Object.assign(mT($("mReset")),metroStd()); saveSettings(); refreshMetroUI(); sideTest();
 };
 function showMetroVol(){ $("metroVolV").textContent=(mmSwap||S).metroVol+"%"; }
 $("metroVol").addEventListener("input",()=>setTimeout(showMetroVol));
@@ -3473,14 +3483,23 @@ function mmSetBpm(v){ S.mBpm=Math.max(20,Math.min(300,Math.round(v))); $("mmBpm"
 function mmLights(){ const box=$("mmLights"); box.innerHTML=""; mm.els=[]; const subs=subLevels().map(x=>x[0]).filter(f=>f>0).sort((a,b)=>a-b);
   for(let i=0;i<S.mBeats;i++){ const grp=document.createElement("div"); grp.className="mmBeat";
     const d=document.createElement("div"); d.className="mmLight"+(accOn(i,0)?" acc":"")+(mvU("mvBeat")&&i%2===0?" rest":""); d.textContent=i+1; /* 4分の「裏」のとき、鳴らさない拍は点線 */
-    d.title=(i+1)+"拍目：押すとアクセントをつける／外す"; d.onclick=()=>toggleAcc(i,0); grp.appendChild(d);
+    grp.appendChild(d);
     const row={0:d};
-    if (subs.length){ const dots=document.createElement("div"); dots.className="mmDots"; dots.title="点を押すと、その位置にアクセントをつける／外す";
+    if (subs.length){ const dots=document.createElement("div"); dots.className="mmDots";
       subs.forEach(fr=>{ const e=document.createElement("span"); e.className="mmDot"+(Math.abs(fr*6-Math.round(fr*6))<1e-6&&Math.abs(fr*4-Math.round(fr*4))>1e-6?" tri":"")+(accOn(i,fr)?" acc":""); e.dataset.fr=fr; dots.appendChild(e); row[fr.toFixed(4)]=e; });
-      /* 点は小さいので、押した位置にいちばん近い点を切り替える */
-      dots.onclick=ev=>{ let best=null,bd=1e9; dots.querySelectorAll(".mmDot").forEach(e=>{ const r=e.getBoundingClientRect(), dx=Math.abs(r.left+r.width/2-ev.clientX); if(dx<bd){ bd=dx; best=e; } }); if(best) toggleAcc(i,+best.dataset.fr); };
       grp.appendChild(dots); }
-    mm.els.push(row); box.appendChild(grp); } }
+    mm.els.push(row); box.appendChild(grp); }
+  mmAccGrid(); }
+/* アクセントの位置を決める表：行＝拍、列＝拍の中の位置（鳴らしている音符の位置だけ） */
+const FR_LABEL={"0.0000":"頭","0.1667":"⅙","0.2500":"¼","0.3333":"⅓","0.5000":"½","0.6667":"⅔","0.7500":"¾","0.8333":"⅚"};
+function mmAccGrid(){ const g=$("mmAccGrid"); if(!g) return; g.innerHTML="";
+  const pos=[0,...subLevels().map(x=>x[0]).filter(f=>f>0)].sort((a,b)=>a-b), tb=document.createElement("table");
+  const hr=tb.insertRow(); hr.appendChild(document.createElement("th"));
+  pos.forEach(f=>{ const th=document.createElement("th"); th.textContent=FR_LABEL[f.toFixed(4)]||f.toFixed(2); hr.appendChild(th); });
+  for(let i=0;i<S.mBeats;i++){ const tr=tb.insertRow(), th=document.createElement("th"); th.textContent=(i+1)+"拍"; tr.appendChild(th);
+    pos.forEach(f=>{ const td=tr.insertCell(), b=document.createElement("button"); b.type="button"; const on=accOn(i,f); b.className=on?"on":""; b.textContent=on?"●":"";
+      b.setAttribute("aria-pressed",String(on)); b.setAttribute("aria-label",(i+1)+"拍目の"+(FR_LABEL[f.toFixed(4)]||"")+"にアクセント"); b.onclick=()=>toggleAcc(i,f); td.appendChild(b); }); }
+  g.appendChild(tb); }
 function mmQuiet(bar){ if(!S.mQuiet||S.mQuiet==="0") return false; const [a,b]=S.mQuiet.split("-").map(Number); return (bar%(a+b))>=a; }
 function mmStart(){
   audio(); if(ctx.state==="suspended") ctx.resume();
