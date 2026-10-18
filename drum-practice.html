@@ -140,6 +140,7 @@ th{color:var(--dim);font-weight:500}
 .mmLight.on{background:var(--accent);color:var(--onAccent);border-color:var(--accent)}
 .mmLight.acc.on{background:var(--miss);border-color:var(--miss);color:#fff}
 .mmLight.quiet{border-style:dashed;opacity:.5}
+.mmLight.rest{border-style:dashed;opacity:.6}
 .mmLight.quiet.on{background:transparent;color:var(--accent)}
 #mmStatus{text-align:center;color:var(--dim);font-size:13px;min-height:1.4em}
 .mmGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(330px,100%),1fr));gap:8px 22px}
@@ -477,7 +478,8 @@ input[type=range]::-webkit-slider-thumb{cursor:pointer}
 .songItem:hover{background:var(--btn)}
 .songItem.on{background:var(--sunk);color:var(--accent);font-weight:700}
 @media (max-width:1240px){ #songBtn{max-width:180px} }
-/* 設定の折りたたみ説明とQRコード */
+/* 設定の折りたたみ説明とQRコード、フェーダーの「裏」 */
+.fader .fu{font-size:10px;padding:1px 5px;border-radius:5px;border:1px solid var(--line);background:transparent;color:var(--dim);cursor:pointer;min-width:0;line-height:1.4}.fader .fu.on{background:var(--accent);border-color:var(--accent);color:var(--onAccent)}.fader .fuSp{visibility:hidden;border-color:transparent}.fader .fuSp::after{content:"裏"}.faderBank.big .fu{font-size:12px;padding:2px 8px}
 details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var(--accent);list-style:none;padding:2px 0;user-select:none}details.tip>summary::-webkit-details-marker{display:none}details.tip>summary::before{content:"▸ "}details.tip[open]>summary::before{content:"▾ "}details.tip>.help,details.tip>div{margin-top:2px}details.fold>summary{cursor:pointer;list-style:none;user-select:none}details.fold>summary::-webkit-details-marker{display:none}details.fold>summary h2{display:inline}details.fold>summary::after{content:"　▸ 開く";font-size:11px;color:var(--accent)}details.fold[open]>summary::after{content:"　▾ 閉じる"}details.fold[open]>summary{margin-bottom:6px}.qrBox{display:flex;gap:14px;align-items:center;flex-wrap:wrap}.qrBox>.help{flex:1;min-width:140px;word-break:break-all}.qrImg{width:132px;flex:none;border-radius:6px;overflow:hidden;background:#fff}.qrImg svg{display:block;width:100%;height:auto}
 </style>
 </head>
@@ -728,10 +730,9 @@ details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var
         <div id="presetDesc" class="help" style="font-size:11px"></div>
         <div style="display:flex;gap:6px;flex-wrap:wrap"><button id="presetApply">この配置にする</button><button id="presetSave" title="今の配置を、選んでいるマイ設定に保存します">今の配置をマイ設定に保存</button></div>
       </div>
-      <div class="help">▲▼で五線上の位置を1つずつ移動</div>
       <div class="pvWrap"><canvas id="partPreview" aria-label="パーツの位置のプレビュー"></canvas>
         <details class="tip"><summary>プレビューの見かた</summary><div class="help" style="font-size:11px">プレビュー：▲▼で動かしたパーツはオレンジで表示します。下の記号は各行の左の記号と対応しています。</div></details></div>
-      <div id="parts"></div>
+      <details class="tip" id="partsBox"><summary>パーツごとに位置・玉の形を調整する</summary><div class="help">▲▼で五線上の位置を1つずつ移動します。チェックを外したパーツは譜面に出しません。</div><div id="parts"></div></details>
     </section>
     <section>
       <h2>音源</h2>
@@ -790,7 +791,7 @@ details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var
             <li>段の半分を過ぎると、終わった段に次の段を先に表示するので、先を読みながら叩けます。</li>
             <li>＋−ボタン、Ctrl＋ホイール、2本指のピンチで拡大・縮小できます。1段の小節数を変えると、段数は画面の高さいっぱいに自動で並びます。</li>
             <li>譜面の左右の◀▶ボタンやスワイプで小節を送り・戻しでき、譜面の一番下の帯（曲全体のシークバー）を押すと、その小節へ移動します。</li>
-            <li>パーツを譜面のどこに書くかは、プリセットから選んだり自由に調整したりでき、プレビューで確認しながら設定できます。</li>
+            <li>パーツを譜面のどこに書くかは、プリセットから選べます。設定の「パーツごとに位置・玉の形を調整する」を開くと、パーツごとに自由に調整でき、プレビューで確認しながら設定できます。</li>
           </ul>
           <p style="margin:8px 0 2px"><b>■ 叩いた結果の判定</b></p>
           <ul>
@@ -813,7 +814,7 @@ details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var
           <p style="margin:8px 0 2px"><b>■ メトロノーム</b></p>
           <ul>
             <li>音色は11種類（クリック・ウッドブロック・カウベル・ピッ・パッ・プッなど）です。</li>
-            <li>ヤマハのメトロノームのように、アクセント・4分・8分・3連・16分の音量を縦のフェーダーで個別に調整して、重ねて鳴らせます。名前を押すとミュートです。</li>
+            <li>ヤマハのメトロノームのように、アクセント・4分・8分・3連・16分の音量を縦のフェーダーで個別に調整して、重ねて鳴らせます。名前を押すとミュートです。4分・8分・16分の「裏」を押すと、裏拍だけを鳴らせます（4分は2・4拍目、8分は「1ト2ト」のト、16分は2つ目と4つ目）。</li>
             <li>専用モードでは、よく使うテンポ（80〜180）のボタン、タップテンポ（4分・8分・3連・16分で叩ける）、無音の小節（クワイエット練習）、自動テンポアップ、叩いたずれをms単位で表示するタイミング判定が使えます。</li>
             <li>専用モードの音色・音量は、通常画面と連動させるか、専用モードだけの設定にするかを選べます。「標準に設定」で好みの設定を保存し、「標準に戻す」でいつでも戻せます。</li>
           </ul>
@@ -891,7 +892,7 @@ function loadSettings(){
   return JSON.parse(JSON.stringify(DEFAULT_SETTINGS));
 }
 // メトロノーム専用モードを「連動しない」にしているときは、専用モードの値を S に入れて使い、保存時は通常画面の値に戻して保存する
-var mmSwap=null; const MMK=["metroVol","mSound","mAccent","mvBar","mvBeat","mv8","mvT","mv16","mSub","mvSub","mMute"];
+var mmSwap=null; const MMK=["metroVol","mSound","mAccent","mvBar","mvBeat","mv8","mvT","mv16","mSub","mvSub","mMute","mUra"];
 const pickMM=o=>{ const r={}; MMK.forEach(k=>r[k]=k==="mMute"?{...(o[k]||{})}:o[k]); return r; };
 // 部品が書き換える先：専用モードを「連動しない」で開いているあいだ、通常画面側の部品は通常画面の値（mmSwap）を使う
 function mT(el){ return (mmSwap&&!(el&&el.closest&&el.closest("#metroMode")))?mmSwap:S; }
@@ -1028,7 +1029,7 @@ function buildSong(name, ppq, rawNotes, rawBack, tempos, sigs, info={}){
     tick+=len;
   }
   song.beats=[];
-  song.bars.forEach((b,bi)=>{ for(let i=0;i<b.num;i++){ const tk=b.tick+b.len/b.num*i; song.beats.push({tick:tk,time:song.t2s(tk),accent:i===0,bar:bi}); } });
+  song.bars.forEach((b,bi)=>{ for(let i=0;i<b.num;i++){ const tk=b.tick+b.len/b.num*i; song.beats.push({tick:tk,time:song.t2s(tk),accent:i===0,bar:bi,idx:i}); } });
   song.notes.forEach(n=>{ song.bars[barOfTick(song,n.q)].notes.push(n); });
   song.length=song.bars[song.bars.length-1].end;
   { let first=Infinity; if(song.drumAudio.length) first=song.drumAudio[0].time; if(song.back.length) first=Math.min(first,song.back[0].time);
@@ -1158,8 +1159,15 @@ function audio(){
 // 返り値：[拍の中の位置(0〜1), 音量] の一覧。8分の位置は 8分と16分の大きい方
 // フェーダーの名前を押すとミュート：ミュート中は 0 として扱う
 const mvv=k=>(S.mMute&&S.mMute[k])?0:(+S[k]||0);
+/* 「裏」：4分・8分・16分のフェーダーの「裏」を押すと、その音符の偶数番目だけ鳴らす（4分＝2・4拍目、8分＝「ト」、16分＝2・4つ目） */
+const mvU=k=>!!(S.mUra&&S.mUra[k]);
 function subLevels(){ const L=new Map(), a=(f,v)=>{ if(v>0) L.set(f,Math.max(L.get(f)||0,v)); };
-  a(0.5,mvv("mv8")); [0.25,0.5,0.75].forEach(f=>a(f,mvv("mv16"))); [1/3,2/3].forEach(f=>a(f,mvv("mvT"))); return [...L.entries()]; }
+  (mvU("mv8")?[0.5]:[0,0.5]).forEach(f=>a(f,mvv("mv8"))); (mvU("mv16")?[0.25,0.75]:[0,0.25,0.5,0.75]).forEach(f=>a(f,mvv("mv16"))); [0,1/3,2/3].forEach(f=>a(f,mvv("mvT"))); return [...L.entries()]; }
+/* 1拍ぶんに鳴らす音：[拍の中の位置, 種類, 音量] の一覧。idx は小節の中の何拍目か（0から） */
+function beatPlan(idx,bar){ const out=[], hv=bar&&S.mAccent?mvv("mvBar"):mvv("mvBeat"), head=hv>0&&!(mvU("mvBeat")&&idx%2===0);
+  if (head) out.push([0,bar?"bar":"beat"]);
+  for(const [fr,lv] of subLevels()) if(!(fr===0&&head)) out.push([fr,"sub",lv]);
+  return out; }
 // kind: "bar"（小節の頭）/"beat"（拍）/"sub"（拍の間）
 function click(t,kind,gainMul,lvl){
   if (kind===true) kind="bar"; else if (kind===false) kind="beat";
@@ -1269,9 +1277,9 @@ function startAt(songPos,countIn){
   st.startPos=songPos;
   if (countIn&&$("countin").checked){
     const b=song.bars[barAt(songPos)], beatDur=(b.end-b.time)/b.num;
-    const cg=countGain(), subs=subLevels();
-    for(let i=0;i<b.num;i++){ const t0=ctx.currentTime+lead+i*beatDur/st.rate; click(t0,i===0?"bar":"beat",cg);
-      for(const [fr,lv] of subs) click(t0+fr*beatDur/st.rate,"sub",cg,lv); }
+    const cg=countGain();
+    for(let i=0;i<b.num;i++){ const t0=ctx.currentTime+lead+i*beatDur/st.rate;
+      for(const [fr,k,lv] of beatPlan(i,i===0)) click(t0+fr*beatDur/st.rate,k,cg,lv); }
     lead+=b.num*beatDur/st.rate;
   }
   st.origin=ctx.currentTime+lead-songPos/st.rate;
@@ -1308,10 +1316,8 @@ function scheduler(){
   while (st.beatIdx<song.beats.length&&song.beats[st.beatIdx].time<lim){
     const bi=st.beatIdx++, b=song.beats[bi];
     if($("metro").checked){
-      click(st.origin+b.time/st.rate,b.accent?"bar":"beat");
-      const subs=subLevels();
-      if (subs.length){ const nt=bi+1<song.beats.length?song.beats[bi+1].time:song.bars[b.bar].end;
-        for(const [fr,lv] of subs){ const tt=b.time+(nt-b.time)*fr; if(tt<limit-1e-4) click(st.origin+tt/st.rate,"sub",undefined,lv); } }
+      const nt=bi+1<song.beats.length?song.beats[bi+1].time:song.bars[b.bar].end;
+      for(const [fr,k,lv] of beatPlan(b.idx||0,b.accent)){ const tt=b.time+(nt-b.time)*fr; if(fr===0||tt<limit-1e-4) click(st.origin+tt/st.rate,k,undefined,lv); }
     }
   }
   while (st.noteIdx<song.notes.length&&song.notes[st.noteIdx].time<lim) st.noteIdx++;
@@ -2400,7 +2406,8 @@ syncMv();
 const FADERS=[["metroVol","全体",200],["mvBar","アクセント",100],["mvBeat","4分",100],["mv8","8分",100],["mvT","3連",100],["mv16","16分",100]];
 function syncFaders(){ document.querySelectorAll(".fader input").forEach(inp=>{ const o=mT(inp), k=inp.dataset.k, v=+o[k]||0, mu=!!(o.mMute&&o.mMute[k]), col=inp.closest(".fader"); if(+inp.value!==v) inp.value=v;
   col.querySelector(".fv").textContent=v; col.classList.toggle("off",v===0||mu); col.classList.toggle("muted",mu);
-  const fn=col.querySelector(".fn"); fn.classList.toggle("on",mu); fn.setAttribute("aria-pressed",String(mu)); }); }
+  const fn=col.querySelector(".fn"); fn.classList.toggle("on",mu); fn.setAttribute("aria-pressed",String(mu));
+  const fu=col.querySelector("button.fu"); if(fu){ const u=!!(o.mUra&&o.mUra[k]); fu.classList.toggle("on",u); fu.setAttribute("aria-pressed",String(u)); } }); }
 document.querySelectorAll(".faderBank").forEach(bank=>{
   FADERS.forEach(([k,name,max])=>{ if(k==="metroVol"&&bank.dataset.master!=="1") return;
     const col=document.createElement("div"); col.className="fader"+(k==="metroVol"?" master":"");
@@ -2416,7 +2423,13 @@ document.querySelectorAll(".faderBank").forEach(bank=>{
       else { o[k]=v; saveSettings(); if(o===S&&typeof syncMv==="function") syncMv(); if(!$("metroMode").hidden) mmLights(); }
       syncFaders(); };
     inp.ondblclick=()=>{ inp.value=METRO_DEFAULT[k]; inp.dispatchEvent(new Event("input")); };
-    col.title=name+"の音量（ダブルクリックで標準）"; col.append(fv,inp,fn); bank.appendChild(col); });
+    col.title=name+"の音量（ダブルクリックで標準）"; col.append(fv,inp,fn);
+    if (k==="mvBeat"||k==="mv8"||k==="mv16"){ const fu=document.createElement("button"); fu.className="fu"; fu.textContent="裏";
+      fu.title={mvBeat:"オン：2・4拍目だけ鳴らす（1・3拍目と頭の音は鳴らさない）",mv8:"オン：8分の裏（「1ト2ト」のト）だけ鳴らす",mv16:"オン：16分の裏（2つ目と4つ目）だけ鳴らす"}[k]; fu.setAttribute("aria-pressed","false");
+      fu.onclick=()=>{ const o=mT(fu); o.mUra={...(o.mUra||{})}; o.mUra[k]=!o.mUra[k]; saveSettings(); syncFaders(); if(!$("metroMode").hidden) mmLights(); flash(name+(o.mUra[k]?"：裏だけ鳴らします":"：すべて鳴らします"),"--ok",null); };
+      col.appendChild(fu); }
+    else col.appendChild(Object.assign(document.createElement("span"),{className:"fu fuSp"})); /* 高さをそろえる */
+    bank.appendChild(col); });
 });
 syncFaders();
 $("metroVol").addEventListener("input",()=>syncFaders());
@@ -2433,12 +2446,12 @@ $("countVol").value=S.countVol; $("countVolV").textContent=S.countVol+"%";
 $("countVol").addEventListener("input",()=>{ S.countVol=+$("countVol").value; $("countVolV").textContent=S.countVol+"%"; if(countNode) countNode.gain.value=countLevel(); saveSettings(); });
 $("countTest").onclick=()=>{ audio(); if(ctx.state==="suspended") ctx.resume(); const t0=ctx.currentTime+0.05, bd=60/(+$("bpm").value||100), cg=countGain();
   for(let i=0;i<4;i++) click(t0+i*bd,i===0?"bar":"beat",cg); };
-function testMetro(){ audio(); if(ctx.state==="suspended") ctx.resume(); const t0=ctx.currentTime+0.05, bd=60/(+$("bpm").value||100), subs=subLevels();
-  for(let i=0;i<4;i++){ click(t0+i*bd,i===0?"bar":"beat"); for(const [fr,lv] of subs) click(t0+i*bd+fr*bd,"sub",undefined,lv); } }
+function testMetro(){ audio(); if(ctx.state==="suspended") ctx.resume(); const t0=ctx.currentTime+0.05, bd=60/(+$("bpm").value||100);
+  for(let i=0;i<4;i++){ for(const [fr,k,lv] of beatPlan(i,i===0)) click(t0+i*bd+fr*bd,k,undefined,lv); } }
 $("mTest").onclick=testMetro;
 // 標準：クリック音、頭（1拍目）の音を変える、拍の間の音なし（1拍ずつ）
-const METRO_DEFAULT={metroVol:20,mSound:"click",mAccent:true,mSub:1,mvBar:100,mvBeat:75,mvSub:45,mv8:0,mvT:0,mv16:0};
-const STD_KEYS=["metroVol","mSound","mAccent","mvBar","mvBeat","mv8","mvT","mv16"];
+const METRO_DEFAULT={metroVol:20,mSound:"click",mAccent:true,mSub:1,mvBar:100,mvBeat:75,mvSub:45,mv8:0,mvT:0,mv16:0,mUra:{}};
+const STD_KEYS=["metroVol","mSound","mAccent","mvBar","mvBeat","mv8","mvT","mv16","mUra"];
 function metroStd(){ return {...METRO_DEFAULT,...(S.mStd||{}),mMute:{}}; }
 $("mReset").onclick=()=>{
   Object.assign(S,metroStd()); saveSettings();
@@ -2603,7 +2616,7 @@ function buildSongList(){ const list=$("songList"); list.innerHTML=""; const cur
       for (const o of node.children) addItem(o); }
     else if (node.value!=="__open") addItem(node); }
   function addItem(o){ const b=document.createElement("button"); b.className="songItem"+(o.value===cur?" on":""); b.setAttribute("role","option"); b.setAttribute("aria-selected",String(o.value===cur)); b.textContent=o.textContent;
-    b.onclick=()=>{ closeSongPanel(); if(o.value!==$("songSel").value){ $("songSel").value=o.value; $("songSel").dispatchEvent(new Event("change")); } }; list.appendChild(b); } }
+    b.onclick=()=>{ closeSongPanel(); if(o.value!==$("songSel").value){ $("songSel").value=o.value; $("songSel").dispatchEvent(new Event("change")); } else if(o.value!=="__open") $("empty").hidden=true; /* 同じ曲を選び直したときも案内を閉じる */ }; list.appendChild(b); } }
 function closeSongPanel(){ $("songPanel").hidden=true; $("songBtn").setAttribute("aria-expanded","false"); }
 $("songBtn").onclick=e=>{ e.stopPropagation(); const p=$("songPanel"); if(!p.hidden){ closeSongPanel(); return; } buildSongList(); p.hidden=false; $("songBtn").setAttribute("aria-expanded","true");
   const on=p.querySelector(".songItem.on"); if(on) on.scrollIntoView({block:"center"}); };
@@ -2611,7 +2624,7 @@ $("songOpen").onclick=()=>{ closeSongPanel(); $("file").click(); };
 document.addEventListener("pointerdown",e=>{ const p=$("songPanel"); if(!p.hidden&&!p.contains(e.target)&&!$("songBtn").contains(e.target)) closeSongPanel(); });
 window.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!$("songPanel").hidden) closeSongPanel(); });
 $("songSel").addEventListener("change",updSongBtn);
-$("songSel").onchange=()=>{ const v=$("songSel").value; if(v==="__open"){ $("songSel").value=curSongVal; $("file").click(); return; } selectSong(v); };
+$("songSel").onchange=()=>{ const v=$("songSel").value; if(v==="__open"){ $("songSel").value=curSongVal; $("file").click(); return; } selectSong(v); $("empty").hidden=true; /* 曲を選んだら最初の案内を閉じる */ };
 $("loadBtn").onclick=()=>$("file").click();
 async function openFile(f){
   try{
@@ -3340,9 +3353,9 @@ $("xSave").onclick=()=>{
 const mm={running:false,next:0,beat:0,bar:0,queue:[],grid:[],offsets:[],taps:[]};
 function mmSetBpm(v){ S.mBpm=Math.max(20,Math.min(300,Math.round(v))); $("mmBpm").firstChild.nodeValue=String(S.mBpm); $("mmBpmRange").value=S.mBpm; saveSettings(); }
 // 拍のランプ：拍の丸に加えて、鳴らしている 8分・3連・16分 の位置を小さな点で並べる
-function mmLights(){ const box=$("mmLights"); box.innerHTML=""; mm.els=[]; const subs=subLevels().map(x=>x[0]).sort((a,b)=>a-b);
+function mmLights(){ const box=$("mmLights"); box.innerHTML=""; mm.els=[]; const subs=subLevels().map(x=>x[0]).filter(f=>f>0).sort((a,b)=>a-b);
   for(let i=0;i<S.mBeats;i++){ const grp=document.createElement("div"); grp.className="mmBeat";
-    const d=document.createElement("div"); d.className="mmLight"+(i===0&&S.mAccent?" acc":""); d.textContent=i+1; grp.appendChild(d);
+    const d=document.createElement("div"); d.className="mmLight"+(i===0&&S.mAccent?" acc":"")+(mvU("mvBeat")&&i%2===0?" rest":""); /* 4分の「裏」のとき、鳴らさない拍は点線 */ d.textContent=i+1; grp.appendChild(d);
     const row={0:d};
     if (subs.length){ const dots=document.createElement("div"); dots.className="mmDots";
       subs.forEach(fr=>{ const e=document.createElement("span"); e.className="mmDot"+(Math.abs(fr*3-Math.round(fr*3))<1e-6&&Math.abs(fr*2-Math.round(fr*2))>1e-6?" tri":""); dots.appendChild(e); row[fr.toFixed(4)]=e; });
@@ -3362,13 +3375,13 @@ function mmTick(){
   if (!mm.running) return;
   while (mm.next<ctx.currentTime+0.12){
     const spb=60/S.mBpm*(4/S.mUnit>=1?1:1), t=mm.next, quiet=mmQuiet(mm.bar);
-    const subs=subLevels();
-    if (!quiet){ click(t,mm.beat===0?"bar":"beat"); for(const [fr,lv] of subs) click(t+fr*spb,"sub",undefined,lv); }
+    const plan=beatPlan(mm.beat,mm.beat===0), subs=plan.filter(x=>x[0]>0);
+    if (!quiet) for(const [fr,k,lv] of plan) click(t+fr*spb,k,undefined,lv);
     mm.queue.push({t,beat:mm.beat,bar:mm.bar,quiet,key:0});
     subs.forEach(([fr])=>mm.queue.push({t:t+fr*spb,beat:mm.beat,bar:mm.bar,quiet,key:fr.toFixed(4)}));
     mm.queue.sort((a,b)=>a.t-b.t);
     // 叩いたずれの判定用の目安：鳴らしている位置（拍と拍の間の音）
-    const pos=[0,...subs.map(x=>x[0])].sort((a,b)=>a-b); let gap=1; for(let i=1;i<=pos.length;i++){ gap=Math.min(gap,(i<pos.length?pos[i]:1)-pos[i-1]); }
+    const pos=[...new Set([0,...plan.map(x=>x[0])])].sort((a,b)=>a-b); let gap=1; for(let i=1;i<=pos.length;i++){ gap=Math.min(gap,(i<pos.length?pos[i]:1)-pos[i-1]); }
     pos.forEach(fr=>mm.grid.push({t:t+fr*spb,step:spb*gap}));
     if (mm.grid.length>64) mm.grid.splice(0,mm.grid.length-64);
     mm.next+=spb; mm.beat++;
