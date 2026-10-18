@@ -744,11 +744,11 @@ details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var
     </section>
     <section>
       <h2>音源</h2>
-      <div class="row"><label for="sfBank">伴奏の音色（ネットから読み込む）</label><select id="sfBank"><option value="FluidR3_GM">高音質：FluidR3（標準）</option><option value="MusyngKite">高音質：Musyng Kite</option><option value="FatBoy">高音質：FatBoy</option><option value="off">簡易な電子音（読み込まない）</option></select><input type="checkbox" id="hq" checked hidden></div>
+      <div class="row"><label for="sfBank">伴奏の音色（ネットから読み込む）</label><select id="sfBank"><option value="FluidR3_GM">高音質：FluidR3（標準）</option><option value="MusyngKite">高音質：Musyng Kite</option><option value="FatBoy">高音質：FatBoy</option><option value="GeneralUserGS">高音質：GeneralUser GS</option><option value="off">簡易な電子音（読み込まない）</option></select><input type="checkbox" id="hq" checked hidden></div>
       <div id="sfStatus" class="help" style="font-size:11px;line-height:1.5"></div>
       <div class="row"><label for="outBack">伴奏の音源</label><select id="outBack" style="max-width:220px"><option value="">このソフトの音</option></select></div>
       <div class="row"><label for="outDrum">ドラムの音源</label><select id="outDrum" style="max-width:220px"><option value="">このソフトの音</option></select></div>
-      <details class="tip"><summary>外部のMIDI音源で鳴らすには</summary><div class="help">「このソフトの音」以外を選ぶと、パソコンにつながったMIDI機器で鳴らします。伴奏は「Microsoft GS Wavetable Synth」、ドラムは「TD-17」がおすすめです。ドラムの音源にTD-17などを選ぶと、左の音量欄に「外部ドラムの音量」が出ます。</div></details>
+      <details class="tip"><summary>外部のMIDI音源で鳴らすには</summary><div class="help">「このソフトの音」以外を選ぶと、パソコンにつながったMIDI機器で鳴らします。ドラムは「TD-17」がおすすめです。Windows の「Microsoft GS Wavetable Synth」は、ブラウザ（Chrome・Edge・Firefox）の制限で一覧に出ず、使えません。ドラムの音源にTD-17などを選ぶと、左の音量欄に「外部ドラムの音量」が出ます。</div></details>
       <div class="row"><label for="extCurve">外部ドラム音源の音量の効き</label><select id="extCurve"><option value="0.6">弱め</option><option value="1">標準</option><option value="1.6">強め</option></select></div>
       <details class="tip"><summary>音量の効きについて</summary><div class="help">TD-17などに鳴らすとき、ミキサーの音量は「叩く強さ」に置き換えて送ります。標準は、このソフトの音と同じ比率で変わります。変化が小さいと感じたら「強め」にしてください。</div></details>
       <div class="row"><label for="outDelay">外部音源のタイミング補正 (ms)</label><input type="number" id="outDelay" value="0" step="5"></div>
@@ -756,6 +756,8 @@ details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var
     <section>
       <h2>再生</h2>
       <div class="row"><label for="skipLead">最初の空白の小節を飛ばして再生する</label><input type="checkbox" id="skipLead" checked></div>
+      <div class="row"><label for="splitOut">クリックを左、それ以外の音を右に分けて出す</label><input type="checkbox" id="splitOut"></div>
+      <details class="tip"><summary>分けて出すときの使い方</summary><div class="help">オンにすると、メトロノームとカウントの音は左だけ、曲やドラムなどほかの音は右だけから出ます。パソコンのイヤホン端子やオーディオ機器の出力を、ミキサーで左右別々に扱うときに使います（例：クリックは自分のヘッドホンだけ、曲は録音や会場のスピーカーへ）。外部のMIDI音源（TD-17など）で鳴らしている音は分けられません。</div></details>
       <details class="tip"><summary>空白の小節について</summary><div class="help">市販のMIDIによくある、音の入っていない1小節目（音色の準備用）などを飛ばして、最初の音がある小節から始めます。</div></details>
     </section>
     <section>
@@ -816,8 +818,9 @@ details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var
             <li>ドラムのパーツごと・伴奏のパートごとに音量とソロを設定できます。名前を押すとミュート、数字を押すと音量のスライダーが出ます。ミュート中もレベルは薄いグレーで動きます。</li>
             <li>ドラムの各パーツは色分けされていて、叩くとミキサーが叩いた強さに合わせて光ります。曲で使っていないパーツも表示します。</li>
             <li>テンポは−／＋（短く押すと±10、長押しで±1・±5を選べる）で変えられます。テンポの数字を押すとスライダーが出て、「テンポ／原曲」の文字を押すと原曲のテンポに戻ります。</li>
+            <li>設定の「再生」で「クリックを左、それ以外の音を右に分けて出す」をオンにすると、メトロノーム・カウントの音を左、曲やドラムの音を右から出せます（ミキサーで別々に扱うときに）。</li>
             <li>ループボタンを押すと曲全体をループします。譜面上で小節をなぞると、その範囲（1小節から）をループします。</li>
-            <li>音色は、内蔵の音、高音質の音色（FluidR3・Musyng Kite・FatBoyの3種類から選べる）、パソコンのMIDI音源（GS Wavetable）、TD-17本体から選べます（設定の「音源」）。</li>
+            <li>音色は、内蔵の音、高音質の音色（FluidR3・Musyng Kite・FatBoy・GeneralUser GSの4種類から選べる）、パソコンにつないだMIDI機器（TD-17本体など）から選べます（設定の「音源」）。</li>
           </ul>
           <p style="margin:8px 0 2px"><b>■ メトロノーム</b></p>
           <ul>
@@ -857,8 +860,14 @@ details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var
           <li>音源：Musyng Kite Soundfont、FatBoy Soundfont</li>
           <li>ライセンス：クリエイティブ・コモンズ 表示-継承 3.0（CC BY-SA 3.0）<br><a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja" target="_blank" rel="noopener">https://creativecommons.org/licenses/by-sa/3.0/deed.ja</a></li>
         </ul>
+        <p style="margin:0 0 4px">「GeneralUser GS」を選んだときは、次の音源を使います。</p>
+        <ul style="margin:0 0 8px;padding-left:18px;line-height:1.7">
+          <li>音源：GeneralUser GS（作者：S. Christian Collins）<br><a href="https://github.com/mrbumpy409/GeneralUser-GS" target="_blank" rel="noopener">https://github.com/mrbumpy409/GeneralUser-GS</a></li>
+          <li>配布元：WebAudioFont（Sergey Surikov）<br><a href="https://github.com/surikov/webaudiofont" target="_blank" rel="noopener">https://github.com/surikov/webaudiofont</a></li>
+          <li>ライセンス：GeneralUser GS License</li>
+        </ul>
         <p style="margin:0 0 8px">音色データは改変せず、配布元から読み込んで使用しています。</p>
-        <p style="margin:0 0 8px" lang="en">Sound samples: "FluidR3_GM" by Frank Wen, via midi-js-soundfonts by Benjamin Gleitzman, licensed under CC BY 3.0. "Musyng Kite" and "FatBoy" soundfonts via midi-js-soundfonts, licensed under CC BY-SA 3.0. No modifications were made.</p></details>
+        <p style="margin:0 0 8px" lang="en">Sound samples: "FluidR3_GM" by Frank Wen, via midi-js-soundfonts by Benjamin Gleitzman, licensed under CC BY 3.0. "Musyng Kite" and "FatBoy" soundfonts via midi-js-soundfonts, licensed under CC BY-SA 3.0. "GeneralUser GS" by S. Christian Collins, via WebAudioFont by Sergey Surikov. No modifications were made.</p></details>
         <p style="margin:0 0 8px"><b>ご要望・不具合の報告</b><br><a href="https://docs.google.com/forms/d/e/1FAIpQLScFlxnOCoQHnpJGOL4SXxdwA6PArkBT3FwHMHZkgAxY0pJtqA/viewform" target="_blank" rel="noopener">こちらのフォーム</a>から送ってください（名前は任意・ログイン不要）。</p>
         <p style="margin:0 0 8px">配布ページから開いたときは、アクセス数を数えるために GoatCounter を使っています（Cookieは使わず、個人を特定する情報は集めません）。</p>
         <p style="margin:0">本ソフトは個人が制作した非公式ツールであり、ローランド株式会社とは関係ありません。「V-Drums」「TD-17」は同社の商標です。</p>
@@ -868,7 +877,7 @@ details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var
       <h2>このソフトのURL</h2>
       <div class="qrBox"><div class="qrImg" role="img" aria-label="配布先URL（https://pikadrum.github.io/drum/）のQRコード"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><rect width="37" height="37" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM12 4h3v1h-3zM22 4h1v1h-1zM26 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h2v1h-2zM16 5h1v1h-1zM20 5h4v1h-4zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM13 6h2v1h-2zM16 6h2v1h-2zM19 6h3v1h-3zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h3v1h-3zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h5v1h-5zM18 7h3v1h-3zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h3v1h-3zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h3v1h-3zM20 8h3v1h-3zM26 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h2v1h-2zM15 9h5v1h-5zM21 9h1v1h-1zM23 9h2v1h-2zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h7v1h-7zM12 11h3v1h-3zM16 11h1v1h-1zM18 11h1v1h-1zM21 11h1v1h-1zM4 12h1v1h-1zM8 12h1v1h-1zM10 12h4v1h-4zM15 12h1v1h-1zM17 12h5v1h-5zM24 12h6v1h-6zM32 12h1v1h-1zM6 13h1v1h-1zM11 13h2v1h-2zM15 13h1v1h-1zM21 13h2v1h-2zM26 13h7v1h-7zM7 14h2v1h-2zM10 14h3v1h-3zM14 14h6v1h-6zM21 14h1v1h-1zM26 14h1v1h-1zM32 14h1v1h-1zM4 15h1v1h-1zM6 15h3v1h-3zM11 15h2v1h-2zM16 15h2v1h-2zM19 15h4v1h-4zM24 15h4v1h-4zM29 15h1v1h-1zM31 15h2v1h-2zM4 16h1v1h-1zM6 16h1v1h-1zM10 16h2v1h-2zM13 16h2v1h-2zM16 16h2v1h-2zM21 16h1v1h-1zM23 16h1v1h-1zM25 16h1v1h-1zM31 16h1v1h-1zM4 17h1v1h-1zM6 17h2v1h-2zM11 17h1v1h-1zM14 17h2v1h-2zM17 17h2v1h-2zM20 17h3v1h-3zM25 17h8v1h-8zM4 18h2v1h-2zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM24 18h3v1h-3zM28 18h3v1h-3zM32 18h1v1h-1zM4 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM14 19h3v1h-3zM18 19h1v1h-1zM21 19h2v1h-2zM25 19h1v1h-1zM27 19h2v1h-2zM31 19h2v1h-2zM7 20h1v1h-1zM10 20h6v1h-6zM17 20h3v1h-3zM21 20h2v1h-2zM24 20h2v1h-2zM31 20h1v1h-1zM4 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM21 21h2v1h-2zM25 21h5v1h-5zM31 21h2v1h-2zM6 22h2v1h-2zM9 22h4v1h-4zM14 22h1v1h-1zM17 22h3v1h-3zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM30 22h1v1h-1zM32 22h1v1h-1zM6 23h4v1h-4zM12 23h1v1h-1zM14 23h4v1h-4zM21 23h4v1h-4zM26 23h3v1h-3zM31 23h2v1h-2zM4 24h2v1h-2zM8 24h1v1h-1zM10 24h4v1h-4zM15 24h3v1h-3zM19 24h1v1h-1zM21 24h1v1h-1zM23 24h7v1h-7zM32 24h1v1h-1zM12 25h1v1h-1zM14 25h1v1h-1zM16 25h4v1h-4zM22 25h3v1h-3zM28 25h1v1h-1zM32 25h1v1h-1zM4 26h7v1h-7zM12 26h2v1h-2zM16 26h1v1h-1zM19 26h1v1h-1zM21 26h4v1h-4zM26 26h1v1h-1zM28 26h3v1h-3zM32 26h1v1h-1zM4 27h1v1h-1zM10 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM18 27h2v1h-2zM21 27h1v1h-1zM23 27h2v1h-2zM28 27h1v1h-1zM31 27h2v1h-2zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM12 28h2v1h-2zM16 28h4v1h-4zM21 28h1v1h-1zM23 28h7v1h-7zM4 29h1v1h-1zM6 29h3v1h-3zM10 29h1v1h-1zM13 29h1v1h-1zM16 29h1v1h-1zM19 29h2v1h-2zM23 29h1v1h-1zM25 29h1v1h-1zM32 29h1v1h-1zM4 30h1v1h-1zM6 30h3v1h-3zM10 30h1v1h-1zM13 30h3v1h-3zM17 30h3v1h-3zM23 30h3v1h-3zM29 30h4v1h-4zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h1v1h-1zM16 31h2v1h-2zM19 31h1v1h-1zM21 31h1v1h-1zM24 31h1v1h-1zM27 31h1v1h-1zM29 31h1v1h-1zM31 31h2v1h-2zM4 32h7v1h-7zM12 32h3v1h-3zM16 32h1v1h-1zM18 32h1v1h-1zM20 32h2v1h-2zM23 32h3v1h-3zM28 32h1v1h-1zM31 32h1v1h-1z"/></svg></div><div class="help">スマホやタブレットのカメラで読み取ると、このソフトを開けます。<br><a href="https://pikadrum.github.io/drum/" target="_blank" rel="noopener">https://pikadrum.github.io/drum/</a></div></div>
     </section>
-    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/18 22:08</div>
+    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/18 22:50</div>
     </div>
   </aside>
 </main>
@@ -1164,12 +1173,25 @@ function audio(){
     const ch=noiseBuf.getChannelData(0); for(let i=0;i<ch.length;i++) ch[i]=Math.random()*2-1;
     masterGain=ctx.createGain(); masterGain.gain.value=masterLevel();
     const mlim=ctx.createDynamicsCompressor(); mlim.threshold.value=-4; mlim.knee.value=2; mlim.ratio.value=16; mlim.attack.value=0.002; mlim.release.value=0.12;
-    masterGain.connect(mlim).connect(ctx.destination);
-    const lim=ctx.createDynamicsCompressor(); lim.threshold.value=-3; lim.knee.value=0; lim.ratio.value=20; lim.attack.value=0.001; lim.release.value=0.05; lim.connect(ctx.destination);
+    masterGain.connect(mlim);
+    const lim=ctx.createDynamicsCompressor(); lim.threshold.value=-3; lim.knee.value=0; lim.ratio.value=20; lim.attack.value=0.001; lim.release.value=0.05;
+    outBus={music:mlim,click:lim}; applySplitOut();
     metroGain=ctx.createGain(); metroGain.gain.value=metroLevel(); metroGain.connect(lim);
     countNode=ctx.createGain(); countNode.gain.value=countLevel(); countNode.connect(lim);
   }
   return ctx;
+}
+/* クリックを分けて出す：オンなら左＝クリック（メトロノーム・カウント）、右＝それ以外の音（どちらも1つにまとめた音） */
+let outBus=null, splitNodes=null;
+function applySplitOut(){
+  if (!ctx||!outBus) return;
+  try{ outBus.music.disconnect(); outBus.click.disconnect(); }catch(e){}
+  if (splitNodes){ splitNodes.forEach(n=>{ try{ n.disconnect(); }catch(e){} }); splitNodes=null; }
+  if (!S.splitOut){ outBus.music.connect(ctx.destination); outBus.click.connect(ctx.destination); return; }
+  const mono=()=>{ const g=ctx.createGain(); g.channelCount=1; g.channelCountMode="explicit"; g.channelInterpretation="speakers"; return g; };
+  const mL=mono(), mR=mono(), mg=ctx.createChannelMerger(2);
+  outBus.click.connect(mL).connect(mg,0,0); outBus.music.connect(mR).connect(mg,0,1); mg.connect(ctx.destination);
+  splitNodes=[mL,mR,mg];
 }
 // 拍の間の音（ヤマハのメトロノーム風に、8分・3連・16分をそれぞれの音量で重ねて鳴らせる）
 // 返り値：[拍の中の位置(0〜1), 音量] の一覧。8分の位置は 8分と16分の大きい方
@@ -1264,7 +1286,20 @@ function synthNote(t,dur,note,vel,prog,dest){
 }
 // 高音質の音色（読み込めた楽器だけ使い、ほかは簡易シンセ）
 function playInst(t,dur,note,vel,prog,dest){
-  const sf=sfCache[sfKey(prog)], buf=S.hq&&sf&&sf.status==="ready"?sf.buffers[note]:null;
+  const sf=sfCache[sfKey(prog)];
+  if (S.hq&&sf&&sf.status==="ready"&&sf.zones){ /* GeneralUser GS：音域の合うゾーンを、音の高さに合わせた速さで鳴らす */
+    let z=null; for(let i=sf.zones.length-1;i>=0;i--){ const q=sf.zones[i]; if(q.keyRangeLow<=note&&q.keyRangeHigh+1>=note){ z=q; break; } }
+    if (!z) z=sf.zones[0];
+    const src=ctx.createBufferSource(), g=ctx.createGain(), v=Math.pow(vel/127,1.4)*0.9;
+    const base=(z.originalPitch??6000)-100*(z.coarseTune||0)-(z.fineTune||0), sr=z.sampleRate||44100;
+    src.buffer=z.buf; src.playbackRate.value=Math.pow(2,(100*note-base)/1200);
+    const loop=(z.loopStart||0)>=1&&z.loopStart<z.loopEnd;
+    if (loop){ src.loop=true; src.loopStart=z.loopStart/sr; src.loopEnd=z.loopEnd/sr; }
+    const len=loop?Math.max(dur,0.05):Math.min(Math.max(dur,0.05),z.buf.duration/src.playbackRate.value), end=t+len;
+    g.gain.setValueAtTime(v,t); g.gain.setValueAtTime(v,end); g.gain.linearRampToValueAtTime(0.0001,end+0.15);
+    src.connect(g).connect(dest||masterGain); src.start(t); src.stop(end+0.17); return;
+  }
+  const buf=S.hq&&sf&&sf.status==="ready"&&sf.buffers?sf.buffers[note]:null;
   if (!buf) return synthNote(t,dur,note,vel,prog,dest);
   const src=ctx.createBufferSource(), g=ctx.createGain(), v=Math.pow(vel/127,1.4)*0.9;
   src.buffer=buf; const end=t+Math.min(Math.max(dur,0.05),buf.duration);
@@ -1728,7 +1763,7 @@ function updateMeters(){
 }
 // ---- 高音質の音色（FluidR3 GM サウンドフォント） ----
 /* 高音質の音色は3種類から選べる（どれも midi-js-soundfonts から読み込む） */
-const SF_BANKS={FluidR3_GM:"FluidR3",MusyngKite:"Musyng Kite",FatBoy:"FatBoy"};
+const SF_BANKS={FluidR3_GM:"FluidR3",MusyngKite:"Musyng Kite",FatBoy:"FatBoy",GeneralUserGS:"GeneralUser GS"};
 const sfBank=()=>SF_BANKS[S.sfBank]?S.sfBank:"FluidR3_GM";
 const SF_BASE=()=>"https://gleitz.github.io/midi-js-soundfonts/"+sfBank()+"/";
 const sfKey=p=>sfBank()+":"+p;
@@ -1736,7 +1771,23 @@ const sfCache={};
 const NOTE_NAMES=["C","Db","D","Eb","E","F","Gb","G","Ab","A","Bb","B"];
 function loadScript(src,ms){ return new Promise((res,rej)=>{ const el=document.createElement("script"); el.src=src; const tm=setTimeout(()=>{ rej(new Error("timeout")); },ms); el.onload=()=>{ clearTimeout(tm); res(); }; el.onerror=()=>{ clearTimeout(tm); rej(new Error("load")); }; document.head.appendChild(el); }); }
 function b64ToBuf(uri){ const b=atob(uri.split(",")[1]); const a=new Uint8Array(b.length); for(let i=0;i<b.length;i++) a[i]=b.charCodeAt(i); return a.buffer; }
+/* GeneralUser GS：WebAudioFont の形式（楽器ごとに数個の録音＝ゾーン。音の高さは再生速度で合わせる） */
+const WAF_BASE="https://surikov.github.io/webaudiofontdata/sound/";
+async function loadProgramWAF(prog){
+  const key0=sfKey(prog); let sf=sfCache[key0]; if(sf) return;
+  sf=sfCache[key0]={status:"loading",zones:null};
+  const name=String(prog*10).padStart(4,"0")+"_GeneralUserGS_sf2_file";
+  try{
+    await loadScript(WAF_BASE+name+".js",30000);
+    const p=window["_tone_"+name]; if(!p||!p.zones||!p.zones.length) throw new Error("no data");
+    await Promise.all(p.zones.map(async z=>{ if(z.buf) return; const b=atob(z.file), a=new Uint8Array(b.length); for(let i=0;i<b.length;i++) a[i]=b.charCodeAt(i);
+      try{ z.buf=await ctx.decodeAudioData(a.buffer); }catch(e){} }));
+    sf.zones=p.zones.filter(z=>z.buf); if(!sf.zones.length) throw new Error("decode");
+    sf.status="ready";
+  }catch(e){ sf.status="failed"; }
+}
 async function loadProgram(prog,notes){
+  if (sfBank()==="GeneralUserGS") return loadProgramWAF(prog);
   const key0=sfKey(prog); let sf=sfCache[key0];
   if (!sf){
     sf=sfCache[key0]={status:"loading",buffers:{},raw:null};
@@ -2501,6 +2552,7 @@ function showMetroVol(){ $("metroVolV").textContent=(mmSwap||S).metroVol+"%"; }
 $("metroVol").addEventListener("input",()=>setTimeout(showMetroVol));
 setTimeout(showMetroVol);
 $("metroVol").value=S.metroVol; $("metroVol").oninput=()=>{ const o=mT($("metroVol")); o.metroVol=+$("metroVol").value; if(o===S&&metroGain) metroGain.gain.value=metroLevel(); showMetroVol(); saveSettings(); };
+$("splitOut").checked=!!S.splitOut; $("splitOut").onchange=()=>{ S.splitOut=$("splitOut").checked; saveSettings(); applySplitOut(); flash(S.splitOut?"クリックを左、ほかの音を右から出します":"左右を元に戻しました","--ok",null); };
 $("hq").checked=S.hq; $("hq").onchange=()=>{ S.hq=$("hq").checked; saveSettings(); loadSoundfonts(); };
 $("sfBank").value=S.hq?sfBank():"off";
 $("sfBank").onchange=()=>{ const v=$("sfBank").value; S.hq=v!=="off"; if(S.hq) S.sfBank=v; $("hq").checked=S.hq; saveSettings(); if(song) loadSoundfonts(); };

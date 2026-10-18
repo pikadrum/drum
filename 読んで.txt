@@ -52,8 +52,10 @@ MIDI楽曲ファイルを読み込んで、ドラム譜の表示や再生など�
 　名前を押すとミュート、叩くとミキサーが強さに合わせて光ります。
 　テンポ変更（−／＋、長押しで細かく）、ループ練習（ループボタンで曲全体、
 　譜面をなぞって1小節から）ができます。
-　音色は内蔵音・高音質音色（3種類）・パソコンのMIDI音源・電子ドラム本体から
-　選べます。
+　音色は内蔵音・高音質音色（4種類）・パソコンにつないだMIDI機器（電子ドラム
+　本体など）から選べます。
+　（Windows の Microsoft GS Wavetable Synth は、ブラウザの制限で使えません）
+　設定で、メトロノーム・カウントの音を左、ほかの音を右に分けて出すこともできます。
 　MIDIファイルがなくても、内蔵の練習パターン（入門〜中級の21種類、
 　どれも8小節以上・ベースとピアノの伴奏つき）で練習できます。
 　練習パターンを選ぶと伴奏はミュート（音量80）で始まり、
@@ -156,6 +158,14 @@ https://docs.google.com/forms/d/e/1FAIpQLScFlxnOCoQHnpJGOL4SXxdwA6PArkBT3FwHMHZk
   ライセンス：クリエイティブ・コモンズ 表示-継承 3.0（CC BY-SA 3.0）
   　　　　　　https://creativecommons.org/licenses/by-sa/3.0/deed.ja
 
+「GeneralUser GS」を選んだときは、次の音源を使用します。
+
+  音源　　　：GeneralUser GS（作者：S. Christian Collins）
+  　　　　　　https://github.com/mrbumpy409/GeneralUser-GS
+  配布元　　：WebAudioFont（Sergey Surikov）
+  　　　　　　https://github.com/surikov/webaudiofont
+  ライセンス：GeneralUser GS License
+
 音色データは改変せず、配布元から読み込んで使用しています。
 
 Sound samples: "FluidR3_GM" by Frank Wen, via midi-js-soundfonts
@@ -163,6 +173,7 @@ by Benjamin Gleitzman (https://github.com/gleitz/midi-js-soundfonts),
 licensed under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/).
 "Musyng Kite" and "FatBoy" soundfonts via midi-js-soundfonts,
 licensed under CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0/).
+"GeneralUser GS" by S. Christian Collins, via WebAudioFont by Sergey Surikov.
 No modifications were made.
 
 
