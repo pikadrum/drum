@@ -70,9 +70,9 @@ footer{margin-top:34px;font-size:12px;color:var(--dim);border-top:1px solid var(
   <ul>
     <li><a href="読んで.txt">読んで.txt（注意事項・音色のクレジット・利用規約）</a></li>
   </ul>
-  <p class="note">このページでは、アクセス数を数えるために GoatCounter を使っています（Cookieは使わず、個人を特定する情報は集めません）。</p>
+  <p class="note">このページとソフト（パソコン版・スマホ版）では、アクセス数を数えるために GoatCounter を使っています（Cookieは使わず、個人を特定する情報は集めません）。</p>
 
-  <footer>本ソフトは個人が制作した非公式ツールであり、ローランド株式会社とは関係ありません。「V-Drums」「TD-17」は同社の商標です。<br>配布者：pikadrum（ピカドラム）</footer>
+  <footer>本ソフトは個人が制作した非公式ツールであり、ローランド株式会社とは関係ありません。「V-Drums」「TD-17」は同社の商標です。<br>配布者：pikadrum（ピカドラム）<span id="visits" hidden>　｜　アクセス数 <b id="visitsN"></b></span></footer>
 </main>
 <script>
 // 開いた端末に合わせて、おすすめの版を光らせ、10秒後に自動で開く。
@@ -103,5 +103,16 @@ footer{margin-top:34px;font-size:12px;color:var(--dim);border-top:1px solid var(
 </script>
 <!-- アクセス数の集計（GoatCounter：Cookieを使わず、個人を特定しない） -->
 <script data-goatcounter="https://pikadrum.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<script>
+// アクセス数の表示（GoatCounter の「サイト全体の合計」）。読めなかったときは何も出さない
+(function(){
+  if (location.protocol !== "https:") return;
+  fetch("https://pikadrum.goatcounter.com/counter/TOTAL.json").then(function(r){ return r.ok ? r.json() : null; }).then(function(d){
+    if (!d || !d.count) return;
+    document.getElementById("visitsN").textContent = d.count;
+    document.getElementById("visits").hidden = false;
+  }).catch(function(){});
+})();
+</script>
 </body>
 </html>
