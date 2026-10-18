@@ -524,6 +524,12 @@ main #partsCol,main.sideRight #partsCol{width:auto}
 @media (max-width:380px){ #tLabelBtn{display:none!important} }
 #mmMenuBtn{width:100%;padding:10px;font-size:15px;font-weight:700;background:var(--accent);color:var(--onAccent);border-color:var(--accent)}
 #mMenu .popMenu button[aria-pressed="true"]{background:var(--accent);color:var(--onAccent);border-color:var(--accent);font-weight:700}
+/* ---- チャンネル番号：順番どおりなら隠し、マウスを乗せる・長押しで表示 ---- */
+.snameBtn .chNo{font-size:.85em;color:var(--dim);margin-right:2px}
+#strips.chSeq .snameBtn .chNo{display:none}
+#strips.chSeq .snameBtn:hover .chNo,#strips.chSeq.showCh .snameBtn .chNo{display:inline}
+.openBtn{font-size:15px;padding:3px 8px}
+#mMenu .openBtn{width:100%;padding:9px;font-size:15px}
 </style>
 </head>
 <body>
@@ -531,7 +537,7 @@ main #partsCol,main.sideRight #partsCol{width:auto}
   <h1 hidden>ドラム練習スコープ（仮）</h1>
   <div class="group">
     <select id="songSel" aria-label="曲・練習パターン（先頭の項目でMIDIファイルを開く）" title="曲・練習パターン。先頭の「MIDIファイルを開く」でファイルを読み込めます"></select>
-    <button id="loadBtn" hidden>MIDIファイルを開く</button>
+    <button id="loadBtn" class="openBtn">📂 MIDIファイルを開く</button>
     <input type="file" id="file" accept=".mid,.midi" hidden>
   </div>
   <div class="group">
@@ -546,6 +552,7 @@ main #partsCol,main.sideRight #partsCol{width:auto}
       <button id="viewGame" role="menuitemradio" aria-pressed="false">ゲーム</button>
       <hr class="menuSep">
       <button id="fsBtn" role="menuitem" title="全画面表示（Escキーかもう一度押すと戻ります）">全画面</button>
+      <button id="themeBtn" role="menuitem" title="黒い画面と白い画面を切り替える">白背景にする</button>
     </div>
   </div>
   <div class="group">
@@ -739,7 +746,7 @@ main #partsCol,main.sideRight #partsCol{width:auto}
     <div class="closeRow"><b>設定</b><button id="closeSettings">閉じる</button></div>
     <section>
       <h2>操作</h2>
-      <div class="opBtns"><button id="editBtn" title="ドラムの音符を追加・削除・移動して、新しいMIDIファイルとして保存">✎ 編集</button><button id="printBtn" title="ドラム譜をPDF・印刷・画像で出力">🖨 楽譜出力</button><button id="themeBtn">白背景にする</button></div>
+      <div class="opBtns"><button id="editBtn" title="ドラムの音符を追加・削除・移動して、新しいMIDIファイルとして保存">✎ 編集</button><button id="printBtn" title="ドラム譜をPDF・印刷・画像で出力">🖨 楽譜出力</button></div>
     </section>
     <section>
       <h2>MIDI入力（電子ドラム）</h2>
@@ -886,6 +893,7 @@ main #partsCol,main.sideRight #partsCol{width:auto}
         </ul>
         <p style="margin:0 0 8px">音色データは改変せず、配布元から読み込んで使用しています。</p>
         <p style="margin:0 0 8px" lang="en">Sound samples: "FluidR3_GM" by Frank Wen, via midi-js-soundfonts by Benjamin Gleitzman, licensed under CC BY 3.0. No modifications were made.</p>
+        <p style="margin:0 0 8px"><b>ご要望・不具合の報告</b><br><a href="https://docs.google.com/forms/d/e/1FAIpQLScFlxnOCoQHnpJGOL4SXxdwA6PArkBT3FwHMHZkgAxY0pJtqA/viewform" target="_blank" rel="noopener">こちらのフォーム</a>から送ってください（名前は任意・ログイン不要）。</p>
         <p style="margin:0">本ソフトは個人が制作した非公式ツールであり、ローランド株式会社とは関係ありません。「V-Drums」「TD-17」は同社の商標です。</p>
       </div>
     </section>
@@ -1666,8 +1674,15 @@ function renderStrips(){
       const meter=document.createElement("div"); meter.className="meter"; const bar=document.createElement("i"); meter.appendChild(bar); s.bar=bar;
       if (compact){ // パート名の部分がミュートボタン。音量は右の数字を押すとスライダーが出る
         row.classList.add("compact"); m.hidden=true;
-        const nb=document.createElement("button"); nb.className="snameBtn"; nb.title=(s.sub?s.sub+"\n":"")+"押すとミュート／解除"; nb.append(dot,document.createTextNode(s.name));
-        nb.onclick=()=>{ s.mute=!s.mute; updateStripStates(); }; s.nameBtn=nb;
+        const nb=document.createElement("button"); nb.className="snameBtn"; nb.title=`Ch${s.ch+1}　`+(s.sub?s.sub+"\n":"")+"押すとミュート／解除（長押しでチャンネル番号を表示）";
+        const chs=document.createElement("span"); chs.className="chNo mono"; chs.textContent=`Ch${s.ch+1}`;
+        nb.append(dot,chs,document.createTextNode(gmLabel(s.prog)));
+        // 長押し：チャンネル番号を表示（ミュートは切り替えない）
+        let lpT=null, lp=false;
+        nb.addEventListener("pointerdown",()=>{ lp=false; clearTimeout(lpT); lpT=setTimeout(()=>{ lp=true; box.classList.add("showCh"); clearTimeout(box._chT); box._chT=setTimeout(()=>box.classList.remove("showCh"),2500); },500); });
+        ["pointerup","pointerleave","pointercancel"].forEach(ev=>nb.addEventListener(ev,()=>clearTimeout(lpT)));
+        nb.addEventListener("contextmenu",e=>e.preventDefault());
+        nb.onclick=()=>{ if(lp){ lp=false; return; } s.mute=!s.mute; updateStripStates(); }; s.nameBtn=nb;
         const pop=document.createElement("span"); pop.className="volPop"; pop.hidden=true; pop.append(vol);
         vv.classList.add("vbtn"); vv.title="押すと音量のスライダーを表示（ダブルクリックで初期値）";
         vv.onclick=e=>{ e.stopPropagation(); const was=pop.hidden; document.querySelectorAll(".volPop").forEach(p=>p.hidden=true); pop.hidden=!was; };
@@ -1690,6 +1705,8 @@ function renderStrips(){
     }
   }
   song.strips.forEach(s=>{ if(s.vol0===undefined) s.vol0=s.vol; });
+  // チャンネルが上から1つずつ順に並んでいるときは番号を隠す（マウスを乗せる・長押しで表示）
+  box.classList.add("chSeq"); // チャンネル番号はふだん隠す（マウスを乗せる・長押しで表示）
   updateStripStates();
   if ($("drumVol")) syncVolGroup();
 }
@@ -2520,7 +2537,8 @@ $("drumMute").onclick=()=>{ const ds=song.strips.find(x=>x.kind==="drum"); if(!d
 function closeResults(){ const r=$("results"); if(r&&!r.hidden) r.hidden=true; }
 ["toggleAside","printBtn","editBtn","mmBtn","viewBtn","showXml","eSave"].forEach(id=>{ const el=$(id); if(el) el.addEventListener("click",()=>{ if(id!=="showRes") closeResults(); },true); });
 ["songSel"].forEach(id=>$(id).addEventListener("change",()=>setMenu(false)));
-["viewScore","viewGrid","viewGame","fsBtn","toggleAside"].forEach(id=>$(id).addEventListener("click",()=>setMenu(false)));
+$("loadBtn").addEventListener("click",()=>setMenu(false));
+["viewScore","viewGrid","viewGame","fsBtn","themeBtn","toggleAside"].forEach(id=>$(id).addEventListener("click",()=>setMenu(false)));
 // 再生中・メトロノーム中は画面が消えないようにする
 let wakeLock=null;
 async function keepAwake(on){ try{
@@ -2531,7 +2549,9 @@ setInterval(()=>{ const want=st.playing||(typeof mm!=="undefined"&&mm.running); 
 // 画面の向きで段数・小節数を自動調整
 function applyOrientation(){
   if (!S.autoBars) return;
-  const portrait=window.innerWidth<window.innerHeight, nb=portrait?2:4, nr=portrait?4:2;
+  // 小節数は向きで決め、段数は譜面の欄の高さに入るだけ（下の欄を開くと段を減らして全部見えるように）
+  const portrait=window.innerWidth<window.innerHeight, nb=portrait?2:4;
+  let nr=portrait?4:2; if(song&&song.bars&&cv.clientHeight>0){ const keepB=S.barsPerRow; S.barsPerRow=nb; nr=fitRows(); S.barsPerRow=keepB; }
   if (S.barsPerRow!==nb||S.rows!==nr){ S.barsPerRow=nb; S.rows=nr; $("barsPerRow").value=nb; $("rows").value=nr; if(song) st.viewPage=Math.floor(barAt(st.pos)/perPage()); saveSettings(); }
 }
 window.addEventListener("resize",applyOrientation); window.addEventListener("orientationchange",()=>setTimeout(applyOrientation,200));
