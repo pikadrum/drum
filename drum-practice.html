@@ -483,6 +483,25 @@ input[type=range]::-webkit-slider-thumb{cursor:pointer}
 .songItem:hover{background:var(--btn)}
 .songItem.on{background:var(--sunk);color:var(--accent);font-weight:700}
 @media (max-width:1240px){ #songBtn{max-width:180px} }
+
+/* 最初の画面：小さな案内と、叩いて遊べるドラムのパッド */
+#empty{flex-direction:column;align-items:stretch;justify-content:flex-start;gap:10px;padding:10px 12px}
+#empty .card.emptyBar{max-width:none;width:100%;flex:none;flex-direction:row;flex-wrap:wrap;align-items:center;gap:6px 12px;padding:10px 14px}
+#empty .emptyBar b{font-size:14px}
+.emptyBtns{display:flex;gap:8px;flex-wrap:wrap}
+.emptyBtns button{padding:6px 12px;font-size:13px}
+#openBig{background:var(--accent);color:var(--onAccent);border-color:var(--accent);font-weight:700}
+#padKit{flex:1;min-height:0;display:flex;flex-direction:column;gap:6px}
+.padHelp{text-align:center}
+.padGrid{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;touch-action:none;user-select:none;-webkit-user-select:none}
+.padGrid svg{width:100%;height:100%;display:block;overflow:visible}
+.pad{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.pad>g{transform-box:fill-box;transform-origin:center;transition:transform .06s,filter .08s}
+.pad.on>g{transform:scale(.95);filter:brightness(1.45) drop-shadow(0 0 2px var(--pc))}
+.pad text{pointer-events:none;font-family:var(--font);text-anchor:middle;dominant-baseline:middle}
+.pad .nm{font-size:3.1px;font-weight:700}
+.pad .ky{font-size:2.4px;font-family:var(--mono);opacity:.75}
+@media (max-height:520px){ .padHelp{display:none} #empty{padding:6px 10px;gap:6px} #empty .card.emptyBar{padding:6px 10px} } /* 横向きのスマホなど低い画面 */
 /* 設定の折りたたみ説明とQRコード、フェーダーの「裏」、アクセントの位置 */
 .mmDots{padding:2px 0}.mmDot.acc{border-color:var(--miss)}.mmDot.acc.on{background:var(--miss);border-color:var(--miss)}.mmLight.acc{border-color:var(--miss)}.mmCard>*{flex-shrink:0} /* 縦に詰まって重ならないように */.mmChk{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end}.mmChk label{display:inline-flex;align-items:center;gap:4px;cursor:pointer;white-space:nowrap}.mmAccBox>summary{cursor:pointer;color:var(--accent);font-size:13px;text-align:center;padding:2px 0}.mmAccBox[open]>summary{margin-bottom:6px}#mmAccGrid table{width:auto;border-collapse:separate;border-spacing:3px;margin:0 auto}#mmAccGrid td,#mmAccGrid th{border:none;padding:0}#mmAccGrid th{font-size:12px;color:var(--dim);font-weight:500;padding:0 4px}#mmAccGrid button{width:40px;height:34px;min-width:0;padding:0;font-size:14px;color:var(--miss)}#mmAccGrid button.on{border-color:var(--miss);background:var(--sunk)}.mmAccBtns{display:flex;gap:8px;justify-content:center;margin:6px 0}.mmAccBtns button{font-size:12px;padding:4px 10px}.mmSubPre{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap}.mmSubPre button{min-width:52px;padding:5px 8px;font-weight:700}
 .fader .fu{font-size:10px;padding:1px 5px;border-radius:5px;border:1px solid var(--line);background:transparent;color:var(--dim);cursor:pointer;min-width:0;line-height:1.4}.fader .fu.on{background:var(--accent);border-color:var(--accent);color:var(--onAccent)}.fader .fuSp{visibility:hidden;border-color:transparent}.fader .fuSp::after{content:"裏"}.faderBank.big .fu{font-size:12px;padding:2px 8px}
@@ -592,13 +611,15 @@ details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var
       <div id="flash"></div>
       <div id="errBar" role="alert" hidden></div>
       <div id="empty" hidden>
-        <div class="card">
-          <h2>MIDIファイルを開いて練習を始めましょう</h2>
-          <p>曲のMIDIファイル（.mid）を開くと、全パートを再生しながらドラム譜を表示します。ドラムは下、ほかのパートは横のミキサーで、音量・ミュート・ソロを変えられます。</p>
-          <button id="openBig">MIDIファイルを開く</button>
-          <p>ファイルをこの画面にドラッグしても開けます。</p>
-          <button id="tryEx">ファイルなしで、練習パターンを試す</button>
+        <div class="card emptyBar">
+          <b>MIDIファイルを開いて練習を始めましょう</b>
+          <span class="emptyBtns"><button id="openBig">MIDIファイルを開く</button><button id="tryEx">練習パターンを試す</button></span>
+          <span class="help">ファイルはこの画面にドラッグしても開けます。</span>
           <p id="loadErr" style="color:var(--miss)" hidden></p>
+        </div>
+        <div id="padKit" aria-label="ドラムのパッド（押すと音が出ます）">
+          <div class="help padHelp">ドラムを叩くと音が出ます（キーボードのキーでも叩けます）</div>
+          <div class="padGrid" id="padGrid"></div>
         </div>
       </div>
       <div id="metroMode" hidden>
@@ -756,6 +777,16 @@ details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var
     <section>
       <h2>再生</h2>
       <div class="row"><label for="skipLead">最初の空白の小節を飛ばして再生する</label><input type="checkbox" id="skipLead" checked></div>
+      <div class="row"><label for="syncOn">ほかのソフトと同期する（同じ端末のブラウザ）</label><input type="checkbox" id="syncOn"></div>
+      <div id="syncStat" class="help"></div>
+      <div class="row"><label for="netRoom">別の端末と同期する（部屋番号）</label><span style="display:flex;gap:6px;align-items:center"><input id="netRoom" inputmode="numeric" maxlength="8" placeholder="例 1234" style="width:84px"><button id="netBtn" type="button">つなぐ</button></span></div>
+      <div id="netStat" class="help"></div>
+      <div class="row"><label for="syncLat">この端末の音の遅れ（同期用、ms）</label><input type="number" id="syncLat" value="0" step="10" style="width:84px"></div>
+      <div class="row"><label for="syncMute">相手が弾くパートを、こちらの音から外す</label><input type="checkbox" id="syncMute" checked></div>
+      <div class="row"><label for="syncSong">相手が開いた曲を、こちらでも自動で開く</label><input type="checkbox" id="syncSong" checked></div>
+      <div class="row"><label for="clockOut">MIDIクロックを送る（DAWなどへ）</label><select id="clockOut" style="max-width:200px"><option value="">使わない</option></select></div>
+      <div class="row"><label for="clockIn">MIDIクロックに合わせる（DAWなどから）</label><select id="clockIn" style="max-width:200px"><option value="">使わない</option></select></div>
+      <details class="tip"><summary>同期のしかた</summary><div class="help">同じブラウザで、同期に対応したソフト（鍵盤の練習ソフトなど）を別のタブやウインドウで開き、両方で同期をオンにします。両方で同じMIDIファイルを開くと、どちらで再生・停止・小節の移動・テンポの変更をしても、もう一方がついてきます。配布ページ（https://pikadrum.github.io/）から開いたソフトどうしで同期します。<br><b>別の端末と</b>：両方の端末で同じ部屋番号（4〜8桁の数字）を入れて「つなぐ」を押します。最初に押した端末が部屋の親になります。つなぐときだけ外部の仲介サーバー（PeerJS）を使い、つながったあとは端末どうしで直接やり取りします（曲のデータは送りません）。通信の制限が強いネットワークでは、つながらないことがあります。部屋の親が抜けても、残った端末が親を引き継ぎます。同じ端末の同期と別の端末の同期を両方オンにした端末は、両方の間を中継します（例：PCのドラム＋PCの鍵盤＋iPadの鍵盤）。<br><b>合わせ方</b>：最後に操作した端末が1秒ごとに位置を知らせ、ほかの端末は少しずつずれを直します。片方でループを決めると相手も同じ範囲をループし、カウント中に始めたときは相手もカウントを鳴らします。片方でMIDIファイルを開くと、相手でも自動で開きます。相手が弾くパート（鍵盤ソフトが弾くピアノなど）は、こちらでミュートされます。<br><b>音の遅れ</b>：Bluetoothのイヤホンやスピーカーなどで音が遅れて出る端末は、その遅れ（例：200）を「この端末の音の遅れ」に入れると、耳で聞いてそろうように早めに鳴らします。<br><b>MIDIクロック</b>：DAWなどの音楽ソフトや機器へ、Clock・Start・Stop・Continue・Song Position を送れます。「合わせる」を選ぶと、相手のStart／Stop／位置／テンポにこちらが従います。</div></details>
       <div class="row"><label for="splitOut">クリックを左、それ以外の音を右に分けて出す</label><input type="checkbox" id="splitOut"></div>
       <details class="tip"><summary>分けて出すときの使い方</summary><div class="help">オンにすると、メトロノームとカウントの音は左だけ、曲やドラムなどほかの音は右だけから出ます。パソコンのイヤホン端子やオーディオ機器の出力を、ミキサーで左右別々に扱うときに使います（例：クリックは自分のヘッドホンだけ、曲は録音や会場のスピーカーへ）。外部のMIDI音源（TD-17など）で鳴らしている音は分けられません。</div></details>
       <details class="tip"><summary>空白の小節について</summary><div class="help">市販のMIDIによくある、音の入っていない1小節目（音色の準備用）などを飛ばして、最初の音がある小節から始めます。</div></details>
@@ -794,6 +825,10 @@ details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var
         <details id="features" class="tip" style="margin:0 0 10px">
           <summary>特徴と使い方の概要</summary>
           <p style="margin:8px 0">電子ドラム（V-Drums / TD-17など）向けの、ブラウザで動く無料のドラム練習ソフトです。MIDIファイルを読み込むとドラム譜を表示し、譜面上を流れるカーソルに合わせて叩くと、タイミングと強さをリアルタイムで判定します。インストールは不要です。</p>
+          <p style="margin:8px 0 2px"><b>■ 最初の画面</b></p>
+          <ul>
+            <li>開いたときの画面には上から見たドラムセットが出て、押すとすぐ音が出ます（打面の中心ほど強く、ふちほど弱い音）。パソコンではキーボードのキー（設定で変更可）でも叩けます。曲や練習パターンを選ぶと、譜面の画面に変わります。</li>
+          </ul>
           <p style="margin:8px 0 2px"><b>■ 譜面の表示</b></p>
           <ul>
             <li>32分音符や3連符（8分・16分・32分）に対応しています。</li>
@@ -819,6 +854,7 @@ details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var
             <li>ドラムの各パーツは色分けされていて、叩くとミキサーが叩いた強さに合わせて光ります。曲で使っていないパーツも表示します。</li>
             <li>テンポは−／＋（短く押すと±10、長押しで±1・±5を選べる）で変えられます。テンポの数字を押すとスライダーが出て、「テンポ／原曲」の文字を押すと原曲のテンポに戻ります。</li>
             <li>設定の「再生」で「クリックを左、それ以外の音を右に分けて出す」をオンにすると、メトロノーム・カウントの音を左、曲やドラムの音を右から出せます（ミキサーで別々に扱うときに）。</li>
+            <li>設定の「再生」で「ほかのソフトと同期する」をオンにすると、同じブラウザで開いた対応ソフト（鍵盤の練習ソフトなど）と、再生・停止・小節の移動・テンポがそろいます（どちらで操作してもよい）。別の端末とは、同じ部屋番号を入れて「つなぐ」を押すと同期します。ループ範囲・カウント・曲の受け渡し・相手が弾くパートのミュート・再生中のずれの補正・端末ごとの音の遅れの調整・MIDIクロック（DAWなどとの同期）にも対応しています。</li>
             <li>ループボタンを押すと曲全体をループします。譜面上で小節をなぞると、その範囲（1小節から）をループします。</li>
             <li>音色は、内蔵の音、高音質の音色（FluidR3・Musyng Kite・FatBoy・GeneralUser GSの4種類から選べる）、パソコンにつないだMIDI機器（TD-17本体など）から選べます（設定の「音源」）。</li>
           </ul>
@@ -877,7 +913,7 @@ details.tip{margin:0}details.tip>summary{cursor:pointer;font-size:12px;color:var
       <h2>このソフトのURL</h2>
       <div class="qrBox"><div class="qrImg" role="img" aria-label="配布先URL（https://pikadrum.github.io/drum/）のQRコード"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><rect width="37" height="37" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM12 4h3v1h-3zM22 4h1v1h-1zM26 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h2v1h-2zM16 5h1v1h-1zM20 5h4v1h-4zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM13 6h2v1h-2zM16 6h2v1h-2zM19 6h3v1h-3zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h3v1h-3zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h5v1h-5zM18 7h3v1h-3zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h3v1h-3zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h3v1h-3zM20 8h3v1h-3zM26 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h2v1h-2zM15 9h5v1h-5zM21 9h1v1h-1zM23 9h2v1h-2zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h7v1h-7zM12 11h3v1h-3zM16 11h1v1h-1zM18 11h1v1h-1zM21 11h1v1h-1zM4 12h1v1h-1zM8 12h1v1h-1zM10 12h4v1h-4zM15 12h1v1h-1zM17 12h5v1h-5zM24 12h6v1h-6zM32 12h1v1h-1zM6 13h1v1h-1zM11 13h2v1h-2zM15 13h1v1h-1zM21 13h2v1h-2zM26 13h7v1h-7zM7 14h2v1h-2zM10 14h3v1h-3zM14 14h6v1h-6zM21 14h1v1h-1zM26 14h1v1h-1zM32 14h1v1h-1zM4 15h1v1h-1zM6 15h3v1h-3zM11 15h2v1h-2zM16 15h2v1h-2zM19 15h4v1h-4zM24 15h4v1h-4zM29 15h1v1h-1zM31 15h2v1h-2zM4 16h1v1h-1zM6 16h1v1h-1zM10 16h2v1h-2zM13 16h2v1h-2zM16 16h2v1h-2zM21 16h1v1h-1zM23 16h1v1h-1zM25 16h1v1h-1zM31 16h1v1h-1zM4 17h1v1h-1zM6 17h2v1h-2zM11 17h1v1h-1zM14 17h2v1h-2zM17 17h2v1h-2zM20 17h3v1h-3zM25 17h8v1h-8zM4 18h2v1h-2zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM24 18h3v1h-3zM28 18h3v1h-3zM32 18h1v1h-1zM4 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM14 19h3v1h-3zM18 19h1v1h-1zM21 19h2v1h-2zM25 19h1v1h-1zM27 19h2v1h-2zM31 19h2v1h-2zM7 20h1v1h-1zM10 20h6v1h-6zM17 20h3v1h-3zM21 20h2v1h-2zM24 20h2v1h-2zM31 20h1v1h-1zM4 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM21 21h2v1h-2zM25 21h5v1h-5zM31 21h2v1h-2zM6 22h2v1h-2zM9 22h4v1h-4zM14 22h1v1h-1zM17 22h3v1h-3zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM30 22h1v1h-1zM32 22h1v1h-1zM6 23h4v1h-4zM12 23h1v1h-1zM14 23h4v1h-4zM21 23h4v1h-4zM26 23h3v1h-3zM31 23h2v1h-2zM4 24h2v1h-2zM8 24h1v1h-1zM10 24h4v1h-4zM15 24h3v1h-3zM19 24h1v1h-1zM21 24h1v1h-1zM23 24h7v1h-7zM32 24h1v1h-1zM12 25h1v1h-1zM14 25h1v1h-1zM16 25h4v1h-4zM22 25h3v1h-3zM28 25h1v1h-1zM32 25h1v1h-1zM4 26h7v1h-7zM12 26h2v1h-2zM16 26h1v1h-1zM19 26h1v1h-1zM21 26h4v1h-4zM26 26h1v1h-1zM28 26h3v1h-3zM32 26h1v1h-1zM4 27h1v1h-1zM10 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM18 27h2v1h-2zM21 27h1v1h-1zM23 27h2v1h-2zM28 27h1v1h-1zM31 27h2v1h-2zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM12 28h2v1h-2zM16 28h4v1h-4zM21 28h1v1h-1zM23 28h7v1h-7zM4 29h1v1h-1zM6 29h3v1h-3zM10 29h1v1h-1zM13 29h1v1h-1zM16 29h1v1h-1zM19 29h2v1h-2zM23 29h1v1h-1zM25 29h1v1h-1zM32 29h1v1h-1zM4 30h1v1h-1zM6 30h3v1h-3zM10 30h1v1h-1zM13 30h3v1h-3zM17 30h3v1h-3zM23 30h3v1h-3zM29 30h4v1h-4zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h1v1h-1zM16 31h2v1h-2zM19 31h1v1h-1zM21 31h1v1h-1zM24 31h1v1h-1zM27 31h1v1h-1zM29 31h1v1h-1zM31 31h2v1h-2zM4 32h7v1h-7zM12 32h3v1h-3zM16 32h1v1h-1zM18 32h1v1h-1zM20 32h2v1h-2zM23 32h3v1h-3zM28 32h1v1h-1zM31 32h1v1h-1z"/></svg></div><div class="help">スマホやタブレットのカメラで読み取ると、このソフトを開けます。<br><a href="https://pikadrum.github.io/drum/" target="_blank" rel="noopener">https://pikadrum.github.io/drum/</a></div></div>
     </section>
-    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/18 22:50</div>
+    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/19 14:20</div>
     </div>
   </aside>
 </main>
@@ -1622,7 +1658,7 @@ function makeStrips(song,info){
 }
 function effGain(s){
   const anySolo=song.strips.some(x=>x.solo&&x.kind!=="piece");
-  const g=(s.mute||(anySolo&&!s.solo))?0:s.vol;
+  const g=(s.mute||s.peerMute||(anySolo&&!s.solo))?0:s.vol; /* peerMute：同期相手が弾くパート */
   return s.kind==="inst"?(st.backMute?0:g*(S.backVol??100)/100):g; // ドラム以外のパートは「ドラム以外」の音量も掛ける
 }
 function ensureNodes(){
@@ -2903,8 +2939,249 @@ window.addEventListener("keydown",e=>{
   if (e.code==="Space"){ e.preventDefault(); play(); return; }
   if ((e.key==="ArrowRight"||e.key==="ArrowLeft")&&e.target.type!=="range"){ e.preventDefault(); seekBars((e.key==="ArrowRight"?1:-1)*(e.shiftKey?S.barsPerRow:1)); return; }
   if (e.key==="Escape"){ $("results").hidden=true; return; }
-  const part=KEYS[e.key.toLowerCase()]; if(part&&!e.repeat){ st.lastIn[part]=performance.now(); st.lastInVel[part]=100; audio(); if(!st.kbdUsed){ st.kbdUsed=true; applyJudgeState(); } hit(part,ctx.currentTime,100); }
+  const part=KEYS[e.key.toLowerCase()]; if(part&&!e.repeat){ st.lastIn[part]=performance.now(); st.lastInVel[part]=100; audio(); if(!st.kbdUsed){ st.kbdUsed=true; applyJudgeState(); } hit(part,ctx.currentTime,100);
+    if (!$("empty").hidden){ drumSound(ctx.currentTime+0.005,part,100); const el=document.querySelector('.pad[data-p="'+part+'"]'); if(el){ el.classList.add("on"); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove("on"),110); } } /* 最初の画面ではキーで音も出す */ }
 });
+
+/* ---- 最初の画面のドラムパッド：押す・キーを叩くとすぐ音が出る ---- */
+/* 上から見たドラムセットの配置：[パーツ, 名前, 中心x, 中心y, 半径, 種類]（座標は 100×72 の中） */
+const PADS_W=[["crash","左クラッシュ",14,13,11,"cym"],["crash2","右クラッシュ",73,10,10,"cym"],["ride","ライド",88,32,11.5,"cym"],
+  ["tom1","タム1",39,21,8.5,"drum"],["tom2","タム2",58,21,8.5,"drum"],["hh","ハイハット",12,38,10,"cym"],["hhOpen","オープンHH",10,59,7.5,"cym"],
+  ["snare","スネア",31,46,10,"drum"],["tom3","フロア",72,53,11,"drum"],["kick","キック",50,57,13,"kick"],["hhp","HHペダル",25,61,5,"pedal"]];
+/* 縦長の画面用（座標は 100×120 の中） */
+const PADS_T=[["crash","左クラッシュ",20,14,15,"cym"],["crash2","右クラッシュ",78,13,14,"cym"],["ride","ライド",82,45,15,"cym"],
+  ["tom1","タム1",39,33,11,"drum"],["tom2","タム2",61,31,11,"drum"],["hh","ハイハット",15,47,13.5,"cym"],["hhOpen","オープンHH",13,74,10,"cym"],
+  ["snare","スネア",37,62,13,"drum"],["tom3","フロア",73,77,14,"drum"],["kick","キック",47,95,17,"kick"],["hhp","HHペダル",19,100,7,"pedal"]];
+let PADS=PADS_W, padTall=null;
+function padPlay(id,vel){ audio(); if(ctx.state==="suspended") ctx.resume();
+  const part=id==="hhOpen"?"hh":id, t=ctx.currentTime+0.005; drumSound(t,part,vel,id==="hhOpen");
+  st.lastIn[part]=performance.now(); st.lastInVel[part]=vel; hit(part,t,vel);
+  const el=document.querySelector('.pad[data-p="'+id+'"]'); if(el){ el.classList.add("on"); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove("on"),110); } }
+function buildPads(){ const g=$("padGrid"); if(!g) return; const km=keyMap();
+  /* 画面が縦長なら縦向きの配置にする */
+  const tall=g.clientWidth>0&&g.clientHeight>g.clientWidth*0.95; padTall=tall;
+  /* 縦長のときは、画面の縦横比に合わせて上下に広げる */
+  const VH=tall?Math.max(120,Math.min(175,g.clientHeight/g.clientWidth*100)):72, sy=tall?(VH-8)/112:1;
+  PADS=(tall?PADS_T:PADS_W).map(q=>tall?[q[0],q[1],q[2],+(4+(q[3]-4)*sy).toFixed(2),q[4],q[5]]:q);
+  let h='<svg viewBox="0 0 100 '+VH.toFixed(1)+'" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><defs>'
+   +'<radialGradient id="cymG" cx="45%" cy="40%" r="65%"><stop offset="0" stop-color="#f6dd8a"/><stop offset=".55" stop-color="#d9ae45"/><stop offset="1" stop-color="#9c7322"/></radialGradient>'
+   +'<radialGradient id="headG" cx="45%" cy="40%" r="70%"><stop offset="0" stop-color="#fbf8f0"/><stop offset="1" stop-color="#dcd5c3"/></radialGradient></defs>';
+  PADS.forEach(([id,name,x,y,r,kind])=>{ const part=id==="hhOpen"?"hh":id, col=(PARTS[part]&&PARTS[part].color)||"#888", k=id!=="hhOpen"&&km[part];
+    let body="", tc="#2a2116";
+    if (kind==="cym"){ body='<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="url(#cymG)" stroke="'+col+'" stroke-width=".8"/>';
+      for(let q=.78;q>.3;q-=.16) body+='<circle cx="'+x+'" cy="'+y+'" r="'+(r*q).toFixed(2)+'" fill="none" stroke="#8a6418" stroke-opacity=".35" stroke-width=".25"/>';
+      body+='<circle cx="'+x+'" cy="'+y+'" r="'+(r*.2).toFixed(2)+'" fill="#e8c766" stroke="#8a6418" stroke-width=".3"/>'; }
+    else if (kind==="drum"){ body='<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="'+col+'"/><circle cx="'+x+'" cy="'+y+'" r="'+(r*.84).toFixed(2)+'" fill="url(#headG)" stroke="#555" stroke-width=".35"/>';
+      for(let a=0;a<8;a++){ const t=a*Math.PI/4; body+='<circle cx="'+(x+Math.cos(t)*r*.92).toFixed(2)+'" cy="'+(y+Math.sin(t)*r*.92).toFixed(2)+'" r=".55" fill="#ddd"/>'; } }
+    else if (kind==="kick"){ body='<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="#222" stroke="'+col+'" stroke-width="1.6"/><circle cx="'+x+'" cy="'+y+'" r="'+(r*.82).toFixed(2)+'" fill="#1b1b1b" stroke="#444" stroke-width=".4"/>'
+      +'<circle cx="'+x+'" cy="'+(y+r*.3).toFixed(2)+'" r="'+(r*.18).toFixed(2)+'" fill="#111" stroke="#555" stroke-width=".3"/>'; tc="#f3e7a0"; }
+    else { body='<rect x="'+(x-r*.55)+'" y="'+(y-r)+'" width="'+(r*1.1)+'" height="'+(r*2)+'" rx="1.4" fill="#3a3f47" stroke="'+col+'" stroke-width=".8"/>'
+      +'<rect x="'+(x-r*.4)+'" y="'+(y-r*.8)+'" width="'+(r*.8)+'" height="'+(r*1.1)+'" rx=".8" fill="#555c66"/>'; tc="#e8eaee"; }
+    const ty=kind==="kick"?y-r*.28:kind==="pedal"?y+r+2.4:kind==="cym"?y+r*.48:y, fs=Math.min(kind==="pedal"?2.8:3.4,2*r*.82/name.length*1.05).toFixed(2);
+    h+='<g class="pad" data-p="'+id+'" role="button" aria-label="'+name+'" style="--pc:'+col+'"><g>'+body+'</g>'
+      +'<text class="nm" style="font-size:'+fs+'px" x="'+x+'" y="'+(ty-(k&&kind!=="pedal"?1.2:0)).toFixed(2)+'" fill="'+(kind==="pedal"?"var(--fg)":tc)+'">'+name+'</text>'
+      +(k?'<text class="ky" x="'+x+'" y="'+(kind==="pedal"?y:ty+2.2).toFixed(2)+'" fill="'+tc+'">'+k.toUpperCase()+'</text>':'')+'</g>'; });
+  g.innerHTML=h+'</svg>';
+  /* 打面の中心ほど強く、ふちほど弱く鳴らす */
+  g.querySelectorAll(".pad").forEach(el=>el.addEventListener("pointerdown",e=>{ e.preventDefault(); const id=el.dataset.p, p=PADS.find(q=>q[0]===id), sv=g.querySelector("svg"), m=sv.getScreenCTM();
+    let f=0; if(m){ const pt=new DOMPoint(e.clientX,e.clientY).matrixTransform(m.inverse()); f=Math.min(1,Math.hypot(pt.x-p[2],pt.y-p[3])/p[4]); }
+    padPlay(id,Math.round(127-f*50)); })); }
+buildPads();
+addEventListener("resize",()=>{ const g=$("padGrid"); if(!g||$("empty").hidden) return; const tall=g.clientHeight>g.clientWidth*0.95; if(tall!==padTall||tall) buildPads(); });
+/* 最初の画面が出ているあいだは body に padOn（横向きのスマホでは下の欄を隠してパッドを広く） */
+new MutationObserver(()=>{ const on=!$("empty").hidden; if(document.body.classList.contains("padOn")!==on){ document.body.classList.toggle("padOn",on); dispatchEvent(new Event("resize")); } if(on) requestAnimationFrame(buildPads); }).observe($("empty"),{attributes:true,attributeFilter:["hidden"]});
+{ const rk=rebuildKeys; rebuildKeys=function(){ rk.apply(this,arguments); buildPads(); }; } /* キーを変えたらパッドの表示も変える */
+
+/* ================= ほかのソフトとの同期 =================
+   ・同じ端末：BroadcastChannel（チャンネル名 pikadrum-sync）
+   ・別の端末：WebRTC（PeerJS）。同じ部屋番号を入れた端末どうしが直接つながる。最初の1台が「部屋の親」になり、ほかの端末の連絡を中継する
+   ・両方につながっている端末は、同じ端末側と別の端末側のメッセージを中継する（mid で重複を捨てる）
+   ・MIDIクロック：DAWなどへ Clock／Start／Stop／Continue／Song Position を送る。受け取って合わせることもできる
+   詳しくは「同期の仕様.md」。 */
+const SYNC={ch:null, id:Math.random().toString(36).slice(2,10), peers:{}, last:null, applying:false, warned:false, leader:null, seen:new Map(), songData:null, recvSong:false, muted:""};
+const NET={peer:null, conns:[], host:false, room:"", offset:0, state:"off", msg:"", retry:0};
+const syncOnline=()=>!!SYNC.ch||NET.conns.some(c=>c.open&&c._ready);
+const syncLat=()=>(+S.syncLat||0)/1000;                                  /* この端末の音が実際に出るまでの遅れ（秒） */
+const newMid=()=>SYNC.id+"-"+Math.random().toString(36).slice(2,9);
+/* 相手に伝える位置は「耳に聞こえている位置」：鳴らしている位置から、この端末の音の遅れの分を引く */
+const audPos=()=>st.playing?songNow()-syncLat()*st.rate:st.pos;
+function syncLoop(){ const lr=song&&loopRange(); return lr?{a:lr.a+1,b:lr.b+1}:null; }
+function syncSnap(){ if(!song) return null; const lp=syncLoop();
+  return {playing:!!st.playing, pos:+(st.playing?songNow():st.pos).toFixed(4), rate:+(st.playing?st.rate:bpmTarget()/song.baseBpm).toFixed(5), origin:st.playing?st.origin:null, loop:lp?lp.a+"-"+lp.b:""}; }
+function bcPost(m){ if(SYNC.ch){ try{ SYNC.ch.postMessage(m); }catch(e){} } }
+function syncSend(type,extra){ const m=Object.assign({v:1,app:"drum",id:SYNC.id,mid:newMid(),type,at:Date.now()},extra||{}); SYNC.seen.set(m.mid,Date.now()); bcPost(m); netSend(m); return m; }
+function syncStateMsg(){ const s=syncSnap(); const counting=st.playing&&songNow()<st.startPos-1e-3;
+  return {playing:s.playing, pos:audPos(), rate:s.rate, loop:syncLoop(), countFrom:counting?st.startPos:null,
+    plays:{drums:true,channels:[]}, song:{name:song.name||"",len:+song.length.toFixed(2)}}; }
+function syncState(type){ const s=syncSnap(); if(!s) return; SYNC.last=s; const m=syncSend(type||"state",syncStateMsg()); SYNC.ver=Math.max(SYNC.ver||0,m.at); }
+/* 自分の状態が変わったら送る（再生・停止・移動・テンポ・ループの変更を、どの操作でも拾う） */
+function syncWatch(){ if(!syncOnline()||SYNC.applying) return; const s=syncSnap(); if(!s) return; const l=SYNC.last;
+  if(!l||s.playing!==l.playing||Math.abs(s.rate-l.rate)>1e-4||s.loop!==l.loop||(s.playing?Math.abs((s.origin||0)-(l.origin||0))>0.002:Math.abs(s.pos-l.pos)>0.002)){ SYNC.leader=SYNC.id; syncState(); } }
+/* 再生中のずれの補正：最後に操作した端末（リーダー）が1秒ごとに位置を送り、ほかの端末は少しずつ合わせる */
+setInterval(()=>{ if(syncOnline()&&st.playing&&SYNC.leader===SYNC.id&&!SYNC.applying) syncSend("tick",syncStateMsg()); },1000);
+function syncCount(m,rate){ /* 相手がカウント中に始めたら、こちらもカウントを鳴らす */
+  if (m.countFrom==null||!$("countin").checked) return;
+  const b=song.bars[barAt(m.countFrom)], bd=(b.end-b.time)/b.num, cg=countGain(), now=songNow();
+  for(let i=0;i<b.num;i++){ const sp=m.countFrom-(b.num-i)*bd; if(sp<now-0.01) continue; const t0=st.origin+sp/rate;
+    for(const [fr,k,lv] of beatPlan(i,i===0)) click(t0+fr*bd/rate,k,cg,lv); } }
+function syncApply(m,tick){
+  if (!song) return;
+  if (m.song&&Math.abs((m.song.len||0)-song.length)>1&&!SYNC.warned){ SYNC.warned=true; flash("同期相手と曲の長さが違います（同じMIDIファイルを開いてください）","--miss",null); }
+  if (!tick){ if(m.at<(SYNC.ver||0)-1) return; SYNC.ver=m.at; SYNC.leader=m.id; } /* 自分の操作より古い知らせは使わない（行き違い対策） */
+  SYNC.applying=true;
+  try{
+    const rate=m.rate>0?m.rate:1, exact=rate*song.baseBpm;
+    if (Math.abs(bpmTarget()-exact)>0.01){ $("bpm").value=$("bpmRange").value=Math.round(exact); $("bpm").dataset.exact=exact; }
+    if (!tick&&m.loop!==undefined){ const cur=syncLoop(), want=m.loop;
+      if (JSON.stringify(cur)!==JSON.stringify(want)){
+        if (want){ $("loopA").value=want.a; $("loopB").value=want.b; $("loop").checked=true; st.loopManual=true; } else $("loop").checked=false;
+        if ($("loopBtn")) applyLoopBtn(); } }
+    if (m.playing){
+      const target=m.pos+(Date.now()-m.at)/1000*rate+syncLat()*rate;   /* 相手に聞こえている位置＋この端末の音の遅れ */
+      const diff=st.playing?songNow()-target:0;
+      if (!st.playing||Math.abs(diff)>0.25||Math.abs(st.rate-rate)>1e-4||(!tick&&Math.abs(diff)>0.03)){
+        audio(); if(st.playing){ midiAllOff(); st.playing=false; }
+        $("empty").hidden=true; resetJudge(Math.max(0,target),song.length+1); startAt(target+0.1*rate,false); /* startAt は0.1秒先から鳴らすので、その分だけ先の位置から始める */
+        if (!tick) syncCount(m,rate);
+      } else if (Math.abs(diff)>0.008){ st.origin+=Math.max(-0.01,Math.min(0.01,diff*0.5))/rate; } /* 小さなずれは少しずつ戻す（1回に最大10ms） */
+    } else if (!tick){
+      if (st.playing) stop();
+      st.pos=Math.max(0,Math.min(m.pos,song.length)); st.viewPage=Math.floor(barAt(st.pos)/perPage());
+    }
+  } finally { SYNC.last=syncSnap(); SYNC.applying=false; }
+}
+/* 相手が弾くパートを、こちらの音から外す（設定でオフにできる） */
+function syncParts(){ if(!song||!song.strips) return; const chs=new Set(); let drums=false;
+  if (S.syncMute!==false) for(const p of Object.values(SYNC.peers)){ if(p.plays){ (p.plays.channels||[]).forEach(c=>chs.add(+c)); if(p.plays.drums&&p.app!=="drum") drums=true; } }
+  const key=[...chs].sort((a,b)=>a-b).join(",")+(drums?"+D":"");
+  song.strips.forEach(s=>{ s.peerMute=(s.kind==="inst"&&chs.has(s.ch+1))||(s.kind==="drum"&&drums); });
+  if (key!==SYNC.muted){ SYNC.muted=key; ensureNodes(); song.strips.forEach(midiVol); if(typeof updateStripStates==="function") updateStripStates();
+    if (key) flash("相手が弾くパートをミュートしました（"+[...chs].map(c=>"Ch"+c).concat(drums?["ドラム"]:[]).join("・")+"）","--ok",null); } }
+/* 曲の受け渡し：開いたMIDIファイルを相手に送る／相手から届いた曲を開く */
+const b64enc=buf=>{ const a=new Uint8Array(buf); let s=""; for(let i=0;i<a.length;i+=0x8000) s+=String.fromCharCode.apply(null,a.subarray(i,i+0x8000)); return btoa(s); };
+const b64dec=str=>{ const b=atob(str), a=new Uint8Array(b.length); for(let i=0;i<b.length;i++) a[i]=b.charCodeAt(i); return a; };
+function syncSendSong(){ if(SYNC.songData&&syncOnline()) syncSend("song",{name:SYNC.songData.name,data:SYNC.songData.data}); }
+async function syncRecvSong(m){
+  if (S.syncSong===false||!m.data) return;
+  if (SYNC.songData&&SYNC.songData.name===m.name&&SYNC.songData.data.length===m.data.length) return;   /* 同じ曲はもう開いている */
+  SYNC.recvSong=true; try{ await openFile(new File([b64dec(m.data)],m.name+".mid")); SYNC.songData={name:m.name,data:m.data}; flash("相手から曲「"+m.name+"」が届いたので開きました","--ok",null); } finally { SYNC.recvSong=false; } }
+{ const of=openFile; openFile=async function(f){ let data=null; try{ data=b64enc(await f.arrayBuffer()); }catch(e){}
+    const before=song; await of.apply(this,arguments);
+    if (song!==before&&data&&!SYNC.recvSong){ SYNC.songData={name:song.name,data}; syncSendSong(); } }; }
+/* 受け取ったメッセージの共通の処理（at はこの端末の時計に直してから渡す） */
+function syncRecv(m,via){ if(!m||m.v!==1||m.id===SYNC.id) return;
+  if (m.mid){ if(SYNC.seen.has(m.mid)) return; SYNC.seen.set(m.mid,Date.now()); if(SYNC.seen.size>800){ const cut=Date.now()-60000; for(const [k,t] of SYNC.seen) if(t<cut) SYNC.seen.delete(k); } }
+  if (via==="bc") netSend(m); else if (via==="net") bcPost(m);   /* 同じ端末側と別の端末側を中継 */
+  if (m.type==="bye"){ delete SYNC.peers[m.id]; syncParts(); syncStatus(); return; }
+  const isNew=!SYNC.peers[m.id], p=SYNC.peers[m.id]=Object.assign(SYNC.peers[m.id]||{}, {app:m.app||"?",seen:Date.now(),via:via||"bc"});
+  if (m.plays){ const k=JSON.stringify(m.plays); if(p.playsKey!==k){ p.plays=m.plays; p.playsKey=k; syncParts(); } }
+  if (m.type==="hello"){ syncState(); syncSendSong(); }
+  else if (m.type==="state") syncApply(m,false);
+  else if (m.type==="tick"){ if(m.id===SYNC.leader||!SYNC.leader) syncApply(m,true); }
+  else if (m.type==="song") syncRecvSong(m);
+  if (isNew) syncStatus(); }
+const APP_NAME={drum:"ドラム",keys:"鍵盤"};
+function syncStatus(){ const now=Date.now(); let gone=false; for(const k in SYNC.peers) if(now-SYNC.peers[k].seen>5000){ delete SYNC.peers[k]; gone=true; } if(gone) syncParts();
+  const nm=v=>Object.values(SYNC.peers).filter(p=>p.via===v).map(p=>APP_NAME[p.app]||p.app).join("、"), bcN=nm("bc"), netN=nm("net"), el=$("syncStat");
+  if (el) el.textContent=!S.syncOn?"":!SYNC.ch?"このブラウザは同期に対応していません":bcN?"同期中："+bcN:"相手を待っています（同じブラウザで相手のソフトを開いてください）";
+  const ne=$("netStat"); if(ne){ ne.textContent=NET.state==="off"?"":NET.msg+(NET.state==="on"&&netN?"　相手："+netN:""); }
+  const nb=$("netBtn"); if(nb) nb.textContent=NET.state==="off"?"つなぐ":"切る"; }
+function syncEnable(on){
+  if (SYNC.ch){ try{ SYNC.ch.postMessage({v:1,app:"drum",id:SYNC.id,mid:newMid(),type:"bye",at:Date.now()}); SYNC.ch.close(); }catch(e){} SYNC.ch=null; }
+  if (on&&"BroadcastChannel" in window){
+    SYNC.ch=new BroadcastChannel("pikadrum-sync");
+    SYNC.ch.onmessage=e=>syncRecv(e.data,"bc");
+    bcPost({v:1,app:"drum",id:SYNC.id,mid:newMid(),type:"hello",at:Date.now(),plays:{drums:true,channels:[]}}); SYNC.last=null;
+  }
+  syncStatus();
+}
+/* ---- 別の端末との同期（PeerJS） ---- */
+const PEERJS_URL="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js";
+function netSay(state,msg){ NET.state=state; NET.msg=msg; syncStatus(); }
+function netSend(m,except){ if(!NET.conns.length) return; const out=Object.assign({},m,{at:m.at+NET.offset}); /* 部屋の親の時計に直して送る */
+  NET.conns.forEach(c=>{ if(c!==except&&c.open&&c._ready){ try{ c.send(out); }catch(e){} } }); }
+function netWire(c){
+  c.on("data",d=>{ if(!d||d.v!==1) return;
+    if (d.type==="tping"){ c.send({v:1,type:"tpong",t0:d.t0,t1:Date.now()}); return; }   /* 時計合わせ（親が答える） */
+    if (d.type==="tpong"){ netClock(c,d); return; }
+    if (NET.host) NET.conns.forEach(x=>{ if(x!==c&&x.open&&x._ready){ try{ x.send(d); }catch(e){} } }); /* 親はほかの子にそのまま中継（時計は親のもの） */
+    syncRecv(Object.assign({},d,{at:d.at-NET.offset}),"net"); });
+  c.on("close",()=>{ NET.conns=NET.conns.filter(x=>x!==c);
+    if (!NET.host&&NET.state!=="off"){ netSay("wait","部屋の親が抜けました。部屋を引き継いでいます…"); setTimeout(()=>{ if(NET.state!=="off") netConnect(NET.room,true); },300+Math.random()*1200); } /* 親がいなくなったら、残った端末が親を引き継ぐ */
+    else if (NET.host&&!NET.conns.length) netSay("on","部屋 "+NET.room+" を作りました。相手の端末で同じ部屋番号を入れてください");
+    syncStatus(); });
+  c.on("error",()=>{});
+}
+/* 子：親の時計とのずれを測る（8回のうち、往復がいちばん速かった回を使う） */
+function netClock(c,d){ const now=Date.now(), rtt=now-d.t0; c._clk=c._clk||[]; c._clk.push({rtt,off:d.t1+rtt/2-now});
+  if (c._clk.length<8){ setTimeout(()=>c.send({v:1,type:"tping",t0:Date.now()}),60); return; }
+  const best=c._clk.reduce((a,b)=>b.rtt<a.rtt?b:a); NET.offset=best.off; c._ready=true; NET.retry=0;
+  netSay("on","部屋 "+NET.room+" で同期中（時計のずれ "+Math.round(best.off)+" ms、通信 "+Math.round(best.rtt)+" ms）");
+  syncSend("hello",{plays:{drums:true,channels:[]}}); SYNC.last=null; }
+function loadPeerJS(){ return window.Peer?Promise.resolve():new Promise((res,rej)=>{ const el=document.createElement("script"); el.src=PEERJS_URL; el.onload=res; el.onerror=()=>rej(new Error("load")); document.head.appendChild(el); }); }
+async function netConnect(room,again){
+  netClose(true); room=String(room||"").replace(/\D/g,""); if(room.length<4){ netSay("off",""); flash("部屋番号は4〜8桁の数字で入れてください","--miss",null); return; }
+  NET.room=room; if(!again) NET.retry=0; netSay("wait","接続の準備中…");
+  try{ await loadPeerJS(); }catch(e){ netSay("off",""); flash("同期のしくみを読み込めませんでした（ネットにつながっていない可能性があります）","--miss",null); return; }
+  const hostId="pikadrum-sync-"+room;
+  const asHost=()=>{ const p=new Peer(hostId,{debug:0}); NET.peer=p;
+    p.on("open",()=>{ NET.host=true; NET.offset=0; NET.retry=0; netSay("on","部屋 "+room+" を作りました。相手の端末で同じ部屋番号を入れてください"); });
+    p.on("connection",c=>{ c.on("open",()=>{ c._ready=true; NET.conns.push(c); netWire(c); netSay("on","部屋 "+room+" で同期中（この端末が部屋の親）"); }); });
+    p.on("error",e=>{ if(e.type==="unavailable-id"){ try{ p.destroy(); }catch(_){} asGuest(); } else netFail(e); }); };
+  const asGuest=()=>{ const p=new Peer({debug:0}); NET.peer=p; NET.host=false;
+    p.on("open",()=>{ netSay("wait","部屋 "+room+" に接続中…"); const c=p.connect(hostId,{reliable:true}); c._ready=false;
+      c.on("open",()=>{ NET.conns=[c]; netWire(c); netSay("wait","時計を合わせています…"); c.send({v:1,type:"tping",t0:Date.now()}); });
+      setTimeout(()=>{ if(!c.open&&NET.state!=="off"&&NET.peer===p){ if(NET.retry++<4) netConnect(room,true); else netSay("wait","部屋 "+room+" につながりません。部屋番号を確かめてください"); } },8000); });
+    p.on("error",netFail); };
+  asHost();
+}
+function netFail(e){ netSay("wait","接続できませんでした（"+(e&&e.type||"エラー")+"）。時間をおいて試してください"); }
+function netClose(keep){ NET.conns.forEach(c=>{ try{ if(!keep) c.send({v:1,app:"drum",id:SYNC.id,mid:newMid(),type:"bye",at:Date.now()}); c.close(); }catch(e){} }); NET.conns=[];
+  if (NET.peer){ try{ NET.peer.destroy(); }catch(e){} NET.peer=null; } NET.host=false; NET.offset=0; if(!keep){ NET.state="off"; NET.msg=""; } syncStatus(); }
+/* ---- MIDIクロック（DAWなどとそろえる） ---- */
+const CLK={out:null,inp:null,k:0,origin:null,running:false,lastIn:[],spp:0,inRun:false};
+function fillClockPorts(){ if(!midiAccess) return;
+  for (const [id,list,key] of [["clockOut",midiAccess.outputs,"clockOutName"],["clockIn",midiAccess.inputs,"clockInName"]]){ const sel=$(id); if(!sel) continue; const cur=S[key]||"";
+    sel.innerHTML='<option value="">使わない</option>'; for(const p of list.values()){ const o=document.createElement("option"); o.value=p.id; o.textContent=p.name; sel.appendChild(o); if(p.name===cur) sel.value=p.id; } }
+  clockPorts(); }
+function clockPorts(){ CLK.out=midiAccess&&$("clockOut").value?midiAccess.outputs.get($("clockOut").value)||null:null;
+  if (CLK.inp) CLK.inp.removeEventListener("midimessage",clockIn);
+  CLK.inp=midiAccess&&$("clockIn").value?midiAccess.inputs.get($("clockIn").value)||null:null;
+  if (CLK.inp) CLK.inp.addEventListener("midimessage",clockIn); }
+{ const fi=fillInputs; fillInputs=function(){ fi.apply(this,arguments); fillClockPorts(); }; }
+["clockOut","clockIn"].forEach(id=>$(id).onchange=()=>{ const sel=$(id); S[id+"Name"]=sel.value?sel.options[sel.selectedIndex].textContent:""; saveSettings(); clockPorts(); });
+/* 送る：再生を始めたら Song Position と Continue、そのあと4分音符あたり24回の Clock。止めたら Stop */
+setInterval(()=>{ const p=CLK.out; if(!p||!song||!ctx){ CLK.running=false; return; }
+  const ppq=song.ppq, step=ppq/24;
+  if (!st.playing){ if(CLK.running){ midiSend(p,[0xFC]); CLK.running=false; } return; }
+  if (!CLK.running||Math.abs(st.origin-CLK.origin)>0.05){ /* 小さなずれの補正では送り直さない */
+    if (CLK.running) midiSend(p,[0xFC]);
+    const tk=song.s2t(Math.max(0,st.startPos)), six=Math.round(tk/(ppq/4)), t0=st.origin+Math.max(0,st.startPos)/st.rate;
+    midiSend(p,[0xF2,six&0x7f,(six>>7)&0x7f],t0-0.002); midiSend(p,[six===0?0xFA:0xFB],t0);
+    CLK.k=Math.ceil(six*(ppq/4)/step); CLK.origin=st.origin; CLK.running=true; }
+  const until=ctx.currentTime+0.15;
+  for(;;){ const t=st.origin+song.t2s(CLK.k*step)/st.rate; if(t>until) break; if(t>=ctx.currentTime-0.01) midiSend(p,[0xF8],t); CLK.k++; }
+},25);
+/* 受け取る：Start／Continue で再生、Stop で停止、Song Position で位置、Clock の間隔からテンポ */
+function clockIn(e){ const d=e.data, s=d[0]; if(!song) return;
+  if (s===0xF2){ const six=d[1]|(d[2]<<7); CLK.spp=song.t2s(six*song.ppq/4); if(!st.playing){ st.pos=CLK.spp; st.viewPage=Math.floor(barAt(st.pos)/perPage()); } return; }
+  if (s===0xFA||s===0xFB){ const pos=s===0xFA?0:CLK.spp; if(st.playing){ midiAllOff(); st.playing=false; } $("empty").hidden=true; resetJudge(pos,song.length+1); startAt(pos,false); CLK.lastIn=[]; return; }
+  if (s===0xFC){ if(st.playing) stop(); CLK.spp=st.pos; return; }
+  if (s===0xF8){ const L=CLK.lastIn; L.push(e.timeStamp); if(L.length>49) L.shift();
+    if (L.length===49&&(L.length%24===1)){ const bpm=60000/((L[48]-L[0])/48*24), cur=60e6/((song.tempos||[]).reduce((a,x)=>x.sec<=songNow()?x:a,(song.tempos||[{uspq:6e7/song.baseBpm}])[0]).uspq);
+      const want=song.baseBpm*bpm/cur; if(Math.abs(bpmTarget()-want)>0.6) setBpm(want); }
+    if (L.length===49) L.splice(0,24); } }
+setInterval(()=>{ if(syncOnline()) syncSend("ping",{plays:{drums:true,channels:[]}}); syncStatus(); },2000);
+setInterval(syncWatch,50);
+addEventListener("pagehide",()=>{ if(syncOnline()) syncSend("bye"); });
+$("syncOn").checked=!!S.syncOn; $("syncOn").onchange=()=>{ S.syncOn=$("syncOn").checked; saveSettings(); syncEnable(S.syncOn); };
+$("netRoom").value=S.netRoom||"";
+$("netBtn").onclick=()=>{ if(NET.state!=="off"){ netClose(); return; } S.netRoom=$("netRoom").value.replace(/\D/g,""); saveSettings(); netConnect(S.netRoom); };
+$("syncLat").value=S.syncLat||0; $("syncLat").onchange=()=>{ const old=syncLat(); S.syncLat=Math.max(-500,Math.min(1000,+$("syncLat").value||0)); $("syncLat").value=S.syncLat; saveSettings();
+  if (st.playing){ st.origin-=syncLat()-old; SYNC.last=syncSnap(); } }; /* 再生中なら、聞こえる位置が変わらないよう鳴らす位置だけずらす（相手には知らせない） */
+$("syncMute").checked=S.syncMute!==false; $("syncMute").onchange=()=>{ S.syncMute=$("syncMute").checked; saveSettings(); syncParts(); };
+$("syncSong").checked=S.syncSong!==false; $("syncSong").onchange=()=>{ S.syncSong=$("syncSong").checked; saveSettings(); };
+syncEnable(!!S.syncOn);
 
 // ================= ドラムの編集 =================
 const EDIT_GRID={"4":1,"8":2,"16":4,"32":8,"8t":3,"16t":6};
