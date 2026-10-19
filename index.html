@@ -24,9 +24,6 @@ a.choice b{font-size:18px}
 a.choice span{font-size:13px;color:var(--dim)}
 a.choice.rec{border:2px solid var(--accent)}
 a.choice.rec b::after{content:"　おすすめ";font-size:12px;color:var(--accent);font-weight:700}
-#auto{margin:16px 0 0;padding:10px 14px;border-radius:10px;background:var(--btn);font-size:14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
-#auto[hidden]{display:none}
-#auto button{font:inherit;font-size:13px;padding:5px 12px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer}
 h2{font-size:14px;letter-spacing:.08em;color:var(--dim);margin:30px 0 8px}
 ul{margin:0;padding-left:20px;font-size:14px}
 li{margin:3px 0}
@@ -34,6 +31,18 @@ a{color:var(--accent)}
 .note{font-size:13px;color:var(--dim)}
 a.formBtn{display:inline-block;padding:10px 16px;border-radius:10px;border:1px solid var(--accent);color:var(--accent);text-decoration:none;font-weight:700}
 a.formBtn:hover{background:var(--accent);color:var(--onAccent)}
+.feats{display:grid;gap:6px}
+@media (min-width:600px){.feats{grid-template-columns:1fr 1fr}.feat[open]{grid-column:1/-1}}
+.feat{background:var(--panel);border:1px solid var(--line);border-radius:10px}
+.feat>summary{list-style:none;cursor:pointer;padding:8px 12px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px;user-select:none}
+.feat>summary::-webkit-details-marker{display:none}
+.feat>summary::after{content:"▸";margin-left:auto;color:var(--dim);font-weight:400}
+.feat[open]>summary::after{content:"▾"}
+.feat[open]{border-color:var(--accent)}
+.feat>div{padding:0 12px 12px}
+.feat p{margin:0;font-size:14px;color:var(--dim)}
+.feat img{display:block;width:100%;height:auto;margin-top:8px;border-radius:8px;border:1px solid var(--line)}
+.feat img.tall{width:auto;max-width:100%;max-height:320px;margin-left:auto;margin-right:auto}
 footer{margin-top:34px;font-size:12px;color:var(--dim);border-top:1px solid var(--line);padding-top:12px}
 </style>
 </head>
@@ -46,7 +55,19 @@ footer{margin-top:34px;font-size:12px;color:var(--dim);border-top:1px solid var(
     <a class="choice" id="goPC" href="drum-practice.html"><b>パソコン版</b><span>大きな画面・キーボード向け</span></a>
     <a class="choice" id="goMobile" href="drum-practice-mobile.html"><b>スマホ・タブレット版</b><span>タッチ操作向け</span></a>
   </div>
-  <div id="auto" hidden><span id="autoMsg"></span><button id="stay" type="button">ここで選ぶ</button></div>
+
+  <h2>このソフトの特徴<span style="font-weight:400;letter-spacing:0">（押すと説明と画面が開きます）</span></h2>
+  <div class="feats">
+    <details class="feat"><summary>🥁 インストール不要・無料</summary><div><p>ブラウザで開くだけで使えます。パソコン版とスマホ・タブレット版があり、開いた端末に合わせておすすめの版を表示します。</p><img src="img/mobile.jpg" alt="インストール不要・無料の画面" loading="lazy" class="tall"></div></details>
+    <details class="feat"><summary>🎼 MIDIファイルをドラム譜に</summary><div><p>市販のMIDIファイル（GS/XG）を読み込んで、ドラム譜を表示・再生します。表示は「譜面」「グリッド」「ゲーム」の3種類。32分音符や3連符にも対応しています。</p><img src="img/grid.jpg" alt="MIDIファイルをドラム譜にの画面" loading="lazy"></div></details>
+    <details class="feat"><summary>🎯 叩いたタイミングと強さを判定</summary><div><p>電子ドラムをUSBでつなぐと、叩くたびにジャスト・少しずれ・叩き忘れ・違うパッドを◯×で表示。強さは譜面の下にバーで出て、曲の終わりに結果が出ます。</p><img src="img/judge.jpg" alt="叩いたタイミングと強さを判定の画面" loading="lazy"></div></details>
+    <details class="feat"><summary>🎚️ ミキサーとループで集中練習</summary><div><p>ドラムのパーツごと・伴奏のパートごとに音量・ミュート・ソロ。テンポを落としての練習や、譜面をなぞって選んだ小節のループもできます。</p></div></details>
+    <details class="feat"><summary>🎵 内蔵の練習パターン21種類</summary><div><p>MIDIファイルがなくても、入門〜中級のパターン（ベースとピアノの伴奏つき）ですぐ練習できます。</p></div></details>
+    <details class="feat"><summary>⏱️ こだわりのメトロノーム</summary><div><p>4分・8分・3連・16分・6連を、それぞれの音量で重ねて鳴らせます。裏拍だけ鳴らす、好きな位置にアクセント、無音の小節、自動テンポアップ、タップテンポも。</p><img src="img/metro.jpg" alt="こだわりのメトロノームの画面" loading="lazy" class="tall"></div></details>
+    <details class="feat"><summary>🔊 選べる音色</summary><div><p>内蔵の音のほか、高音質の音色4種類、パソコンにつないだ電子ドラムの音源でも鳴らせます。クリックだけを左、ほかの音を右に分けて出すこともできます。</p><img src="img/sound.jpg" alt="選べる音色の画面" loading="lazy" class="tall"></div></details>
+    <details class="feat"><summary>✏️ 編集・書き出し</summary><div><p>ドラムの音符を追加・削除・移動して、MIDIファイルとして保存。ドラム譜はPDF・PNG・印刷、伴奏パートはMusicXMLで書き出せます。</p><img src="img/edit.jpg" alt="編集・書き出しの画面" loading="lazy"></div></details>
+    <details class="feat"><summary>👆 開いてすぐ叩いて遊べる</summary><div><p>最初の画面に上から見たドラムセットが出て、押すとすぐ音が出ます。パソコンではキーボードでも叩けます。</p><img src="img/pads.jpg" alt="開いてすぐ叩いて遊べるの画面" loading="lazy"></div></details>
+  </div>
 
   <h2>はじめに</h2>
   <ul>
@@ -78,8 +99,7 @@ footer{margin-top:34px;font-size:12px;color:var(--dim);border-top:1px solid var(
   <footer>本ソフトは個人が制作した非公式ツールであり、ローランド株式会社とは関係ありません。「V-Drums」「TD-17」は同社の商標です。<br>配布者：pikadrum（ピカドラム）<span id="visits" hidden>　｜　アクセス数 <b id="visitsN"></b></span></footer>
 </main>
 <script>
-// 開いた端末に合わせて、おすすめの版を光らせ、10秒後に自動で開く。
-// 「ここで選ぶ」を押すと止まる。手で選んだ版は覚えておき、次回からはそちらを自動で開く。
+// 開いた端末に合わせて、おすすめの版を光らせる。手で選んだ版は覚えておき、次回からはそちらをおすすめにする。
 (function(){
   var mobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ||
                (navigator.maxTouchPoints > 1 && Math.min(screen.width, screen.height) < 900);
@@ -92,16 +112,6 @@ footer{margin-top:34px;font-size:12px;color:var(--dim);border-top:1px solid var(
       try { localStorage.setItem("drumScopeEntry", id === "goPC" ? "pc" : "mobile"); } catch (e) {}
     });
   });
-  if (/[?&]select\b/.test(location.search)) return; // index.html?select なら自動で開かない
-  var box = document.getElementById("auto"), msg = document.getElementById("autoMsg"), n = 10, timer;
-  var name = pick === "mobile" ? "スマホ・タブレット版" : "パソコン版";
-  function tick(){
-    if (n <= 0) { location.replace(link.getAttribute("href")); return; }
-    msg.textContent = n + "秒後に" + name + "を開きます";
-    n--; timer = setTimeout(tick, 1000);
-  }
-  box.hidden = false; tick();
-  document.getElementById("stay").onclick = function(){ clearTimeout(timer); box.hidden = true; };
 })();
 </script>
 <!-- アクセス数の集計（GoatCounter：Cookieを使わず、個人を特定しない） -->
