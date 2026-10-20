@@ -45,6 +45,9 @@ a.formBtn:hover{background:var(--accent);color:var(--onAccent)}
 .feat img.tall{width:auto;max-width:100%;max-height:320px;margin-left:auto;margin-right:auto}
 .beta{margin:-8px 0 18px;padding:8px 12px;border-radius:10px;border:1px solid var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--panel));font-size:13px}
 .beta b{color:var(--accent)}
+.infos{display:grid;gap:6px}
+.feat ul,.feat ol{margin:0;padding-left:20px;font-size:14px;color:var(--dim)}
+.feat p+ul,.feat ul+p,.feat p+p{margin-top:6px}
 footer{margin-top:34px;font-size:12px;color:var(--dim);border-top:1px solid var(--line);padding-top:12px}
 </style>
 </head>
@@ -95,11 +98,39 @@ footer{margin-top:34px;font-size:12px;color:var(--dim);border-top:1px solid var(
   <p class="note" style="color:var(--fg)">使ってみての要望や、うまく動かないところは、こちらのフォームから送ってください（名前は任意・ログイン不要）。返信はできませんのでご了承ください。</p>
   <p><a class="formBtn" href="https://docs.google.com/forms/d/e/1FAIpQLScFlxnOCoQHnpJGOL4SXxdwA6PArkBT3FwHMHZkgAxY0pJtqA/viewform" target="_blank" rel="noopener">📝 ご要望・不具合を送る</a></p>
 
-  <h2>説明・利用規約</h2>
-  <ul>
-    <li><a href="読んで.txt">読んで.txt（注意事項・音色のクレジット・利用規約）</a></li>
-  </ul>
-  <p class="note">このページとソフト（パソコン版・スマホ版）では、アクセス数を数えるために GoatCounter を使っています（Cookieは使わず、個人を特定する情報は集めません）。</p>
+  <h2>説明・利用規約<span style="font-weight:400;letter-spacing:0">（押すと開きます）</span></h2>
+  <div class="infos">
+    <details class="feat"><summary>📖 使い方と電子ドラムの接続</summary><div>
+      <ul>
+        <li>パソコン版・スマホ版のボタンから開きます。ページを保存して、ブラウザで開いても使えます。</li>
+        <li>電子ドラムをUSBでつなぐと、開いたときに「MIDIデバイスの操作と再プログラム」の許可を求められます。つなぐ場合は「許可」を選んでください。</li>
+        <li>作者の環境が TD-17 のため、ソフト内の説明には TD-17 と書いてある所があります。MIDIに対応した電子ドラム音源であれば、パソコン・スマホとも、たいてい認識します。</li>
+        <li>練習用の曲は、上の一覧から保存して、ソフトの曲の選択欄の先頭「📂 MIDIファイルを開く…」から読み込みます。</li>
+        <li>ソフトの「設定」の一番最後に、このページのQRコードがあります。スマホやタブレットのカメラで読み取ると、そのまま開けます。</li>
+        <li>機能の詳しい説明は、ソフトの「設定」の後半にある「このソフトについて」の「特徴と使い方の概要」を押すと出ます。</li>
+      </ul></div></details>
+    <details class="feat"><summary>📊 アクセス数の集計について</summary><div>
+      <p>このページと、このページから開いたソフト（パソコン版・スマホ版）では、アクセス数を数えるために <a href="https://www.goatcounter.com/" target="_blank" rel="noopener">GoatCounter</a> を使っています。Cookieは使わず、個人を特定する情報は集めません。保存したファイルを直接開いて使うときは、数えません。</p></div></details>
+    <details class="feat"><summary>🔗 別の端末との同期について</summary><div>
+      <p>別の端末と同期するときは、接続の準備のために外部の仲介サーバー（<a href="https://peerjs.com/" target="_blank" rel="noopener">PeerJS</a>）を使います。つながったあとは端末どうしで直接やり取りします。同期の機能はまだ作っている途中です。</p></div></details>
+    <details class="feat"><summary>🎹 音色について（クレジット）</summary><div>
+      <p>「高音質」の音色には、以下の音源を使用しています。音色データは改変せず、配布元から読み込んで使用しています。</p>
+      <ul>
+        <li><b>FluidR3_GM</b>（作者：Frank Wen）／配布元：<a href="https://github.com/gleitz/midi-js-soundfonts" target="_blank" rel="noopener">midi-js-soundfonts</a>（Benjamin Gleitzman）／ライセンス：<a href="https://creativecommons.org/licenses/by/3.0/deed.ja" target="_blank" rel="noopener">CC BY 3.0</a></li>
+        <li><b>Musyng Kite</b>・<b>FatBoy</b>（設定で選んだとき）／配布元：midi-js-soundfonts（Benjamin Gleitzman）／ライセンス：<a href="https://creativecommons.org/licenses/by-sa/3.0/deed.ja" target="_blank" rel="noopener">CC BY-SA 3.0</a></li>
+        <li><b>GeneralUser GS</b>（作者：S. Christian Collins、<a href="https://github.com/mrbumpy409/GeneralUser-GS" target="_blank" rel="noopener">配布ページ</a>）／配布元：<a href="https://github.com/surikov/webaudiofont" target="_blank" rel="noopener">WebAudioFont</a>（Sergey Surikov）／ライセンス：GeneralUser GS License</li>
+      </ul>
+      <p lang="en" style="font-size:12px">Sound samples: "FluidR3_GM" by Frank Wen, via midi-js-soundfonts by Benjamin Gleitzman, licensed under CC BY 3.0. "Musyng Kite" and "FatBoy" soundfonts via midi-js-soundfonts, licensed under CC BY-SA 3.0. "GeneralUser GS" by S. Christian Collins, via WebAudioFont by Sergey Surikov. No modifications were made.</p></div></details>
+    <details class="feat"><summary>📜 利用規約・ライセンス</summary><div>
+      <p>本ソフトウェア（付属の練習用MIDI曲を含む）は、以下の条件のもとで自由にご利用いただけます。（「高音質」の音色データは、本規約ではなく、それぞれのライセンスに従います）</p>
+      <ol>
+        <li><b>無償でのご利用</b>：完全に無償（無料）でご利用いただけます。</li>
+        <li><b>商用利用</b>：個人・法人を問わず、商用利用（ビジネス・営利目的）が可能です。</li>
+        <li><b>改変</b>：必要に応じて、一部を改変・加工してご利用いただけます。</li>
+        <li><b>再配布</b>：再配布を行う場合は、このページのURL（https://pikadrum.github.io/drum/）と、この利用規約・音色のクレジットを必ず添えてください。</li>
+        <li><b>免責事項</b>：本ソフトウェアを利用したことによるいかなるトラブルや損害についても、当方は一切の責任を負いません。</li>
+      </ol></div></details>
+  </div>
 
   <footer>本ソフトは個人が制作した非公式ツールであり、ローランド株式会社とは関係ありません。「V-Drums」「TD-17」は同社の商標です。<br>配布者：pikadrum（ピカドラム）<span id="visits" hidden>　｜　アクセス数 <b id="visitsN"></b></span></footer>
 </main>
