@@ -838,6 +838,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
         <div class="row"><label for="syncLat">この端末の音の遅れ（同期用、ms）</label><input type="number" id="syncLat" value="0" step="10" style="width:84px"></div>
         <div class="row"><label for="syncMute">相手が弾くパートを、こちらの音から外す</label><input type="checkbox" id="syncMute" checked></div>
         <div class="row"><label for="syncSong">相手が開いた曲を、こちらでも自動で開く</label><input type="checkbox" id="syncSong" checked></div>
+        <div class="row"><label for="syncMetro" title="音色・鳴らし方・アクセントをそろえ、メトロノーム専用モードの開始・停止・テンポも合わせます（音量は端末ごと）">メトロノームの設定と専用モードも相手と合わせる</label><input type="checkbox" id="syncMetro" checked></div>
         <div class="row"><label for="clockOut">MIDIクロックを送る（DAWなどへ）</label><select id="clockOut" style="max-width:200px"><option value="">使わない</option></select></div>
         <div class="row"><label for="clockIn">MIDIクロックに合わせる（DAWなどから）</label><select id="clockIn" style="max-width:200px"><option value="">使わない</option></select></div>
         <details class="tip"><summary>同期のしかた</summary><div class="help">同じブラウザで、同期に対応したソフト（鍵盤の練習ソフトなど）を別のタブやウインドウで開き、両方で同期をオンにします。両方で同じMIDIファイルを開くと、どちらで再生・停止・小節の移動・テンポの変更をしても、もう一方がついてきます。配布ページ（https://pikadrum.github.io/）から開いたソフトどうしで同期します。<br><b>別の端末と</b>：両方の端末で同じ部屋番号（4〜8桁の数字）を入れて「つなぐ」を押します。最初に押した端末が部屋の親になります。つなぐときだけ外部の仲介サーバー（PeerJS）を使い、つながったあとは端末どうしで直接やり取りします（曲のデータは送りません）。通信の制限が強いネットワークでは、つながらないことがあります。部屋の親が抜けても、残った端末が親を引き継ぎます。同じ端末の同期と別の端末の同期を両方オンにした端末は、両方の間を中継します（例：PCのドラム＋PCの鍵盤＋iPadの鍵盤）。<br><b>合わせ方</b>：最後に操作した端末が1秒ごとに位置を知らせ、ほかの端末は少しずつずれを直します。片方でループを決めると相手も同じ範囲をループし、カウント中に始めたときは相手もカウントを鳴らします。片方でMIDIファイルを開くと、相手でも自動で開きます。相手が弾くパート（鍵盤ソフトが弾くピアノなど）は、こちらでミュートされます。<br><b>音の遅れ</b>：Bluetoothのイヤホンやスピーカーなどで音が遅れて出る端末は、その遅れ（例：200）を「この端末の音の遅れ」に入れると、耳で聞いてそろうように早めに鳴らします。<br><b>MIDIクロック</b>：DAWなどの音楽ソフトや機器へ、Clock・Start・Stop・Continue・Song Position を送れます。「合わせる」を選ぶと、相手のStart／Stop／位置／テンポにこちらが従います。</div></details>
@@ -912,6 +913,11 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
             <li>再生中は、今の段の最後の小節に入ったところで、弾き終わった段を次の段に書き換えます。曲全体が画面に収まるときは書き換えません。</li>
             <li>電子ドラムが叩き分けの信号を送ってくるときは、パッドの図と下のドラムの図に、どこを叩いたかが出ます（ライド・シンバルのカップは中心の点、エッジやリムショットはふちの輪、クロススティックはふちの線）。</li>
             <li>タッチできる端末では、ゲーム表示の判定線の下に、指で叩けるパッドが出ます。</li>
+            <li>表示の「横スクロール」は、叩く位置の線が左に止まっていて、音符が右から左へ流れてくる表示です。</li>
+            <li>「🎙 フリーモード（採譜）」（最初の画面、または表示のメニュー）では、叩いた音がそのまま譜面になります。テンポ・拍子・長さ（止めるまで／小節数）・そろえ方（8分・16分・32分、3連系も）を決めて「● 録音」を押すと、カウントのあとに録り始めます。開いていた曲や、mp3などの音楽ファイルを流しながら録ることもできます。録ったあとで「📐 位置を直す」を押し、小節の頭にしたい音を2つ選ぶと、小節線の位置とテンポを合わせ直せます。「✎ 編集・保存」で手直しして、MIDIファイルに保存できます。</li>
+            <li>編集の「今聞いている音で保存」をオンにすると、ミュートしたパートを外し、ミキサーの音量と、鳴らしているカウント・メトロノームの音も入れてMIDIファイルに保存します。</li>
+            <li>設定の「叩き分けごとに音を鳴らし分ける」がオンのときは、ライドのカップ・エッジ、リムショット、クロススティックなどを、それぞれ近い音で鳴らします。</li>
+            <li>同期中は、メトロノームの音色・鳴らし方・アクセントも相手とそろい、メトロノーム専用モードも同じ拍で鳴ります（設定でオフにできます）。</li>
             <li>設定の「再生」で「クリックを左、それ以外の音を右に分けて出す」をオンにすると、メトロノーム・カウントの音を左、曲やドラムの音を右から出せます（ミキサーで別々に扱うときに）。</li>
             <li>設定の「再生」にある「ほかのソフト・別の端末と同期する」のボタンを押して開き、「ほかのソフトと同期する」をオンにすると、同じブラウザで開いた対応ソフト（鍵盤の練習ソフトなど）と、再生・停止・小節の移動・テンポがそろいます（どちらで操作してもよい）。別の端末とは、同じ部屋番号を入れて「つなぐ」を押すと同期します。ループ範囲・カウント・曲の受け渡し・相手が弾くパートのミュート・再生中のずれの補正・端末ごとの音の遅れの調整・MIDIクロック（DAWなどとの同期）にも対応しています。</li>
             <li>ループボタンを押すと曲全体をループします。譜面上で小節をなぞると、その範囲（1小節から）をループします。</li>
@@ -972,7 +978,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <h2>このソフトのURL</h2>
       <div class="qrBox"><div class="qrImg" role="img" aria-label="配布先URL（https://pikadrum.github.io/drum/）のQRコード"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><rect width="37" height="37" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM12 4h3v1h-3zM22 4h1v1h-1zM26 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h2v1h-2zM16 5h1v1h-1zM20 5h4v1h-4zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM13 6h2v1h-2zM16 6h2v1h-2zM19 6h3v1h-3zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h3v1h-3zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h5v1h-5zM18 7h3v1h-3zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h3v1h-3zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h3v1h-3zM20 8h3v1h-3zM26 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h2v1h-2zM15 9h5v1h-5zM21 9h1v1h-1zM23 9h2v1h-2zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h7v1h-7zM12 11h3v1h-3zM16 11h1v1h-1zM18 11h1v1h-1zM21 11h1v1h-1zM4 12h1v1h-1zM8 12h1v1h-1zM10 12h4v1h-4zM15 12h1v1h-1zM17 12h5v1h-5zM24 12h6v1h-6zM32 12h1v1h-1zM6 13h1v1h-1zM11 13h2v1h-2zM15 13h1v1h-1zM21 13h2v1h-2zM26 13h7v1h-7zM7 14h2v1h-2zM10 14h3v1h-3zM14 14h6v1h-6zM21 14h1v1h-1zM26 14h1v1h-1zM32 14h1v1h-1zM4 15h1v1h-1zM6 15h3v1h-3zM11 15h2v1h-2zM16 15h2v1h-2zM19 15h4v1h-4zM24 15h4v1h-4zM29 15h1v1h-1zM31 15h2v1h-2zM4 16h1v1h-1zM6 16h1v1h-1zM10 16h2v1h-2zM13 16h2v1h-2zM16 16h2v1h-2zM21 16h1v1h-1zM23 16h1v1h-1zM25 16h1v1h-1zM31 16h1v1h-1zM4 17h1v1h-1zM6 17h2v1h-2zM11 17h1v1h-1zM14 17h2v1h-2zM17 17h2v1h-2zM20 17h3v1h-3zM25 17h8v1h-8zM4 18h2v1h-2zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM24 18h3v1h-3zM28 18h3v1h-3zM32 18h1v1h-1zM4 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM14 19h3v1h-3zM18 19h1v1h-1zM21 19h2v1h-2zM25 19h1v1h-1zM27 19h2v1h-2zM31 19h2v1h-2zM7 20h1v1h-1zM10 20h6v1h-6zM17 20h3v1h-3zM21 20h2v1h-2zM24 20h2v1h-2zM31 20h1v1h-1zM4 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM21 21h2v1h-2zM25 21h5v1h-5zM31 21h2v1h-2zM6 22h2v1h-2zM9 22h4v1h-4zM14 22h1v1h-1zM17 22h3v1h-3zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM30 22h1v1h-1zM32 22h1v1h-1zM6 23h4v1h-4zM12 23h1v1h-1zM14 23h4v1h-4zM21 23h4v1h-4zM26 23h3v1h-3zM31 23h2v1h-2zM4 24h2v1h-2zM8 24h1v1h-1zM10 24h4v1h-4zM15 24h3v1h-3zM19 24h1v1h-1zM21 24h1v1h-1zM23 24h7v1h-7zM32 24h1v1h-1zM12 25h1v1h-1zM14 25h1v1h-1zM16 25h4v1h-4zM22 25h3v1h-3zM28 25h1v1h-1zM32 25h1v1h-1zM4 26h7v1h-7zM12 26h2v1h-2zM16 26h1v1h-1zM19 26h1v1h-1zM21 26h4v1h-4zM26 26h1v1h-1zM28 26h3v1h-3zM32 26h1v1h-1zM4 27h1v1h-1zM10 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM18 27h2v1h-2zM21 27h1v1h-1zM23 27h2v1h-2zM28 27h1v1h-1zM31 27h2v1h-2zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM12 28h2v1h-2zM16 28h4v1h-4zM21 28h1v1h-1zM23 28h7v1h-7zM4 29h1v1h-1zM6 29h3v1h-3zM10 29h1v1h-1zM13 29h1v1h-1zM16 29h1v1h-1zM19 29h2v1h-2zM23 29h1v1h-1zM25 29h1v1h-1zM32 29h1v1h-1zM4 30h1v1h-1zM6 30h3v1h-3zM10 30h1v1h-1zM13 30h3v1h-3zM17 30h3v1h-3zM23 30h3v1h-3zM29 30h4v1h-4zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h1v1h-1zM16 31h2v1h-2zM19 31h1v1h-1zM21 31h1v1h-1zM24 31h1v1h-1zM27 31h1v1h-1zM29 31h1v1h-1zM31 31h2v1h-2zM4 32h7v1h-7zM12 32h3v1h-3zM16 32h1v1h-1zM18 32h1v1h-1zM20 32h2v1h-2zM23 32h3v1h-3zM28 32h1v1h-1zM31 32h1v1h-1z"/></svg></div><div class="help">スマホやタブレットのカメラで読み取ると、このソフトを開けます。<br><a href="https://pikadrum.github.io/drum/" target="_blank" rel="noopener">https://pikadrum.github.io/drum/</a></div></div>
     </section>
-    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/23 12:13</div>
+    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/23 12:26</div>
     </div>
   </aside>
 </main>
@@ -3322,6 +3328,33 @@ function syncApply(m,tick){
     }
   } finally { SYNC.last=syncSnap(); SYNC.applying=false; }
 }
+
+/* ---- メトロノームの同期：同じクリック音にそろえる（設定でオフにできる）・メトロノーム専用モードも合わせる ----
+   type "metro"：音色・鳴らし方・アクセントなど（音量は端末ごと）。type "mm"：専用モードの開始・停止・テンポ・拍子と、1拍目の時刻 */
+const METRO_KEYS=["mSound","mvBar","mvBeat","mv8","mvT","mv16","mv6","mUra","mAccPos","mAccent","mBeatSnd","mMute"];
+function metroSig(){ const o={on:!!($("metro")&&$("metro").checked)}; METRO_KEYS.forEach(k=>o[k]=S[k]); return JSON.stringify(o); }
+function mmSig(){ return mm.running?[1,S.mBpm,S.mBeats,S.mUnit,Math.round(mm.t0w||0)].join(","):"0"; }
+function syncSendMetro(){ if(!syncOnline()||S.syncMetro===false) return; SYNC.metroLast=metroSig(); syncSend("metro",{metro:JSON.parse(SYNC.metroLast)}); }
+function syncSendMM(){ if(!syncOnline()||S.syncMetro===false) return; SYNC.mmLast=mmSig();
+  syncSend("mm",{running:mm.running,bpm:S.mBpm,beats:S.mBeats,unit:S.mUnit,t0:mm.running?Math.round(mm.t0w-Date.now()):null}); } /* t0：送った時刻から見た1拍目の時刻（ミリ秒、マイナス＝過去） */
+setInterval(()=>{ if(!syncOnline()||SYNC.applying||S.syncMetro===false) return;
+  if (SYNC.metroLast!==undefined&&metroSig()!==SYNC.metroLast) syncSendMetro(); else if(SYNC.metroLast===undefined) SYNC.metroLast=metroSig();
+  if (SYNC.mmLast!==undefined&&mmSig()!==SYNC.mmLast) syncSendMM(); else if(SYNC.mmLast===undefined) SYNC.mmLast=mmSig(); },120);
+function syncRecvMetro(m){ if(S.syncMetro===false||!m.metro) return; SYNC.applying=true;
+  try{ METRO_KEYS.forEach(k=>{ if(k in m.metro) S[k]=m.metro[k]; }); if($("metro")) $("metro").checked=!!m.metro.on; saveSettings(); if(typeof refreshMetroUI==="function") refreshMetroUI(); }
+  finally{ SYNC.metroLast=metroSig(); SYNC.applying=false; } }
+function syncRecvMM(m){ if(S.syncMetro===false) return; SYNC.applying=true;
+  try{
+    if (!m.running){ if(mm.running) mmStop(); return; }
+    if ($("metroMode")&&$("metroMode").hidden&&typeof mmOpen==="function") mmOpen();
+    S.mBeats=m.beats||S.mBeats; S.mUnit=m.unit||S.mUnit; mmSetBpm(m.bpm||S.mBpm); if(typeof refreshMetroUI==="function") refreshMetroUI();
+    const T0=m.at+(m.t0||0); /* この端末の時計での1拍目の時刻 */
+    audio(); if(ctx.state==="suspended") ctx.resume(); if(st.playing) stop();
+    const spb=60/S.mBpm, nowW=Date.now(), lat=syncLat();
+    let n=Math.max(0,Math.ceil(((nowW-T0)/1000+0.12)/spb)); const tW=T0+n*spb*1000;
+    mm.running=true; mm.next=ctx.currentTime+(tW-nowW)/1000+lat; mm.beat=n%S.mBeats; mm.bar=Math.floor(n/S.mBeats); mm.queue=[]; mm.grid=[]; mm.t0w=T0;
+    $("mmGo").textContent="■ ストップ"; $("mmGo").classList.add("on"); if (typeof keepAwake==="function") keepAwake(true);
+  } finally{ SYNC.mmLast=mmSig(); SYNC.applying=false; } }
 /* 相手が弾くパートを、こちらの音から外す（設定でオフにできる） */
 function syncParts(){ if(!song||!song.strips) return; const chs=new Set(); let drums=false;
   if (S.syncMute!==false) for(const p of Object.values(SYNC.peers)){ if(p.plays){ (p.plays.channels||[]).forEach(c=>chs.add(+c)); if(p.plays.drums&&p.app!=="drum") drums=true; } }
@@ -3347,10 +3380,12 @@ function syncRecv(m,via){ if(!m||m.v!==1||m.id===SYNC.id) return;
   if (m.type==="bye"){ delete SYNC.peers[m.id]; syncParts(); syncStatus(); return; }
   const isNew=!SYNC.peers[m.id], p=SYNC.peers[m.id]=Object.assign(SYNC.peers[m.id]||{}, {app:m.app||"?",seen:Date.now(),via:via||"bc"});
   if (m.plays){ const k=JSON.stringify(m.plays); if(p.playsKey!==k){ p.plays=m.plays; p.playsKey=k; syncParts(); } }
-  if (m.type==="hello"){ syncState(); syncSendSong(); }
+  if (m.type==="hello"){ syncState(); syncSendSong(); syncSendMetro(); if(mm.running) syncSendMM(); }
   else if (m.type==="state") syncApply(m,false);
   else if (m.type==="tick"){ if(m.id===SYNC.leader||!SYNC.leader) syncApply(m,true); }
   else if (m.type==="song") syncRecvSong(m);
+  else if (m.type==="metro") syncRecvMetro(m);
+  else if (m.type==="mm") syncRecvMM(m);
   if (isNew) syncStatus(); }
 const APP_NAME={drum:"ドラム",keys:"鍵盤"};
 function syncStatus(){ const now=Date.now(); let gone=false; for(const k in SYNC.peers) if(now-SYNC.peers[k].seen>5000){ delete SYNC.peers[k]; gone=true; } if(gone) syncParts();
@@ -3453,6 +3488,7 @@ $("netBtn").onclick=()=>{ if(NET.state!=="off"){ netClose(); return; } S.netRoom
 $("syncLat").value=S.syncLat||0; $("syncLat").onchange=()=>{ const old=syncLat(); S.syncLat=Math.max(-500,Math.min(1000,+$("syncLat").value||0)); $("syncLat").value=S.syncLat; saveSettings();
   if (st.playing){ st.origin-=syncLat()-old; SYNC.last=syncSnap(); } }; /* 再生中なら、聞こえる位置が変わらないよう鳴らす位置だけずらす（相手には知らせない） */
 $("syncMute").checked=S.syncMute!==false; $("syncMute").onchange=()=>{ S.syncMute=$("syncMute").checked; saveSettings(); syncParts(); };
+$("syncMetro").checked=S.syncMetro!==false; $("syncMetro").onchange=()=>{ S.syncMetro=$("syncMetro").checked; saveSettings(); };
 $("syncSong").checked=S.syncSong!==false; $("syncSong").onchange=()=>{ S.syncSong=$("syncSong").checked; saveSettings(); };
 syncEnable(!!S.syncOn);
 
@@ -4056,7 +4092,7 @@ function mmQuiet(bar){ if(!S.mQuiet||S.mQuiet==="0") return false; const [a,b]=S
 function mmStart(){
   audio(); if(ctx.state==="suspended") ctx.resume();
   if (st.playing) stop();
-  mm.running=true; mm.next=ctx.currentTime+0.12; mm.beat=0; mm.bar=0; mm.queue=[]; mm.grid=[];
+  mm.running=true; mm.next=ctx.currentTime+0.12; mm.beat=0; mm.bar=0; mm.queue=[]; mm.grid=[]; mm.t0w=Date.now()+(0.12-(typeof syncLat==="function"?syncLat():0))*1000; /* 1拍目が耳に聞こえる時刻（同期用） */
   $("mmGo").textContent="■ ストップ"; $("mmGo").classList.add("on");
   if (typeof keepAwake==="function") keepAwake(true);
 }
