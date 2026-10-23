@@ -129,6 +129,7 @@ body.freeOn #empty{top:auto;height:46%;border-top:2px solid #e5484d}
 body.freeOn #empty .emptyBar,body.freeOn #empty .padHelp{display:none}
 @media (max-height:520px){ body.freeOn #empty{height:60%} }
 @media (max-width:600px){ #recBar{font-size:12px;gap:4px 8px;padding:4px 8px} #recBar select,#recBar input[type=number]{font-size:12px;padding:2px 4px} #recBar button{padding:4px 8px;font-size:12px} }
+#auxBox{display:flex;flex-direction:column;gap:6px}.auxRow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px}.auxRow label{min-width:64px;display:inline-flex;gap:4px;align-items:center}
 #editBar b{color:var(--accent);letter-spacing:.06em}
 #editBar label{gap:4px}
 .eMixL{font-size:12px;color:var(--dim);display:inline-flex;align-items:center}
@@ -982,11 +983,9 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <details class="tip"><summary>遅延補正の合わせかた</summary><div class="help">叩いた位置は玉の下の短い線で出ます。水色は早い、橙は遅い、緑はちょうど。線がいつも橙なら遅延補正を増やしてください。</div></details>
     </section>
     <section>
-      <h2>追加のパッド（AUX）</h2>
-      <div class="row"><label for="auxOn" title="TD-17 などの、もう1つの入力（AUX）につないだパッドを使います">AUX（追加のパッド）を使う</label><input type="checkbox" id="auxOn"></div>
-      <div class="row"><label for="auxRole">AUXの役割</label><select id="auxRole"><option value="splash">スプラッシュ</option><option value="china">チャイナ</option><option value="cowbell">カウベル</option><option value="lowtom">タム4（フロアの右の低いタム）</option><option value="tom0">タム0（タム1の左の高いタム）</option><option value="snare2">スネア2（2つ目のスネア）</option></select></div>
-      <div class="row"><label for="auxNote">AUXの番号（MIDIのノート番号）</label><span style="display:flex;gap:6px;align-items:center"><input type="number" id="auxNote" min="0" max="127" placeholder="未設定" style="width:72px"><button id="auxLearn" type="button">叩いて覚える</button></span></div>
-      <details class="tip"><summary>AUXの使い方</summary><div class="help">「叩いて覚える」を押してから、電子ドラムのAUXのパッドを1回叩くと、その番号を覚えます（TD-17 本体で、そのパッドが送る番号を決めておいてください）。ほかのパーツと同じ番号にすると、その番号はAUXとして扱います。役割を変えると、名前・譜面の位置・玉の形・音・パッドの置き場所が変わります。MIDIファイルに書き出すときは、この番号（未設定なら役割の一般的な番号）で保存します。</div></details>
+      <h2>追加のパッド（AUX1〜4）</h2>
+      <div id="auxBox" class="auxBox"></div>
+      <details class="tip"><summary>AUXの使い方</summary><div class="help">TD-17 はAUXが1つ、TD-27 などの上位機種は追加の入力が3〜4つあります。使うAUXにチェックを入れ、役割を選び、「叩いて覚える」を押してからそのパッドを1回叩くと、番号を覚えます（電子ドラム本体で、そのパッドが送る番号を決めておいてください）。ほかのパーツと同じ番号にすると、その番号はAUXとして扱います。役割を変えると、名前・譜面の位置・玉の形・音・パッドの置き場所が変わります。MIDIファイルに書き出すときは、この番号（未設定なら役割の一般的な番号）で保存します。</div></details>
     </section>
     <section>
       <h2>キーボードで試し打ちするキー</h2>
@@ -1043,7 +1042,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
             <li>設定やメニュー、結果などを開いているときにスマホの「戻る」を押すと、ページを離れずに、まずそれを閉じます。</li>
             <li>横画面にすると、画面を触ったときに全画面になります（設定の「横画面にしたら全画面にする」。Android など）。iPhone・iPad は、Safari の共有ボタンから「ホーム画面に追加」して開くと、ブラウザのバーが出ずに広く使えます。</li>
             <li>最初の画面のパッドは、押した場所で叩き分けます。ライドの真ん中はカップ、シンバル・ハイハットのふちはエッジ、スネア・タムのふちはリムショットの音です（それ以外は、真ん中ほど強く鳴ります）。左右のクラッシュは別の音で鳴り、判定で◯にするときだけ、設定でどちらでも正解にできます。</li>
-            <li>設定の「追加のパッド（AUX）」で、TD-17 などのもう1つの入力を使えます。役割はスプラッシュ（初期値）・チャイナ・カウベル・タム4・タム0・スネア2から選べ、番号は「叩いて覚える」で合わせます。</li>
+            <li>設定の「追加のパッド（AUX1〜4）」で、TD-17 のAUXや、上位機種の追加の入力（最大4つ）を使えます。役割はスプラッシュ・チャイナ・カウベル・タム4・タム0・スネア2から選べ、番号は「叩いて覚える」で合わせます。キーボードの試し打ちは G・H・T・Y です。</li>
             <li>タッチできる端末では、ゲーム表示の判定線の下に、指で叩けるパッドが出ます。</li>
             <li>表示の「横スクロール」は、叩く位置の線が左に止まっていて、音符が右から左へ流れてくる表示です。</li>
             <li>「🎙 採譜」（設定の「✎ 編集」「🖨 楽譜出力」の隣）では、叩いた音がそのまま譜面になります（表示は、採譜のバーで譜面・グリッドを切り替えます。グリッドでは、画面の左下のボタンで横スクロールにもできます）。テンポ・拍子・長さ（止めるまで／小節数）・そろえ方（8分・16分・32分、3連系も）を決めて「● 録音」を押すと、カウントのあとに録り始めます。開いていた曲や、mp3などの音楽ファイルを流しながら録ることもできます。録ったあとで「📐 位置を直す」を押し、小節の頭にしたい音を2つ選ぶと、小節線の位置とテンポを合わせ直せます。「✎ 編集・保存」で手直しして、MIDIファイルに保存できます。</li>
@@ -1110,7 +1109,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <h2>このソフトのURL</h2>
       <div class="qrBox"><div class="qrImg" role="img" aria-label="配布先URL（https://pikadrum.github.io/drum/）のQRコード"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><rect width="37" height="37" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM12 4h3v1h-3zM22 4h1v1h-1zM26 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h2v1h-2zM16 5h1v1h-1zM20 5h4v1h-4zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM13 6h2v1h-2zM16 6h2v1h-2zM19 6h3v1h-3zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h3v1h-3zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h5v1h-5zM18 7h3v1h-3zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h3v1h-3zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h3v1h-3zM20 8h3v1h-3zM26 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h2v1h-2zM15 9h5v1h-5zM21 9h1v1h-1zM23 9h2v1h-2zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h7v1h-7zM12 11h3v1h-3zM16 11h1v1h-1zM18 11h1v1h-1zM21 11h1v1h-1zM4 12h1v1h-1zM8 12h1v1h-1zM10 12h4v1h-4zM15 12h1v1h-1zM17 12h5v1h-5zM24 12h6v1h-6zM32 12h1v1h-1zM6 13h1v1h-1zM11 13h2v1h-2zM15 13h1v1h-1zM21 13h2v1h-2zM26 13h7v1h-7zM7 14h2v1h-2zM10 14h3v1h-3zM14 14h6v1h-6zM21 14h1v1h-1zM26 14h1v1h-1zM32 14h1v1h-1zM4 15h1v1h-1zM6 15h3v1h-3zM11 15h2v1h-2zM16 15h2v1h-2zM19 15h4v1h-4zM24 15h4v1h-4zM29 15h1v1h-1zM31 15h2v1h-2zM4 16h1v1h-1zM6 16h1v1h-1zM10 16h2v1h-2zM13 16h2v1h-2zM16 16h2v1h-2zM21 16h1v1h-1zM23 16h1v1h-1zM25 16h1v1h-1zM31 16h1v1h-1zM4 17h1v1h-1zM6 17h2v1h-2zM11 17h1v1h-1zM14 17h2v1h-2zM17 17h2v1h-2zM20 17h3v1h-3zM25 17h8v1h-8zM4 18h2v1h-2zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM24 18h3v1h-3zM28 18h3v1h-3zM32 18h1v1h-1zM4 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM14 19h3v1h-3zM18 19h1v1h-1zM21 19h2v1h-2zM25 19h1v1h-1zM27 19h2v1h-2zM31 19h2v1h-2zM7 20h1v1h-1zM10 20h6v1h-6zM17 20h3v1h-3zM21 20h2v1h-2zM24 20h2v1h-2zM31 20h1v1h-1zM4 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM21 21h2v1h-2zM25 21h5v1h-5zM31 21h2v1h-2zM6 22h2v1h-2zM9 22h4v1h-4zM14 22h1v1h-1zM17 22h3v1h-3zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM30 22h1v1h-1zM32 22h1v1h-1zM6 23h4v1h-4zM12 23h1v1h-1zM14 23h4v1h-4zM21 23h4v1h-4zM26 23h3v1h-3zM31 23h2v1h-2zM4 24h2v1h-2zM8 24h1v1h-1zM10 24h4v1h-4zM15 24h3v1h-3zM19 24h1v1h-1zM21 24h1v1h-1zM23 24h7v1h-7zM32 24h1v1h-1zM12 25h1v1h-1zM14 25h1v1h-1zM16 25h4v1h-4zM22 25h3v1h-3zM28 25h1v1h-1zM32 25h1v1h-1zM4 26h7v1h-7zM12 26h2v1h-2zM16 26h1v1h-1zM19 26h1v1h-1zM21 26h4v1h-4zM26 26h1v1h-1zM28 26h3v1h-3zM32 26h1v1h-1zM4 27h1v1h-1zM10 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM18 27h2v1h-2zM21 27h1v1h-1zM23 27h2v1h-2zM28 27h1v1h-1zM31 27h2v1h-2zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM12 28h2v1h-2zM16 28h4v1h-4zM21 28h1v1h-1zM23 28h7v1h-7zM4 29h1v1h-1zM6 29h3v1h-3zM10 29h1v1h-1zM13 29h1v1h-1zM16 29h1v1h-1zM19 29h2v1h-2zM23 29h1v1h-1zM25 29h1v1h-1zM32 29h1v1h-1zM4 30h1v1h-1zM6 30h3v1h-3zM10 30h1v1h-1zM13 30h3v1h-3zM17 30h3v1h-3zM23 30h3v1h-3zM29 30h4v1h-4zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h1v1h-1zM16 31h2v1h-2zM19 31h1v1h-1zM21 31h1v1h-1zM24 31h1v1h-1zM27 31h1v1h-1zM29 31h1v1h-1zM31 31h2v1h-2zM4 32h7v1h-7zM12 32h3v1h-3zM16 32h1v1h-1zM18 32h1v1h-1zM20 32h2v1h-2zM23 32h3v1h-3zM28 32h1v1h-1zM31 32h1v1h-1z"/></svg></div><div class="help">スマホやタブレットのカメラで読み取ると、このソフトを開けます。<br><a href="https://pikadrum.github.io/drum/" target="_blank" rel="noopener">https://pikadrum.github.io/drum/</a></div></div>
     </section>
-    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/23 14:17</div>
+    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/23 14:30</div>
     </div>
   </aside>
 </main>
@@ -1183,43 +1182,56 @@ const PARTS = {
   tom3:{name:"フロアタム", short:"FT", notes:[43,58,41], freq:110, pos:3, head:"o", up:true, color:"#9b6bff"},
   kick:{name:"キック", short:"BD", notes:[36,35], freq:60, pos:1, head:"o", up:false, color:"#f2d43a"},
   hhp:{name:"HHペダル", short:"HP", notes:[44], cym:true, pos:-1, head:"x", up:false, color:"#6fb3c9"},
-  aux:{name:"スプラッシュ", short:"SP", notes:[], cym:true, pos:12, head:"x", up:true, color:"#ffc65c"}, /* 追加のパッド（AUX）。役割は設定で変える */
+  aux:{name:"スプラッシュ", short:"SP", notes:[], cym:true, pos:12, head:"x", up:true, color:"#ffc65c"}, /* 追加のパッド（AUX1〜4）。役割は設定で変える */
+  aux2:{name:"チャイナ", short:"CH", notes:[], cym:true, pos:12.5, head:"x", up:true, color:"#d98c2b"},
+  aux3:{name:"タム4（ロー）", short:"T4", notes:[], freq:85, pos:2, head:"o", up:true, color:"#6e5bd6"},
+  aux4:{name:"カウベル", short:"CB", notes:[], cym:true, pos:10.5, head:"x", up:true, color:"#c9c9c9"},
 };
 const PART_KEYS=Object.keys(PARTS);
 // キーボードで試し打ちするキー（設定で変更できる）
-const KEY_DEFAULT={hhp:"z",hh:"k",crash:"l",snare:"j",tom1:"d",kick:"f",tom2:"s",tom3:"a",crash2:"o",ride:";",aux:"g"};
+const KEY_DEFAULT={hhp:"z",hh:"k",crash:"l",snare:"j",tom1:"d",kick:"f",tom2:"s",tom3:"a",crash2:"o",ride:";",aux:"g",aux2:"h",aux3:"t",aux4:"y"};
 function keyMap(){ return {...KEY_DEFAULT,...((typeof S!=="undefined"&&S.keys)||{})}; }
-const GAME_ORDER=["hhp","hh","crash","snare","tom1","tom2","tom3","crash2","ride","aux","kick"];
+const GAME_ORDER=["hhp","hh","crash","snare","tom1","tom2","tom3","crash2","ride","aux","aux2","aux3","aux4","kick"];
 const noteToPart={};
 for (const [k,d] of Object.entries(PARTS)) d.notes.forEach(n=>noteToPart[n]=k);
 
-/* ================= 追加のパッド（AUX）：TD-17 などのもう1つの入力を、選んだ役割のパーツとして扱う =================
-   役割（スプラッシュ・チャイナ・カウベル・タム4・タム0・スネア2）で、名前・譜面の位置・玉の形・音・置き場所が変わる。
+/* ================= 追加のパッド（AUX1〜4）：TD-17 の AUX や、上位機種の追加の入力を、選んだ役割のパーツとして扱う =================
+   それぞれ役割（スプラッシュ・チャイナ・カウベル・タム4・タム0・スネア2）で、名前・譜面の位置・玉の形・音が変わる。置き場所は AUX の番号ごとに決まっている。
    入力の番号は「叩いて覚える」か、番号を入れて決める（決めるまでは、ほかのパーツの番号を横取りしない） */
+const AUX_KEYS=["aux","aux2","aux3","aux4"];
 const AUX_ROLES={
-  splash:{name:"スプラッシュ",short:"SP",cym:true,head:"x",pos:12,up:true,color:"#ffc65c",gm:55,kit:[0.5,0.08,0.09],padW:[48,6,6,"cym"],padT:[50,12,10,"cym"]},
-  china:{name:"チャイナ",short:"CH",cym:true,head:"x",pos:12,up:true,color:"#d98c2b",gm:52,kit:[0.9,0.55,0.11],padW:[48,6,6,"cym"],padT:[50,12,10,"cym"]},
-  cowbell:{name:"カウベル",short:"CB",cym:true,head:"x",pos:10.5,up:true,color:"#c9c9c9",gm:56,kit:[0.62,0.1,0.07],padW:[48,6,6,"cym"],padT:[50,12,10,"cym"]},
-  lowtom:{name:"タム4（ロー）",short:"T4",freq:85,head:"o",pos:2,up:true,color:"#6e5bd6",gm:41,kit:[0.9,0.74,0.11],padW:[90,62,8,"drum"],padT:[88,104,11,"drum"]},
-  tom0:{name:"タム0（ハイ）",short:"T0",freq:300,head:"o",pos:8,up:true,color:"#ff9a5c",gm:50,kit:[0.33,0.3,0.08],padW:[90,62,8,"drum"],padT:[88,104,11,"drum"]},
-  snare2:{name:"スネア2",short:"S2",freq:240,head:"o",pos:4,up:true,color:"#ffa8cf",gm:40,kit:[0.12,0.66,0.09],padW:[90,62,8,"drum"],padT:[88,104,11,"drum"]}};
-let AUX_ORIG=null; /* 番号を横取りしたときの元のパーツ */
-function auxRole(){ return AUX_ROLES[S.auxRole]||AUX_ROLES.splash; }
-function auxActive(){ if(S.auxOn) return true; try{ return !!(song&&song.notes&&song.notes.some(n=>n.part==="aux")); }catch(e){ return false; } }
-function applyAux(){ const r=auxRole(), d=PARTS.aux;
-  ["name","short","cym","head","pos","up","color","freq"].forEach(k=>{ if(r[k]!==undefined) d[k]=r[k]; else delete d[k]; });
-  for (const n in noteToPart) if (noteToPart[n]==="aux") delete noteToPart[n];
-  if (AUX_ORIG){ noteToPart[AUX_ORIG.n]=AUX_ORIG.p; AUX_ORIG=null; }
-  const nt=+S.auxNote||0; d.notes=nt?[nt]:[];
-  if (S.auxOn&&nt){ if(noteToPart[nt]) AUX_ORIG={n:nt,p:noteToPart[nt]}; noteToPart[nt]="aux"; }
-  try{ if(auxActive()) KIT_POS.aux=r.kit; else delete KIT_POS.aux; }catch(e){ setTimeout(applyAux,0); } } /* 読み込みの途中（KIT_POS がまだない）ときは、あとでもう一度 */
-function auxSound(t,vel,dest){ const r=S.auxRole||"splash", v=(vel/127)*.5;
+  splash:{name:"スプラッシュ",short:"SP",cym:true,head:"x",pos:12,up:true,color:"#ffc65c",gm:55},
+  china:{name:"チャイナ",short:"CH",cym:true,head:"x",pos:12.5,up:true,color:"#d98c2b",gm:52},
+  cowbell:{name:"カウベル",short:"CB",cym:true,head:"x",pos:10.5,up:true,color:"#c9c9c9",gm:56},
+  lowtom:{name:"タム4（ロー）",short:"T4",freq:85,head:"o",pos:2,up:true,color:"#6e5bd6",gm:41},
+  tom0:{name:"タム0（ハイ）",short:"T0",freq:300,head:"o",pos:8,up:true,color:"#ff9a5c",gm:50},
+  snare2:{name:"スネア2",short:"S2",freq:240,head:"o",pos:4,up:true,color:"#ffa8cf",gm:40}};
+const AUX_DEF_ROLE=["splash","china","lowtom","cowbell"];
+/* AUX ごとの置き場所（下のドラムの図／横長のパッド／縦長のパッド） */
+const AUX_SLOT=[{kit:[0.5,0.08,0.08],padW:[48,6,6],padT:[50,12,10]},{kit:[0.9,0.74,0.09],padW:[86,66,6],padT:[88,104,11]},{kit:[0.95,0.45,0.07],padW:[97,52,4],padT:[63,57,7.5]},{kit:[0.05,0.66,0.07],padW:[19,68,3.5],padT:[36,106,9]}];
+let AUX_ORIG={};
+function auxCfg(i){ if(!Array.isArray(S.aux)) S.aux=[]; if(!S.aux[i]) S.aux[i]={on:false,role:AUX_DEF_ROLE[i],note:0};
+  if(i===0&&S.auxOn!==undefined){ S.aux[0]={on:!!S.auxOn,role:S.auxRole||"splash",note:+S.auxNote||0}; delete S.auxOn; delete S.auxRole; delete S.auxNote; } /* 1つだけだった前の版の設定を引き継ぐ */
+  return S.aux[i]; }
+const auxIdx=k=>AUX_KEYS.indexOf(k);
+function auxRole(k){ return AUX_ROLES[auxCfg(Math.max(0,auxIdx(k))).role]||AUX_ROLES.splash; }
+function auxActive(k){ if(auxCfg(auxIdx(k)).on) return true; try{ return !!(song&&song.notes&&song.notes.some(n=>n.part===k)); }catch(e){ return false; } }
+function applyAux(){
+  for (const n in noteToPart) if (AUX_KEYS.includes(noteToPart[n])) delete noteToPart[n];
+  for (const n in AUX_ORIG) noteToPart[n]=AUX_ORIG[n]; AUX_ORIG={};
+  AUX_KEYS.forEach((k,i)=>{ const c=auxCfg(i), r=auxRole(k), d=PARTS[k];
+    ["name","short","cym","head","pos","up","color","freq"].forEach(p=>{ if(r[p]!==undefined) d[p]=r[p]; else delete d[p]; });
+    d.name=r.name+(i?"（AUX"+(i+1)+"）":""); const nt=+c.note||0; d.notes=nt?[nt]:[];
+    if (c.on&&nt){ if(noteToPart[nt]&&!AUX_KEYS.includes(noteToPart[nt])) AUX_ORIG[nt]=noteToPart[nt]; noteToPart[nt]=k; } });
+  try{ AUX_KEYS.forEach((k,i)=>{ if(auxActive(k)) KIT_POS[k]=AUX_SLOT[i].kit; else delete KIT_POS[k]; }); }catch(e){ setTimeout(applyAux,0); } } /* 読み込みの途中（KIT_POS がまだない）ときは、あとでもう一度 */
+function auxPads(tall){ const out=[]; AUX_KEYS.forEach((k,i)=>{ if(!auxCfg(i).on) return; const r=auxRole(k), p=tall?AUX_SLOT[i].padT:AUX_SLOT[i].padW; out.push([k,r.name,p[0],p[1],p[2],r.cym?"cym":"drum"]); }); return out; }
+function auxSound(t,vel,dest,k){ const r=auxCfg(Math.max(0,auxIdx(k))).role||"splash", v=(vel/127)*.5;
   const nz=(ftype,fq,q,peak,dur)=>{ const src=ctx.createBufferSource(), fl=ctx.createBiquadFilter(), g=ctx.createGain(); src.buffer=noiseBuf; fl.type=ftype; fl.frequency.value=fq; fl.Q.value=q; g.gain.setValueAtTime(peak,t); g.gain.exponentialRampToValueAtTime(.001,t+dur); src.connect(fl).connect(g).connect(dest); src.start(t); src.stop(t+dur+.02); };
   const tone=(type,fq,peak,dur,to)=>{ const o=ctx.createOscillator(), g=ctx.createGain(); o.type=type; o.frequency.setValueAtTime(fq,t); if(to) o.frequency.exponentialRampToValueAtTime(to,t+Math.min(.08,dur)); g.gain.setValueAtTime(peak,t); g.gain.exponentialRampToValueAtTime(.001,t+dur); o.connect(g).connect(dest); o.start(t); o.stop(t+dur+.02); };
   if (r==="splash"){ nz("highpass",8200,.7,v*.75,.42); nz("bandpass",11000,1,v*.3,.25); return; }
   if (r==="china"){ nz("bandpass",3200,1.2,v*.8,.9); nz("highpass",5500,.7,v*.45,.7); return; }
   if (r==="cowbell"){ const bp=ctx.createBiquadFilter(), g=ctx.createGain(); bp.type="bandpass"; bp.frequency.value=900; bp.Q.value=2; g.gain.setValueAtTime(v*1.6,t); g.gain.exponentialRampToValueAtTime(.001,t+.3); bp.connect(g).connect(dest); [560,845].forEach(f=>{ const o=ctx.createOscillator(); o.type="square"; o.frequency.value=f; o.connect(bp); o.start(t); o.stop(t+.32); }); return; }
-  const f=auxRole().freq||150; tone("sine",f*2,v,r==="lowtom"?.38:.25,f);
+  const f=(AUX_ROLES[r]||{}).freq||150; tone("sine",f*2,v,r==="lowtom"?.38:.25,f);
   if (r==="snare2"){ nz("highpass",2200,.7,v*.85,.15); } }
 
 const DEFAULT_SETTINGS={ barsPerRow:4, rows:2, zoom:100, headSize:100, ball:true, cursor:true, marks:true, showKit:true, beatLines:true, preview:true,
@@ -1560,7 +1572,7 @@ function click(t,kind,gainMul,lvl){
 }
 function drumSound(t,part,vel,open,dest,note){
   dest=dest||masterGain;
-  if (part==="aux") return auxSound(t,vel,dest);
+  if (AUX_KEYS.includes(part)) return auxSound(t,vel,dest,part);
   const v=(vel/127)*.5, def=PARTS[part]||{cym:true};
   /* 叩き分け（設定でオン）：MIDIの番号ごとに、本来の音に近い音で鳴らす */
   const art=S.artSound!==false&&note!=null?ART[note]:null;
@@ -1930,7 +1942,7 @@ const ART={51:"bow",59:"edge",53:"bell",49:"bow",55:"edge",57:"bow",52:"edge",42
 function noteArt(part,note){ const a=ART[note]; if(!a) return null; st.artSeen=st.artSeen||{}; if(a!=="bow"&&a!=="head") st.artSeen[part]=true; if((a==="bow"||a==="head")&&!st.artSeen[part]) return null; return a; }
 function onMidi(e){
   const [s,a,b]=e.data; if((s&0xf0)!==0x90||!b) return;
-  if (AUX_LEARN){ AUX_LEARN=false; S.auxNote=a; S.auxOn=true; saveSettings(); applyAux(); auxUI(); buildPads(); if(song) renderStrips(); flash(`AUXの番号を ${a} にしました`,"--ok",null); return; } /* 「叩いて覚える」 */
+  if (AUX_LEARN>=0){ const i=AUX_LEARN; AUX_LEARN=-1; const c=auxCfg(i); c.note=a; c.on=true; saveSettings(); applyAux(); auxUI(); buildPads(); if(song) renderStrips(); flash(`AUX${i+1}の番号を ${a} にしました`,"--ok",null); return; } /* 「叩いて覚える」 */
   const part=noteToPart[a]; if(!part) return;
   st.lastIn[part]=performance.now(); st.lastInVel[part]=b;
   const op=part==="hh"?PARTS.hh.open.includes(a):undefined, art=noteArt(part,a); st.lastArt=st.lastArt||{}; st.lastArt[part]=art?{art,at:performance.now()}:null; padLight(op?"hhOpen":part,b,art);
@@ -1955,8 +1967,8 @@ function makeStrips(song,info){
     strips.push({key:"drums",kind:"drum",ch:dch[0],name:"ドラム",sub:"Ch "+dch.map(c=>c+1).join("・")+(chName[dch[0]]?"・"+chName[dch[0]]:""),vol:0.2,pan:0,mute:false,solo:false,color:"#f28482",hits:[]}); /* 曲を開いたときのドラムの音量は20%（自分で叩く練習向け） */
     const used=new Set(song.drumAudio.map(n=>n.part));
     // ミキサーの並び（左から）：HHペダル・ハイハット・左クラッシュ・スネア・タム1・キック・タム2・フロア・右クラッシュ・ライド
-    const MIX_ORDER=["hhp","hh","crash","snare","tom1","kick","tom2","tom3","crash2","ride","aux"], oi=k=>{ const i=MIX_ORDER.indexOf(k); return i<0?99:i; };
-    const parts=[...new Set([...PART_KEYS,...used])].filter(k=>k!=="aux"||S.auxOn||used.has("aux")).sort((a,b)=>(a==="perc")-(b==="perc")||oi(a)-oi(b));
+    const MIX_ORDER=["hhp","hh","crash","snare","tom1","kick","tom2","tom3","crash2","ride","aux","aux2","aux3","aux4"], oi=k=>{ const i=MIX_ORDER.indexOf(k); return i<0?99:i; };
+    const parts=[...new Set([...PART_KEYS,...used])].filter(k=>!AUX_KEYS.includes(k)||auxCfg(auxIdx(k)).on||used.has(k)).sort((a,b)=>(a==="perc")-(b==="perc")||oi(a)-oi(b));
     parts.forEach(pt=>strips.push({key:"dp:"+pt,kind:"piece",part:pt,unused:!used.has(pt),name:pt==="perc"?"その他の打楽器":PARTS[pt].name,vol:1,mute:false,solo:false,color:pt==="perc"?"#adb5bd":PARTS[pt].color,hits:[]}));
   }
   chans.forEach((ch,i)=>{
@@ -2251,7 +2263,7 @@ let GRID=false, GRID_LANES=[], GRID_STEP=2;
 function gridSetup(){
   GRID=S.view==="grid"&&!PRINT_BASES;
   if (!GRID) return;
-  GRID_LANES=PART_KEYS.filter(k=>!S.hidden[k]&&(k!=="aux"||auxActive())).sort((a,b)=>posOf(b)-posOf(a));
+  GRID_LANES=PART_KEYS.filter(k=>!S.hidden[k]&&(!AUX_KEYS.includes(k)||auxActive(k))).sort((a,b)=>posOf(b)-posOf(a));
   GRID_STEP=Math.min(3,20/Math.max(1,GRID_LANES.length-1)); // 位置の単位（半スペース）
 }
 const gridPos=part=>{ const k=GRID_LANES.indexOf(part); return 18-(k<0?GRID_LANES.length:k)*GRID_STEP; };
@@ -2568,7 +2580,7 @@ function drawKitView(){
   if (c.width!==Math.round(w*dpr)||c.height!==Math.round(h*dpr)){ c.width=Math.round(w*dpr); c.height=Math.round(h*dpr); }
   const k=c.getContext("2d"); k.setTransform(dpr,0,0,dpr,0,0); k.clearRect(0,0,w,h);
   const t=performance.now(), pad=4, W=w-pad*2, H=h-pad*2;
-  const order=["kick","hhp","tom3","snare","tom2","tom1","hh","ride","crash2","crash","aux"]; // 奥（シンバル）を後から描く
+  const order=["kick","hhp","tom3","snare","tom2","tom1","hh","ride","crash2","crash","aux","aux2","aux3","aux4"]; // 奥（シンバル）を後から描く
   for (const p of order){ if(!KIT_POS[p]||!PARTS[p]) continue;
     const [px,py,r]=KIT_POS[p], cx=pad+px*W, cy=pad+py*H, col=PARTS[p].color;
     const ih=st.lastIn[p], a=ih?(t-ih)/350:9, lit=a<1?1-a:0, v=Math.max(.06,Math.pow(Math.min(1,(st.lastInVel[p]??100)/127),1.6)), L=lit*v; /* 強いほど明るく、弱いほど薄く */
@@ -2608,7 +2620,7 @@ cv.addEventListener("pointerdown",e=>{ const gp=GAME_PADS; if(S.view!=="game"||!
   if (y<gp.hitY+4) return; const i=Math.floor((x-gp.x0)/gp.laneW); if(i<0||i>=gp.lanes.length) return; e.preventDefault(); e.stopImmediatePropagation();
   const part=gp.lanes[i]; audio(); if(ctx.state==="suspended") ctx.resume(); const t=ctx.currentTime+0.005; drumSound(t,part,100,false); st.lastIn[part]=performance.now(); st.lastInVel[part]=100; if(!st.kbdUsed){ st.kbdUsed=true; applyJudgeState(); } hit(part,t,100); },true);
 function drawGame(now){
-  const {w,h}=G, lanes=GAME_ORDER.filter(k=>!S.hidden[k]&&(k!=="aux"||auxActive()));
+  const {w,h}=G, lanes=GAME_ORDER.filter(k=>!S.hidden[k]&&(!AUX_KEYS.includes(k)||auxActive(k)));
   const touch=IS_TOUCH, laneW=Math.min(110,(w-60)/lanes.length), x0=(w-laneW*lanes.length)/2, hitY=h-(touch?Math.min(170,Math.max(110,h*0.22)):80);
   GAME_PADS={x0,laneW,lanes,hitY,on:touch};
   const pps=280*S.gameSpeed/100, t=performance.now(), rate=st.playing?st.rate:1;
@@ -2645,7 +2657,7 @@ function drawGame(now){
    ・叩いた時刻は、マス目にそろえる前の「生の時刻」で覚えておく。そろえ方や小節線の位置を直しても、元の演奏は崩れない */
 const REC={mode:false,on:false,raw:[],r0:0,base:null,prevVal:"",audio:null,src:null,gain:null,tmr:0,last:0,pick:[]};
 const DEF_NOTE={kick:36,snare:38,hh:42,hhp:44,crash:49,crash2:57,ride:51,tom1:48,tom2:45,tom3:43};
-const recNote=(part,open)=>part==="hh"&&open?46:part==="aux"?(+S.auxNote||auxRole().gm):(DEF_NOTE[part]||38);
+const recNote=(part,open)=>part==="hh"&&open?46:AUX_KEYS.includes(part)?(+auxCfg(auxIdx(part)).note||auxRole(part).gm):(DEF_NOTE[part]||38);
 function recSay(t){ $("rInfo").textContent=t; }
 function recViewBtns(){ document.querySelectorAll("#recBar [data-rv]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.rv===(S.view||"score")))); }
 function recBarTicks(){ return song.ppq*4*song.bars[0].num/song.bars[0].den; }
@@ -2745,11 +2757,11 @@ function rfNudge(kind,d){ if(kind==="bpm") $("rBpm").value=(Math.max(20,(+$("rBp
 }
 
 /* ================= 横スクロール表示：叩く位置の線は左に止まっていて、音符が右から左へ流れてくる ================= */
-const SCROLL_ORDER=["aux","crash2","crash","hh","ride","tom1","tom2","snare","tom3","kick","hhp"];
+const SCROLL_ORDER=["aux","aux2","aux3","aux4","crash2","crash","hh","ride","tom1","tom2","snare","tom3","kick","hhp"];
 function drawScroll(now){
   const {w,h}=G, used=new Set(song.notes.map(n=>n.part));
-  let lanes=SCROLL_ORDER.filter(k=>!S.hidden[k]&&used.has(k)); if(!lanes.length) lanes=SCROLL_ORDER.filter(k=>!S.hidden[k]&&(k!=="aux"||auxActive()));
-  if (PARTS.aux) lanes.sort((a,b)=>posOf(b)-posOf(a));
+  let lanes=SCROLL_ORDER.filter(k=>!S.hidden[k]&&used.has(k)); if(!lanes.length) lanes=SCROLL_ORDER.filter(k=>!S.hidden[k]&&(!AUX_KEYS.includes(k)||auxActive(k)));
+  lanes.sort((a,b)=>posOf(b)-posOf(a));
   const vh=document.body.classList.contains("freeOn")?Math.max(h*0.35,h-($("empty").offsetHeight||0)):h; /* 採譜では下のパッドに隠れない高さ */
   const top=58, bot=vh-14, laneH=Math.max(16,Math.min(46,(bot-top)/lanes.length)), y0=top+((bot-top)-laneH*lanes.length)/2;
   const labW=w<520?44:96, hitX=labW+Math.max(40,(w-labW)*0.16), pps=Math.max(120,(w-labW)*0.42)*S.gameSpeed/100, rate=st.playing?st.rate:1;
@@ -2989,14 +3001,19 @@ $("autoFs").checked=S.autoFs!==false; $("autoFs").onchange=()=>{ S.autoFs=$("aut
   if (mq.addEventListener) mq.addEventListener("change",chk); else if (mq.addListener) mq.addListener(chk); chk();
   document.addEventListener("pointerdown",()=>{ if(want&&mq.matches&&!document.fullscreenElement&&S.autoFs!==false){ want=false; de.requestFullscreen({navigationUI:"hide"}).then(()=>{ auto=true; }).catch(()=>{}); } },true);
   document.addEventListener("fullscreenchange",()=>{ if(!document.fullscreenElement) auto=false; }); })();
-let AUX_LEARN=false;
-function auxUI(){ $("auxOn").checked=!!S.auxOn; $("auxRole").value=AUX_ROLES[S.auxRole]?S.auxRole:"splash"; $("auxNote").value=S.auxNote?S.auxNote:""; $("auxLearn").textContent=AUX_LEARN?"叩いてください…":"叩いて覚える"; }
+let AUX_LEARN=-1;
+/* 設定の「追加のパッド（AUX1〜4）」の欄を作る */
+{ const box=$("auxBox"), opts=Object.entries(AUX_ROLES).map(([k,r])=>`<option value="${k}">${r.name}</option>`).join("");
+  box.innerHTML=AUX_KEYS.map((k,i)=>`<div class="auxRow" data-i="${i}"><label><input type="checkbox" class="auxOn"> AUX${i+1}</label><select class="auxRole" aria-label="AUX${i+1}の役割">${opts}</select><input type="number" class="auxNote" min="0" max="127" placeholder="番号" aria-label="AUX${i+1}の番号" style="width:64px"><button type="button" class="auxLearn">叩いて覚える</button></div>`).join("");
+  box.querySelectorAll(".auxRow").forEach(row=>{ const i=+row.dataset.i, c=()=>auxCfg(i);
+    row.querySelector(".auxOn").onchange=e=>{ c().on=e.target.checked; auxChanged(); };
+    row.querySelector(".auxRole").onchange=e=>{ c().role=e.target.value; auxChanged(); };
+    row.querySelector(".auxNote").onchange=e=>{ const v=Math.round(+e.target.value); c().note=v>0&&v<128?v:0; auxChanged(); };
+    row.querySelector(".auxLearn").onclick=()=>{ AUX_LEARN=AUX_LEARN===i?-1:i; auxUI(); if(AUX_LEARN>=0) flash(`AUX${i+1}のパッドを1回叩いてください`,"--ok",null); }; }); }
+function auxUI(){ document.querySelectorAll("#auxBox .auxRow").forEach(row=>{ const i=+row.dataset.i, c=auxCfg(i);
+  row.querySelector(".auxOn").checked=!!c.on; row.querySelector(".auxRole").value=AUX_ROLES[c.role]?c.role:AUX_DEF_ROLE[i]; row.querySelector(".auxNote").value=c.note?c.note:""; row.querySelector(".auxLearn").textContent=AUX_LEARN===i?"叩いてください…":"叩いて覚える"; }); }
 auxUI();
 const auxChanged=()=>{ saveSettings(); applyAux(); auxUI(); if(typeof buildPads==="function") buildPads(); if(song){ renderStrips(); } };
-$("auxOn").onchange=()=>{ S.auxOn=$("auxOn").checked; auxChanged(); };
-$("auxRole").onchange=()=>{ S.auxRole=$("auxRole").value; auxChanged(); };
-$("auxNote").onchange=()=>{ const v=Math.round(+$("auxNote").value); S.auxNote=v>0&&v<128?v:0; auxChanged(); };
-$("auxLearn").onclick=()=>{ AUX_LEARN=!AUX_LEARN; auxUI(); if(AUX_LEARN) flash("AUXのパッドを1回叩いてください","--ok",null); };
 $("hideLead").checked=!!S.hideLead; $("hideLead").onchange=()=>{ S.hideLead=$("hideLead").checked; saveSettings(); st.viewPage=pageOf(barAt(st.pos)); };
 $("skipLead").checked=S.skipLead; $("skipLead").onchange=()=>{ S.skipLead=$("skipLead").checked; saveSettings(); if(!st.playing){ st.pos=songStart(); st.viewPage=pageOf(barAt(st.pos)); } };
 $("extCurve").value=String(S.extCurve); $("extCurve").onchange=()=>{ S.extCurve=+$("extCurve").value; saveSettings(); };
@@ -3454,7 +3471,7 @@ function buildPads(){ const g=$("padGrid"); if(!g) return; const km=keyMap();
   const tall=g.clientWidth>0&&g.clientHeight>g.clientWidth*0.95; padTall=tall;
   /* 縦長のときは、画面の縦横比に合わせて上下に広げる */
   const VH=tall?Math.max(120,Math.min(175,g.clientHeight/g.clientWidth*100)):72, sy=tall?(VH-8)/112:1;
-  PADS=(tall?PADS_T:PADS_W).concat(S.auxOn?[["aux",auxRole().name,...(tall?auxRole().padT:auxRole().padW)].map((v,i)=>i===5?v:v)].map(q=>[q[0],q[1],q[2],q[3],q[4],q[5]]):[]).map(q=>tall?[q[0],q[1],q[2],+(4+(q[3]-4)*sy).toFixed(2),q[4],q[5]]:q);
+  PADS=(tall?PADS_T:PADS_W).concat(auxPads(tall)).map(q=>tall?[q[0],q[1],q[2],+(4+(q[3]-4)*sy).toFixed(2),q[4],q[5]]:q);
   let h='<svg viewBox="0 0 100 '+VH.toFixed(1)+'" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><defs>'
    +'<radialGradient id="cymG" cx="45%" cy="40%" r="65%"><stop offset="0" stop-color="#f6dd8a"/><stop offset=".55" stop-color="#d9ae45"/><stop offset="1" stop-color="#9c7322"/></radialGradient>'
    +'<radialGradient id="headG" cx="45%" cy="40%" r="70%"><stop offset="0" stop-color="#fbf8f0"/><stop offset="1" stop-color="#dcd5c3"/></radialGradient></defs>';
