@@ -9,6 +9,11 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ドラム練習">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700&family=IBM+Plex+Mono:wght@500&display=swap">
 <style>
@@ -935,6 +940,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <h2>再生</h2>
       <div class="row"><label for="skipLead">最初の空白の小節を飛ばして再生する</label><input type="checkbox" id="skipLead" checked></div>
       <div class="row"><label for="hideLead">最初の空白の小節を譜面に表示しない</label><input type="checkbox" id="hideLead"></div>
+      <div class="row"><label for="autoFs" title="Android などで、横にしたあと最初に画面を触ったときに全画面にします（iPhone は「ホーム画面に追加」から開くとバーが出ません）">横画面にしたら全画面にする</label><input type="checkbox" id="autoFs" checked></div>
       <details class="syncBox" id="syncBox"><summary><span>ほかのソフト・別の端末と同期する</span><span id="syncBadge"></span></summary><div class="syncIn">
         <div class="row"><label for="syncOn">ほかのソフトと同期する（同じ端末のブラウザ）</label><input type="checkbox" id="syncOn"></div>
         <div id="syncStat" class="help"></div>
@@ -1017,6 +1023,8 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
             <li>設定の「最初の空白の小節を譜面に表示しない」をオンにすると、曲の頭の空白の小節を譜面に出しません（小節番号は元の曲のまま）。「譜面の細かさ」は、標準では32分音符まで（それより細かいずれは近い位置にまとめて描く）、「64分音符まで」にすると64分音符も描きます。</li>
             <li>再生中は、今の段の最後の小節に入ったところで、弾き終わった段を次の段に書き換えます。曲全体が画面に収まるときは書き換えません。</li>
             <li>電子ドラムが叩き分けの信号を送ってくるときは、パッドの図と下のドラムの図に、どこを叩いたかが出ます（ライド・シンバルのカップは中心の点、エッジやリムショットはふちの輪、クロススティックはふちの線）。</li>
+            <li>横画面にすると、画面を触ったときに全画面になります（設定の「横画面にしたら全画面にする」。Android など）。iPhone・iPad は、Safari の共有ボタンから「ホーム画面に追加」して開くと、ブラウザのバーが出ずに広く使えます。</li>
+            <li>最初の画面のパッドは、押した場所で叩き分けます。ライドの真ん中はカップ、シンバル・ハイハットのふちはエッジ、スネア・タムのふちはリムショットの音です（それ以外は、真ん中ほど強く鳴ります）。左右のクラッシュは別の音で鳴り、判定で◯にするときだけ、設定でどちらでも正解にできます。</li>
             <li>タッチできる端末では、ゲーム表示の判定線の下に、指で叩けるパッドが出ます。</li>
             <li>表示の「横スクロール」は、叩く位置の線が左に止まっていて、音符が右から左へ流れてくる表示です。</li>
             <li>「🎙 フリーモード（採譜）」（最初の画面、パソコン版は上の「🎙 フリーモード」、スマホ版は☰メニュー）では、叩いた音がそのまま譜面になります（表示は、フリーモードのバーで譜面・グリッド・横スクロールを切り替えます）。テンポ・拍子・長さ（止めるまで／小節数）・そろえ方（8分・16分・32分、3連系も）を決めて「● 録音」を押すと、カウントのあとに録り始めます。開いていた曲や、mp3などの音楽ファイルを流しながら録ることもできます。録ったあとで「📐 位置を直す」を押し、小節の頭にしたい音を2つ選ぶと、小節線の位置とテンポを合わせ直せます。「✎ 編集・保存」で手直しして、MIDIファイルに保存できます。</li>
@@ -1083,7 +1091,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <h2>このソフトのURL</h2>
       <div class="qrBox"><div class="qrImg" role="img" aria-label="配布先URL（https://pikadrum.github.io/drum/）のQRコード"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><rect width="37" height="37" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM12 4h3v1h-3zM22 4h1v1h-1zM26 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h2v1h-2zM16 5h1v1h-1zM20 5h4v1h-4zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM13 6h2v1h-2zM16 6h2v1h-2zM19 6h3v1h-3zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h3v1h-3zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h5v1h-5zM18 7h3v1h-3zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h3v1h-3zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h3v1h-3zM20 8h3v1h-3zM26 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h2v1h-2zM15 9h5v1h-5zM21 9h1v1h-1zM23 9h2v1h-2zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h7v1h-7zM12 11h3v1h-3zM16 11h1v1h-1zM18 11h1v1h-1zM21 11h1v1h-1zM4 12h1v1h-1zM8 12h1v1h-1zM10 12h4v1h-4zM15 12h1v1h-1zM17 12h5v1h-5zM24 12h6v1h-6zM32 12h1v1h-1zM6 13h1v1h-1zM11 13h2v1h-2zM15 13h1v1h-1zM21 13h2v1h-2zM26 13h7v1h-7zM7 14h2v1h-2zM10 14h3v1h-3zM14 14h6v1h-6zM21 14h1v1h-1zM26 14h1v1h-1zM32 14h1v1h-1zM4 15h1v1h-1zM6 15h3v1h-3zM11 15h2v1h-2zM16 15h2v1h-2zM19 15h4v1h-4zM24 15h4v1h-4zM29 15h1v1h-1zM31 15h2v1h-2zM4 16h1v1h-1zM6 16h1v1h-1zM10 16h2v1h-2zM13 16h2v1h-2zM16 16h2v1h-2zM21 16h1v1h-1zM23 16h1v1h-1zM25 16h1v1h-1zM31 16h1v1h-1zM4 17h1v1h-1zM6 17h2v1h-2zM11 17h1v1h-1zM14 17h2v1h-2zM17 17h2v1h-2zM20 17h3v1h-3zM25 17h8v1h-8zM4 18h2v1h-2zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM24 18h3v1h-3zM28 18h3v1h-3zM32 18h1v1h-1zM4 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM14 19h3v1h-3zM18 19h1v1h-1zM21 19h2v1h-2zM25 19h1v1h-1zM27 19h2v1h-2zM31 19h2v1h-2zM7 20h1v1h-1zM10 20h6v1h-6zM17 20h3v1h-3zM21 20h2v1h-2zM24 20h2v1h-2zM31 20h1v1h-1zM4 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM21 21h2v1h-2zM25 21h5v1h-5zM31 21h2v1h-2zM6 22h2v1h-2zM9 22h4v1h-4zM14 22h1v1h-1zM17 22h3v1h-3zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM30 22h1v1h-1zM32 22h1v1h-1zM6 23h4v1h-4zM12 23h1v1h-1zM14 23h4v1h-4zM21 23h4v1h-4zM26 23h3v1h-3zM31 23h2v1h-2zM4 24h2v1h-2zM8 24h1v1h-1zM10 24h4v1h-4zM15 24h3v1h-3zM19 24h1v1h-1zM21 24h1v1h-1zM23 24h7v1h-7zM32 24h1v1h-1zM12 25h1v1h-1zM14 25h1v1h-1zM16 25h4v1h-4zM22 25h3v1h-3zM28 25h1v1h-1zM32 25h1v1h-1zM4 26h7v1h-7zM12 26h2v1h-2zM16 26h1v1h-1zM19 26h1v1h-1zM21 26h4v1h-4zM26 26h1v1h-1zM28 26h3v1h-3zM32 26h1v1h-1zM4 27h1v1h-1zM10 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM18 27h2v1h-2zM21 27h1v1h-1zM23 27h2v1h-2zM28 27h1v1h-1zM31 27h2v1h-2zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM12 28h2v1h-2zM16 28h4v1h-4zM21 28h1v1h-1zM23 28h7v1h-7zM4 29h1v1h-1zM6 29h3v1h-3zM10 29h1v1h-1zM13 29h1v1h-1zM16 29h1v1h-1zM19 29h2v1h-2zM23 29h1v1h-1zM25 29h1v1h-1zM32 29h1v1h-1zM4 30h1v1h-1zM6 30h3v1h-3zM10 30h1v1h-1zM13 30h3v1h-3zM17 30h3v1h-3zM23 30h3v1h-3zM29 30h4v1h-4zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h1v1h-1zM16 31h2v1h-2zM19 31h1v1h-1zM21 31h1v1h-1zM24 31h1v1h-1zM27 31h1v1h-1zM29 31h1v1h-1zM31 31h2v1h-2zM4 32h7v1h-7zM12 32h3v1h-3zM16 32h1v1h-1zM18 32h1v1h-1zM20 32h2v1h-2zM23 32h3v1h-3zM28 32h1v1h-1zM31 32h1v1h-1z"/></svg></div><div class="help">スマホやタブレットのカメラで読み取ると、このソフトを開けます。<br><a href="https://pikadrum.github.io/drum/" target="_blank" rel="noopener">https://pikadrum.github.io/drum/</a></div></div>
     </section>
-    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/23 13:34</div>
+    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/23 13:40</div>
     </div>
   </aside>
 </main>
@@ -1495,7 +1503,7 @@ function drumSound(t,part,vel,open,dest,note){
       [[620,1],[1340,.55],[2010,.35],[2950,.2]].forEach(([fq,a])=>tone("sine",fq,v*.5*a,1.1)); nz("highpass",6500,.7,v*.35,.25); return; }
     if (art==="edge"){ /* シンバルのエッジ：ボウより厚く長く */
       if (part==="hh"){ nz("highpass",5200,.7,v*.75,open?.45:.09); nz("bandpass",8000,1,v*.3,open?.4:.07); return; }
-      nz("highpass",part==="ride"?3800:4800,.7,v*.75,part==="ride"?1.1:1.6); nz("bandpass",6500,.8,v*.35,.6); return; }
+      nz("highpass",part==="ride"?3800:part==="crash2"?4100:4800,.7,v*.75,part==="ride"?1.1:part==="crash2"?1.35:1.6); nz("bandpass",6500,.8,v*.35,.6); return; }
     if (art==="rim"){ /* リムショット：胴の音に、高く硬い「カン」が乗る */
       if (part==="snare"){ tone("triangle",(def.freq||190)*2.4,v*.9,.12,(def.freq||190)*1.5); nz("bandpass",3200,2.5,v*1.1,.06); nz("highpass",2000,.7,v*.7,.16); return; }
       tone("sine",(def.freq||150)*2,v,.3,def.freq||150); nz("bandpass",3000,3,v*.7,.04); return; }
@@ -1510,8 +1518,8 @@ function drumSound(t,part,vel,open,dest,note){
   }
   if (def.cym){
     const src=ctx.createBufferSource(), f=ctx.createBiquadFilter(), g=ctx.createGain();
-    src.buffer=noiseBuf; f.type="highpass"; f.frequency.value=part==="ride"?5000:7000;
-    const dur=(part==="crash"||part==="crash2")?1.2:part==="ride"?.5:open?.35:part==="hhp"?.05:.07;
+    src.buffer=noiseBuf; f.type="highpass"; f.frequency.value=part==="ride"?5000:part==="crash2"?5800:7000; /* 右クラッシュは少し低く、左とは別の音に */
+    const dur=part==="crash2"?1.0:part==="crash"?1.25:part==="ride"?.5:open?.35:part==="hhp"?.05:.07;
     g.gain.setValueAtTime(v*.6,t); g.gain.exponentialRampToValueAtTime(.001,t+dur);
     src.connect(f).connect(g).connect(dest); src.start(t); src.stop(t+dur);
     return;
@@ -2903,6 +2911,13 @@ $("extTrim").value=S.extTrim; $("extTrimV").textContent=S.extTrim+"%";
 $("extTrim").addEventListener("input",()=>{ S.extTrim=+$("extTrim").value; $("extTrimV").textContent=S.extTrim+"%"; saveSettings(); });
 $("outDrum").addEventListener("change",applyExtTrimRow);
 $("artSound").checked=S.artSound!==false; $("artSound").onchange=()=>{ S.artSound=$("artSound").checked; saveSettings(); };
+$("autoFs").checked=S.autoFs!==false; $("autoFs").onchange=()=>{ S.autoFs=$("autoFs").checked; saveSettings(); };
+/* 横画面にしたら、次に画面を触ったときに全画面にする（ブラウザの決まりで、触らずに全画面にはできない）。縦に戻したら、自動で入った全画面だけ戻す */
+(function(){ const de=document.documentElement, can=!!de.requestFullscreen, mq=matchMedia("(orientation: landscape)"); let want=false, auto=false;
+  const chk=()=>{ if(!can||S.autoFs===false) return; if(mq.matches){ if(!document.fullscreenElement) want=true; } else { want=false; if(auto&&document.fullscreenElement) document.exitFullscreen().catch(()=>{}); auto=false; } };
+  if (mq.addEventListener) mq.addEventListener("change",chk); else if (mq.addListener) mq.addListener(chk); chk();
+  document.addEventListener("pointerdown",()=>{ if(want&&mq.matches&&!document.fullscreenElement&&S.autoFs!==false){ want=false; de.requestFullscreen({navigationUI:"hide"}).then(()=>{ auto=true; }).catch(()=>{}); } },true);
+  document.addEventListener("fullscreenchange",()=>{ if(!document.fullscreenElement) auto=false; }); })();
 $("hideLead").checked=!!S.hideLead; $("hideLead").onchange=()=>{ S.hideLead=$("hideLead").checked; saveSettings(); st.viewPage=pageOf(barAt(st.pos)); };
 $("skipLead").checked=S.skipLead; $("skipLead").onchange=()=>{ S.skipLead=$("skipLead").checked; saveSettings(); if(!st.playing){ st.pos=songStart(); st.viewPage=pageOf(barAt(st.pos)); } };
 $("extCurve").value=String(S.extCurve); $("extCurve").onchange=()=>{ S.extCurve=+$("extCurve").value; saveSettings(); };
@@ -3333,9 +3348,17 @@ const PADS_T=[["crash","左クラッシュ",17,13,15,"cym"],["crash2","右クラ
   ["tom1","タム1",36,34,14,"drum"],["tom2","タム2",64,32,14,"drum"],["hh","ハイハット",13,50,13.5,"cym"],["hhOpen","オープンHH",10,85,9,"cym"],
   ["tom3","フロア",80,80,14,"drum"],["kick","キック",60,98,13,"kick"],["snare","スネア",39,72,20,"drum"],["hhp","HHペダル",18,103,7,"pedal"]]; /* 縦画面：スネアは2本指で連打しやすいよう大きく（ほかのパッドとは重ねない） */
 let PADS=PADS_W, padTall=null;
-function padPlay(id,vel){ audio(); if(ctx.state==="suspended") ctx.resume();
-  const part=id==="hhOpen"?"hh":id, t=ctx.currentTime+0.005; drumSound(t,part,vel,id==="hhOpen");
-  st.lastIn[part]=performance.now(); st.lastInVel[part]=vel; hit(part,t,vel,part==="hh"?id==="hhOpen":undefined); padLight(id,vel); }
+function padPlay(id,vel,note){ audio(); if(ctx.state==="suspended") ctx.resume();
+  const part=id==="hhOpen"?"hh":id, t=ctx.currentTime+0.005, op=id==="hhOpen"; drumSound(t,part,vel,op,undefined,note);
+  const art=note!=null?ART[note]:null, show=art&&art!=="bow"&&art!=="head"?art:null; st.lastArt=st.lastArt||{}; st.lastArt[part]=show?{art:show,at:performance.now()}:null;
+  st.lastIn[part]=performance.now(); st.lastInVel[part]=vel; hit(part,t,vel,part==="hh"?op:undefined,note); padLight(id,vel,show); }
+/* パッドを押した場所で叩き分ける：ライドの真ん中＝カップ、シンバル・ハイハットのふち＝エッジ、スネア・タムのふち＝リムショット。
+   ふちとカップは強さを決めて鳴らし、それ以外は今までどおり真ん中ほど強く鳴らす */
+const PAD_ART={ride:{bell:53,edge:59,bow:51},crash:{edge:55,bow:49},crash2:{edge:52,bow:57},hh:{edge:22,bow:42},hhOpen:{edge:26,bow:46},snare:{rim:40,head:38},tom1:{rim:50,head:48},tom2:{rim:47,head:45},tom3:{rim:58,head:43}};
+function padZone(id,f){ const z=PAD_ART[id]; if(!z) return [null,Math.round(127-f*50)];
+  if (z.bell&&f<0.26) return [z.bell,112];
+  if (f>0.8) return z.edge?[z.edge,112]:[z.rim,118];
+  return [z.bow||z.head,Math.round(127-Math.max(0,f-(z.bell?0.26:0))*55)]; }
 /* 叩き分けの印をパッドに出す（ボウ＝打面の中ほどの点、エッジ／リム＝ふちの輪、カップ＝中心の点、クロススティック＝ふちの線） */
 function padArt(el,id,art){ let a=el.querySelector(".art"); if(!art){ if(a) a.classList.remove("show"); return; } const p=PADS.find(q=>q[0]===id); if(!p) return; const [,,x,y,r]=p;
   const W='fill="none" stroke="#fff" stroke-linecap="round"';
@@ -3374,7 +3397,7 @@ function buildPads(){ const g=$("padGrid"); if(!g) return; const km=keyMap();
   /* 打面の中心ほど強く、ふちほど弱く鳴らす */
   g.querySelectorAll(".pad").forEach(el=>el.addEventListener("pointerdown",e=>{ e.preventDefault(); const id=el.dataset.p, p=PADS.find(q=>q[0]===id), sv=g.querySelector("svg"), m=sv.getScreenCTM();
     let f=0; if(m){ const pt=new DOMPoint(e.clientX,e.clientY).matrixTransform(m.inverse()); f=Math.min(1,Math.hypot(pt.x-p[2],pt.y-p[3])/p[4]); }
-    padPlay(id,Math.round(127-f*50)); })); }
+    const [nt,vv]=padZone(id,f); padPlay(id,vv,nt); })); }
 buildPads();
 addEventListener("resize",()=>{ const g=$("padGrid"); if(!g||$("empty").hidden) return; const tall=g.clientHeight>g.clientWidth*0.95; if(tall!==padTall||tall) buildPads(); });
 /* 最初の画面が出ているあいだは body に padOn（横向きのスマホでは下の欄を隠してパッドを広く） */
