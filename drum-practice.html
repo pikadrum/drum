@@ -870,7 +870,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <details class="tip"><summary>遅延補正の合わせかた</summary><div class="help">叩いた位置は玉の下の短い線で出ます。水色は早い、橙は遅い、緑はちょうど。線がいつも橙なら遅延補正を増やしてください。</div></details>
     </section>
     <section>
-      <h2>追加のパッド（AUX1〜4）</h2>
+      <h2>追加のパッド（AUX1〜6）</h2>
       <div id="auxBox" class="auxBox"></div>
       <details class="tip"><summary>AUXの使い方</summary><div class="help">TD-17 はAUXが1つ、TD-27 などの上位機種は追加の入力が3〜4つあります。使うAUXにチェックを入れ、役割を選び、「叩いて覚える」を押してからそのパッドを1回叩くと、番号を覚えます（電子ドラム本体で、そのパッドが送る番号を決めておいてください）。ほかのパーツと同じ番号にすると、その番号はAUXとして扱います。役割を変えると、名前・譜面の位置・玉の形・音・パッドの置き場所が変わります。MIDIファイルに書き出すときは、この番号（未設定なら役割の一般的な番号）で保存します。</div></details>
     </section>
@@ -927,7 +927,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
             <li>電子ドラムが叩き分けの信号を送ってくるときは、パッドの図と下のドラムの図に、どこを叩いたかが出ます（ライド・シンバルのカップは中心の点、エッジやリムショットはふちの輪、クロススティックはふちの線）。</li>
             <li>最初の画面の「✥ パッドの配置を変える」を押すと、パッドを引っぱって動かせます（ふちを引っぱると大きさが変わります）。配置は画面の向きごとに覚え、「標準に戻す」で元に戻せます。</li>
             <li>最初の画面のパッドは、押した場所で叩き分けます。ライドとクラッシュの真ん中はカップ、シンバル・ハイハットのふちはエッジ（ハイハットはふちを広くとり、真ん中の少しだけがふつうの音です）、スネアは下側（3時〜7時）のふちだけリムショットの音です。タムとフロアは、どこを押しても打面の音です（それ以外は、真ん中ほど強く鳴ります）。左右のクラッシュは別の音で鳴り、判定で◯にするときだけ、設定でどちらでも正解にできます。オープンHHの隣の「ハーフHH」は、ハーフオープン（少しだけ開いた「チー」という音）で鳴り、判定はオープンと同じに数えます。</li>
-            <li>設定の「追加のパッド（AUX1〜4）」で、TD-17 のAUXや、上位機種の追加の入力（最大4つ）を使えます。役割はスプラッシュ・チャイナ・カウベル・タム4・タム0・スネア2・バスドラ2から選べ、番号は「叩いて覚える」で合わせます。キーボードの試し打ちは G・H・T・Y です。</li>
+            <li>設定の「追加のパッド（AUX1〜6）」で、TD-17 のAUXや、上位機種の追加の入力（最大6つ）を使えます。役割はスプラッシュ・チャイナ・カウベル・タム4・タム0・スネア2・バスドラ2から選べ、番号は「叩いて覚える」で合わせます。キーボードの試し打ちは G・H・T・Y・B・N です。</li>
             <li>タッチできる端末では、ゲーム表示の判定線の下に、指で叩けるパッドが出ます。</li>
             <li>表示の「横スクロール」は、叩く位置の線が左に止まっていて、音符が右から左へ流れてくる表示です。</li>
             <li>「🎙 採譜」（設定の「✎ 編集」「🖨 楽譜出力」の隣）では、叩いた音がそのまま譜面になります（表示は、採譜のバーで譜面・グリッドを切り替えます。グリッドでは、画面の左下のボタンで横スクロールにもできます）。テンポ・拍子・長さ（止めるまで／小節数）・そろえ方（8分・16分・32分、3連系も）を決めて「● 録音」を押すと、カウントのあとに録り始めます。開いていた曲や、mp3などの音楽ファイルを流しながら録ることもできます。録ったあとで「📐 位置を直す」を押し、小節の頭にしたい音を2つ選ぶと、小節線の位置とテンポを合わせ直せます。「✎ 編集・保存」で手直しして、MIDIファイルに保存できます。</li>
@@ -994,7 +994,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <h2>このソフトのURL</h2>
       <div class="qrBox"><div class="qrImg" role="img" aria-label="配布先URL（https://pikadrum.github.io/drum/）のQRコード"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><rect width="37" height="37" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM12 4h3v1h-3zM22 4h1v1h-1zM26 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h2v1h-2zM16 5h1v1h-1zM20 5h4v1h-4zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM13 6h2v1h-2zM16 6h2v1h-2zM19 6h3v1h-3zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h3v1h-3zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h5v1h-5zM18 7h3v1h-3zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h3v1h-3zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h3v1h-3zM20 8h3v1h-3zM26 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h2v1h-2zM15 9h5v1h-5zM21 9h1v1h-1zM23 9h2v1h-2zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h7v1h-7zM12 11h3v1h-3zM16 11h1v1h-1zM18 11h1v1h-1zM21 11h1v1h-1zM4 12h1v1h-1zM8 12h1v1h-1zM10 12h4v1h-4zM15 12h1v1h-1zM17 12h5v1h-5zM24 12h6v1h-6zM32 12h1v1h-1zM6 13h1v1h-1zM11 13h2v1h-2zM15 13h1v1h-1zM21 13h2v1h-2zM26 13h7v1h-7zM7 14h2v1h-2zM10 14h3v1h-3zM14 14h6v1h-6zM21 14h1v1h-1zM26 14h1v1h-1zM32 14h1v1h-1zM4 15h1v1h-1zM6 15h3v1h-3zM11 15h2v1h-2zM16 15h2v1h-2zM19 15h4v1h-4zM24 15h4v1h-4zM29 15h1v1h-1zM31 15h2v1h-2zM4 16h1v1h-1zM6 16h1v1h-1zM10 16h2v1h-2zM13 16h2v1h-2zM16 16h2v1h-2zM21 16h1v1h-1zM23 16h1v1h-1zM25 16h1v1h-1zM31 16h1v1h-1zM4 17h1v1h-1zM6 17h2v1h-2zM11 17h1v1h-1zM14 17h2v1h-2zM17 17h2v1h-2zM20 17h3v1h-3zM25 17h8v1h-8zM4 18h2v1h-2zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM24 18h3v1h-3zM28 18h3v1h-3zM32 18h1v1h-1zM4 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM14 19h3v1h-3zM18 19h1v1h-1zM21 19h2v1h-2zM25 19h1v1h-1zM27 19h2v1h-2zM31 19h2v1h-2zM7 20h1v1h-1zM10 20h6v1h-6zM17 20h3v1h-3zM21 20h2v1h-2zM24 20h2v1h-2zM31 20h1v1h-1zM4 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM21 21h2v1h-2zM25 21h5v1h-5zM31 21h2v1h-2zM6 22h2v1h-2zM9 22h4v1h-4zM14 22h1v1h-1zM17 22h3v1h-3zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM30 22h1v1h-1zM32 22h1v1h-1zM6 23h4v1h-4zM12 23h1v1h-1zM14 23h4v1h-4zM21 23h4v1h-4zM26 23h3v1h-3zM31 23h2v1h-2zM4 24h2v1h-2zM8 24h1v1h-1zM10 24h4v1h-4zM15 24h3v1h-3zM19 24h1v1h-1zM21 24h1v1h-1zM23 24h7v1h-7zM32 24h1v1h-1zM12 25h1v1h-1zM14 25h1v1h-1zM16 25h4v1h-4zM22 25h3v1h-3zM28 25h1v1h-1zM32 25h1v1h-1zM4 26h7v1h-7zM12 26h2v1h-2zM16 26h1v1h-1zM19 26h1v1h-1zM21 26h4v1h-4zM26 26h1v1h-1zM28 26h3v1h-3zM32 26h1v1h-1zM4 27h1v1h-1zM10 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM18 27h2v1h-2zM21 27h1v1h-1zM23 27h2v1h-2zM28 27h1v1h-1zM31 27h2v1h-2zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM12 28h2v1h-2zM16 28h4v1h-4zM21 28h1v1h-1zM23 28h7v1h-7zM4 29h1v1h-1zM6 29h3v1h-3zM10 29h1v1h-1zM13 29h1v1h-1zM16 29h1v1h-1zM19 29h2v1h-2zM23 29h1v1h-1zM25 29h1v1h-1zM32 29h1v1h-1zM4 30h1v1h-1zM6 30h3v1h-3zM10 30h1v1h-1zM13 30h3v1h-3zM17 30h3v1h-3zM23 30h3v1h-3zM29 30h4v1h-4zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h1v1h-1zM16 31h2v1h-2zM19 31h1v1h-1zM21 31h1v1h-1zM24 31h1v1h-1zM27 31h1v1h-1zM29 31h1v1h-1zM31 31h2v1h-2zM4 32h7v1h-7zM12 32h3v1h-3zM16 32h1v1h-1zM18 32h1v1h-1zM20 32h2v1h-2zM23 32h3v1h-3zM28 32h1v1h-1zM31 32h1v1h-1z"/></svg></div><div class="help">スマホやタブレットのカメラで読み取ると、このソフトを開けます。<br><a href="https://pikadrum.github.io/drum/" target="_blank" rel="noopener">https://pikadrum.github.io/drum/</a></div></div>
     </section>
-    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/24 08:31</div>
+    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/24 08:38</div>
     </div>
   </aside>
 </main>
@@ -1013,23 +1013,25 @@ const PARTS = {
   tom3:{name:"フロアタム", short:"FT", notes:[43,58,41], freq:110, pos:3, head:"o", up:true, color:"#9b6bff"},
   kick:{name:"キック", short:"BD", notes:[36,35], freq:60, pos:1, head:"o", up:false, color:"#f2d43a"},
   hhp:{name:"HHペダル", short:"HP", notes:[44], cym:true, pos:-1, head:"x", up:false, color:"#6fb3c9"},
-  aux:{name:"スプラッシュ", short:"SP", notes:[], cym:true, pos:12, head:"x", up:true, color:"#ffc65c"}, /* 追加のパッド（AUX1〜4）。役割は設定で変える */
+  aux:{name:"スプラッシュ", short:"SP", notes:[], cym:true, pos:12, head:"x", up:true, color:"#ffc65c"}, /* 追加のパッド（AUX1〜6）。役割は設定で変える */
   aux2:{name:"チャイナ", short:"CH", notes:[], cym:true, pos:12.5, head:"x", up:true, color:"#d98c2b"},
   aux3:{name:"タム4（ロー）", short:"T4", notes:[], freq:85, pos:2, head:"o", up:true, color:"#6e5bd6"},
   aux4:{name:"カウベル", short:"CB", notes:[], cym:true, pos:10.5, head:"x", up:true, color:"#c9c9c9"},
+  aux5:{name:"タム0（ハイ）", short:"T0", notes:[], freq:300, pos:8, head:"o", up:true, color:"#ff9a5c"},
+  aux6:{name:"バスドラ2", short:"B2", notes:[], freq:45, pos:0, head:"o", up:false, color:"#e0a530"},
 };
 const PART_KEYS=Object.keys(PARTS);
 // キーボードで試し打ちするキー（設定で変更できる）
-const KEY_DEFAULT={hhp:"z",hh:"k",crash:"l",snare:"j",tom1:"d",kick:"f",tom2:"s",tom3:"a",crash2:"o",ride:";",aux:"g",aux2:"h",aux3:"t",aux4:"y"};
+const KEY_DEFAULT={hhp:"z",hh:"k",crash:"l",snare:"j",tom1:"d",kick:"f",tom2:"s",tom3:"a",crash2:"o",ride:";",aux:"g",aux2:"h",aux3:"t",aux4:"y",aux5:"b",aux6:"n"};
 function keyMap(){ return {...KEY_DEFAULT,...((typeof S!=="undefined"&&S.keys)||{})}; }
-const GAME_ORDER=["hhp","hh","crash","snare","tom1","tom2","tom3","crash2","ride","aux","aux2","aux3","aux4","kick"];
+const GAME_ORDER=["hhp","hh","crash","snare","tom1","tom2","tom3","crash2","ride","aux","aux2","aux3","aux4","aux5","aux6","kick"];
 const noteToPart={};
 for (const [k,d] of Object.entries(PARTS)) d.notes.forEach(n=>noteToPart[n]=k);
 
-/* ================= 追加のパッド（AUX1〜4）：TD-17 の AUX や、上位機種の追加の入力を、選んだ役割のパーツとして扱う =================
+/* ================= 追加のパッド（AUX1〜6）：TD-17 の AUX や、上位機種の追加の入力を、選んだ役割のパーツとして扱う =================
    それぞれ役割（スプラッシュ・チャイナ・カウベル・タム4・タム0・スネア2・バスドラ2）で、名前・譜面の位置・玉の形・音が変わる。置き場所は AUX の番号ごとに決まっている。
    入力の番号は「叩いて覚える」か、番号を入れて決める（決めるまでは、ほかのパーツの番号を横取りしない） */
-const AUX_KEYS=["aux","aux2","aux3","aux4"];
+const AUX_KEYS=["aux","aux2","aux3","aux4","aux5","aux6"];
 const AUX_ROLES={
   splash:{name:"スプラッシュ",short:"SP",cym:true,head:"x",pos:12,up:true,color:"#ffc65c",gm:55},
   china:{name:"チャイナ",short:"CH",cym:true,head:"x",pos:12.5,up:true,color:"#d98c2b",gm:52},
@@ -1038,9 +1040,9 @@ const AUX_ROLES={
   tom0:{name:"タム0（ハイ）",short:"T0",freq:300,head:"o",pos:8,up:true,color:"#ff9a5c",gm:50},
   snare2:{name:"スネア2",short:"S2",freq:240,head:"o",pos:4,up:true,color:"#ffa8cf",gm:40},
   kick2:{name:"バスドラ2",short:"B2",freq:45,head:"o",pos:0,up:false,color:"#e0a530",gm:35,kick:true}};
-const AUX_DEF_ROLE=["splash","china","lowtom","cowbell"];
+const AUX_DEF_ROLE=["splash","china","lowtom","cowbell","tom0","kick2"];
 /* AUX ごとの置き場所（下のドラムの図／横長のパッド／縦長のパッド） */
-const AUX_SLOT=[{kit:[0.5,0.08,0.08],padW:[48,6,6],padT:[50,12,10]},{kit:[0.9,0.74,0.09],padW:[86,66,6],padT:[88,104,11]},{kit:[0.95,0.45,0.07],padW:[97,52,4],padT:[63,57,7.5]},{kit:[0.05,0.66,0.07],padW:[4,68,3.5],padT:[36,106,9]}];
+const AUX_SLOT=[{kit:[0.5,0.08,0.08],padW:[48,6,6],padT:[50,12,10]},{kit:[0.9,0.74,0.09],padW:[86,66,6],padT:[88,104,11]},{kit:[0.95,0.45,0.07],padW:[97,52,4],padT:[63,57,7.5]},{kit:[0.05,0.66,0.07],padW:[4,68,3.5],padT:[36,106,9]},{kit:[0.3,0.06,0.06],padW:[30,5,4],padT:[86,100,8]},{kit:[0.97,0.88,0.06],padW:[96.5,66,3.5],padT:[86,100,8]}];
 let AUX_ORIG={};
 function auxCfg(i){ if(!Array.isArray(S.aux)) S.aux=[]; if(!S.aux[i]) S.aux[i]={on:false,role:AUX_DEF_ROLE[i],note:0};
   if(i===0&&S.auxOn!==undefined){ S.aux[0]={on:!!S.auxOn,role:S.auxRole||"splash",note:+S.auxNote||0}; delete S.auxOn; delete S.auxRole; delete S.auxNote; } /* 1つだけだった前の版の設定を引き継ぐ */
@@ -1404,12 +1406,11 @@ function click(t,kind,gainMul,lvl){
     default: osc("square",1175*pm,.75,.06*dm);
   }
 }
-/* ハーフオープンのハイハット：上下のシンバルが軽く触れて鋭く「チー」とこすれる音。高い所を強め、少し伸ばして細かく震わせる */
-function hhHalfSound(t,v,dest){ const dur=.42, src=ctx.createBufferSource(), hp=ctx.createBiquadFilter(), bp=ctx.createBiquadFilter(), g=ctx.createGain(), am=ctx.createGain(), lfo=ctx.createOscillator(), lg=ctx.createGain();
-  src.buffer=noiseBuf; hp.type="highpass"; hp.frequency.value=7200; bp.type="peaking"; bp.frequency.value=10000; bp.Q.value=1.8; bp.gain.value=10;
-  g.gain.setValueAtTime(v*.75,t); g.gain.exponentialRampToValueAtTime(v*.5,t+.03); g.gain.exponentialRampToValueAtTime(v*.3,t+.2); g.gain.exponentialRampToValueAtTime(.001,t+dur);
-  am.gain.value=.8; lfo.frequency.value=55; lg.gain.value=.2; lfo.connect(lg).connect(am.gain); /* こすれて細かく震える */
-  src.connect(hp).connect(bp).connect(am).connect(g).connect(dest); src.start(t); src.stop(t+dur+.02); lfo.start(t); lfo.stop(t+dur+.02); }
+/* ハーフオープンのハイハット：単純に高く「チー」と伸びる音（混ぜものなし） */
+function hhHalfSound(t,v,dest){ const dur=.42, src=ctx.createBufferSource(), hp=ctx.createBiquadFilter(), g=ctx.createGain();
+  src.buffer=noiseBuf; hp.type="highpass"; hp.frequency.value=7500;
+  g.gain.setValueAtTime(v*.75,t); g.gain.exponentialRampToValueAtTime(v*.35,t+.15); g.gain.exponentialRampToValueAtTime(.001,t+dur);
+  src.connect(hp).connect(g).connect(dest); src.start(t); src.stop(t+dur+.02); }
 function drumSound(t,part,vel,open,dest,note,artOv){ /* artOv：叩き分けを直接指定（画面のパッドのクラッシュのカップなど） */
   dest=dest||masterGain;
   if (AUX_KEYS.includes(part)) return auxSound(t,vel,dest,part);
@@ -1809,7 +1810,7 @@ function makeStrips(song,info){
     strips.push({key:"drums",kind:"drum",ch:dch[0],name:"ドラム",sub:"Ch "+dch.map(c=>c+1).join("・")+(chName[dch[0]]?"・"+chName[dch[0]]:""),vol:0.2,pan:0,mute:false,solo:false,color:"#f28482",hits:[]}); /* 曲を開いたときのドラムの音量は20%（自分で叩く練習向け） */
     const used=new Set(song.drumAudio.map(n=>n.part));
     // ミキサーの並び（左から）：HHペダル・ハイハット・左クラッシュ・スネア・タム1・キック・タム2・フロア・右クラッシュ・ライド
-    const MIX_ORDER=["hhp","hh","crash","snare","tom1","kick","tom2","tom3","crash2","ride","aux","aux2","aux3","aux4"], oi=k=>{ const i=MIX_ORDER.indexOf(k); return i<0?99:i; };
+    const MIX_ORDER=["hhp","hh","crash","snare","tom1","kick","tom2","tom3","crash2","ride","aux","aux2","aux3","aux4","aux5","aux6"], oi=k=>{ const i=MIX_ORDER.indexOf(k); return i<0?99:i; };
     const parts=[...new Set([...PART_KEYS,...used])].filter(k=>!AUX_KEYS.includes(k)||auxCfg(auxIdx(k)).on||used.has(k)).sort((a,b)=>(a==="perc")-(b==="perc")||oi(a)-oi(b));
     parts.forEach(pt=>strips.push({key:"dp:"+pt,kind:"piece",part:pt,unused:!used.has(pt),name:pt==="perc"?"その他の打楽器":PARTS[pt].name,vol:1,mute:false,solo:false,color:pt==="perc"?"#adb5bd":PARTS[pt].color,hits:[]}));
   }
@@ -2426,7 +2427,7 @@ function drawKitView(){
   if (c.width!==Math.round(w*dpr)||c.height!==Math.round(h*dpr)){ c.width=Math.round(w*dpr); c.height=Math.round(h*dpr); }
   const k=c.getContext("2d"); k.setTransform(dpr,0,0,dpr,0,0); k.clearRect(0,0,w,h);
   const t=performance.now(), pad=4, W=w-pad*2, H=h-pad*2;
-  const order=["kick","hhp","tom3","snare","tom2","tom1","hh","ride","crash2","crash","aux","aux2","aux3","aux4"]; // 奥（シンバル）を後から描く
+  const order=["kick","hhp","tom3","snare","tom2","tom1","hh","ride","crash2","crash","aux","aux2","aux3","aux4","aux5","aux6"]; // 奥（シンバル）を後から描く
   for (const p of order){ if(!KIT_POS[p]||!PARTS[p]) continue;
     const [px,py,r]=KIT_POS[p], cx=pad+px*W, cy=pad+py*H, col=PARTS[p].color;
     const ih=st.lastIn[p], a=ih?(t-ih)/350:9, lit=a<1?1-a:0, v=Math.max(.06,Math.pow(Math.min(1,(st.lastInVel[p]??100)/127),1.6)), L=lit*v; /* 強いほど明るく、弱いほど薄く */
@@ -2603,7 +2604,7 @@ function rfNudge(kind,d){ if(kind==="bpm") $("rBpm").value=(Math.max(20,(+$("rBp
 }
 
 /* ================= 横スクロール表示：叩く位置の線は左に止まっていて、音符が右から左へ流れてくる ================= */
-const SCROLL_ORDER=["aux","aux2","aux3","aux4","crash2","crash","hh","ride","tom1","tom2","snare","tom3","kick","hhp"];
+const SCROLL_ORDER=["aux","aux2","aux3","aux4","aux5","aux6","crash2","crash","hh","ride","tom1","tom2","snare","tom3","kick","hhp"];
 function drawScroll(now){
   const {w,h}=G, used=new Set(song.notes.map(n=>n.part));
   let lanes=SCROLL_ORDER.filter(k=>!S.hidden[k]&&used.has(k)); if(!lanes.length) lanes=SCROLL_ORDER.filter(k=>!S.hidden[k]&&(!AUX_KEYS.includes(k)||auxActive(k)));
@@ -2841,7 +2842,7 @@ $("extTrim").addEventListener("input",()=>{ S.extTrim=+$("extTrim").value; $("ex
 $("outDrum").addEventListener("change",applyExtTrimRow);
 $("artSound").checked=S.artSound!==false; $("artSound").onchange=()=>{ S.artSound=$("artSound").checked; saveSettings(); };
 let AUX_LEARN=-1;
-/* 設定の「追加のパッド（AUX1〜4）」の欄を作る */
+/* 設定の「追加のパッド（AUX1〜6）」の欄を作る */
 { const box=$("auxBox"), opts=Object.entries(AUX_ROLES).map(([k,r])=>`<option value="${k}">${r.name}</option>`).join("");
   box.innerHTML=AUX_KEYS.map((k,i)=>`<div class="auxRow" data-i="${i}"><label><input type="checkbox" class="auxOn"> AUX${i+1}</label><select class="auxRole" aria-label="AUX${i+1}の役割">${opts}</select><input type="number" class="auxNote" min="0" max="127" placeholder="番号" aria-label="AUX${i+1}の番号" style="width:64px"><button type="button" class="auxLearn">叩いて覚える</button></div>`).join("");
   box.querySelectorAll(".auxRow").forEach(row=>{ const i=+row.dataset.i, c=()=>auxCfg(i);
@@ -3318,7 +3319,7 @@ const PADS_T=[["crash","左クラッシュ",20,14,15,"cym"],["crash2","右クラ
    ・タム1・タム2・タム4とオープンHHの真ん中の高さをそろえ、ライドも同じ高さに合わせる
    ・スネアは、ハイハットとライドの真ん中。タム2のすぐ下（すき間はオープンHHとタム1の間と同じくらい）
    ・ハイハットとキックは同じ大きさ。キックはスネアとハイハットの真ん中の、なるべく高い所。フロアはタム4の真下 */
-const PAD_ROLE_T={splash:[50,13,9],china:[33,6,7.5],cowbell:[67,6,7],lowtom:[79,31,10],kick2:[60,100,11]}; /* バスドラ2はキックの右下 */
+const PAD_ROLE_T={splash:[50,13,9],china:[33,6,7.5],cowbell:[67,6,7],lowtom:[79,31,10],kick2:[60,100,11],tom0:[86,100,9],snare2:[86,100,9]}; /* バスドラ2はキックの右下、タム0・スネア2はフロアの下 */
 function layoutPadsT(sy){ const Y=v=>4+(v-4)*sy, iY=v=>4+(v-4)/sy, gap=3, r1=v=>+v.toFixed(2);
   const tom1=[32,31,12], tom2=[56,31,12], ride=[85,54,15], ho=[9,31,8];
   const hh=[15,0,15]; hh[1]=iY(Math.max(Y(tom1[1])+Math.sqrt((tom1[2]+hh[2]+gap)**2-(tom1[0]-hh[0])**2), Y(ho[1])+Math.sqrt((ho[2]+hh[2]+gap)**2-(hh[0]-ho[0])**2)));
