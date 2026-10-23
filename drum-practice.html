@@ -518,6 +518,9 @@ input[type=range]::-webkit-slider-thumb{cursor:pointer}
 .padGrid svg{width:100%;height:100%;display:block;overflow:visible}
 .pad{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .pad>g{transform-box:fill-box;transform-origin:center;transition:transform .06s,filter .08s}
+#padKit{position:relative}.padTools{position:absolute;right:0;top:0;z-index:2;display:flex;gap:6px}#padKit .padHelp{text-align:left;padding-right:150px} /* ボタンは右上に重ねて、パッドの高さを減らさない */.padTools button{font-size:12px;padding:3px 10px}
+body.padEdit #padGrid .pad{cursor:move}body.padEdit #padGrid .pad>g{filter:drop-shadow(0 0 3px var(--accent))}body.padEdit #padGrid .pad.dragging>g{opacity:.85}
+body.freeOn .padTools{display:none}
 .pad .art{opacity:0;transition:opacity .3s;pointer-events:none}.pad .art.show{opacity:.95;transition:none}
 .pad.on>g{transform:scale(calc(1 - .06*var(--pv,1)));filter:brightness(calc(1 + .9*var(--pv,1))) drop-shadow(0 0 calc(1px + 12px*var(--pv,1)) var(--pc))}
 .pad text{pointer-events:none;font-family:var(--font);text-anchor:middle;dominant-baseline:middle}
@@ -670,6 +673,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
         </div>
         <div id="padKit" aria-label="ドラムのパッド（押すと音が出ます）">
           <div class="help padHelp">ドラムを叩くと音が出ます（キーボードのキーでも叩けます）</div>
+          <div class="padTools"><button id="padEditBtn" type="button">✥ パッドの配置を変える</button><button id="padResetBtn" type="button" hidden>標準に戻す</button></div>
           <div class="padGrid" id="padGrid"></div>
         </div>
       </div>
@@ -921,6 +925,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
             <li>設定の「最初の空白の小節を譜面に表示しない」をオンにすると、曲の頭の空白の小節を譜面に出しません（小節番号は元の曲のまま）。「譜面の細かさ」は、標準では32分音符まで（それより細かいずれは近い位置にまとめて描く）、「64分音符まで」にすると64分音符も描きます。</li>
             <li>再生中は、今の段の最後の小節に入ったところで、弾き終わった段を次の段に書き換えます。曲全体が画面に収まるときは書き換えません。</li>
             <li>電子ドラムが叩き分けの信号を送ってくるときは、パッドの図と下のドラムの図に、どこを叩いたかが出ます（ライド・シンバルのカップは中心の点、エッジやリムショットはふちの輪、クロススティックはふちの線）。</li>
+            <li>最初の画面の「✥ パッドの配置を変える」を押すと、パッドを引っぱって動かせます（ふちを引っぱると大きさが変わります）。配置は画面の向きごとに覚え、「標準に戻す」で元に戻せます。</li>
             <li>最初の画面のパッドは、押した場所で叩き分けます。ライドの真ん中はカップ、シンバル・ハイハットのふちはエッジ、スネア・タムのふちはリムショットの音です（それ以外は、真ん中ほど強く鳴ります）。左右のクラッシュは別の音で鳴り、判定で◯にするときだけ、設定でどちらでも正解にできます。</li>
             <li>設定の「追加のパッド（AUX1〜4）」で、TD-17 のAUXや、上位機種の追加の入力（最大4つ）を使えます。役割はスプラッシュ・チャイナ・カウベル・タム4・タム0・スネア2から選べ、番号は「叩いて覚える」で合わせます。キーボードの試し打ちは G・H・T・Y です。</li>
             <li>タッチできる端末では、ゲーム表示の判定線の下に、指で叩けるパッドが出ます。</li>
@@ -989,7 +994,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <h2>このソフトのURL</h2>
       <div class="qrBox"><div class="qrImg" role="img" aria-label="配布先URL（https://pikadrum.github.io/drum/）のQRコード"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><rect width="37" height="37" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM12 4h3v1h-3zM22 4h1v1h-1zM26 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h2v1h-2zM16 5h1v1h-1zM20 5h4v1h-4zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM13 6h2v1h-2zM16 6h2v1h-2zM19 6h3v1h-3zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h3v1h-3zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h5v1h-5zM18 7h3v1h-3zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h3v1h-3zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h3v1h-3zM20 8h3v1h-3zM26 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h2v1h-2zM15 9h5v1h-5zM21 9h1v1h-1zM23 9h2v1h-2zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h7v1h-7zM12 11h3v1h-3zM16 11h1v1h-1zM18 11h1v1h-1zM21 11h1v1h-1zM4 12h1v1h-1zM8 12h1v1h-1zM10 12h4v1h-4zM15 12h1v1h-1zM17 12h5v1h-5zM24 12h6v1h-6zM32 12h1v1h-1zM6 13h1v1h-1zM11 13h2v1h-2zM15 13h1v1h-1zM21 13h2v1h-2zM26 13h7v1h-7zM7 14h2v1h-2zM10 14h3v1h-3zM14 14h6v1h-6zM21 14h1v1h-1zM26 14h1v1h-1zM32 14h1v1h-1zM4 15h1v1h-1zM6 15h3v1h-3zM11 15h2v1h-2zM16 15h2v1h-2zM19 15h4v1h-4zM24 15h4v1h-4zM29 15h1v1h-1zM31 15h2v1h-2zM4 16h1v1h-1zM6 16h1v1h-1zM10 16h2v1h-2zM13 16h2v1h-2zM16 16h2v1h-2zM21 16h1v1h-1zM23 16h1v1h-1zM25 16h1v1h-1zM31 16h1v1h-1zM4 17h1v1h-1zM6 17h2v1h-2zM11 17h1v1h-1zM14 17h2v1h-2zM17 17h2v1h-2zM20 17h3v1h-3zM25 17h8v1h-8zM4 18h2v1h-2zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM24 18h3v1h-3zM28 18h3v1h-3zM32 18h1v1h-1zM4 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM14 19h3v1h-3zM18 19h1v1h-1zM21 19h2v1h-2zM25 19h1v1h-1zM27 19h2v1h-2zM31 19h2v1h-2zM7 20h1v1h-1zM10 20h6v1h-6zM17 20h3v1h-3zM21 20h2v1h-2zM24 20h2v1h-2zM31 20h1v1h-1zM4 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM21 21h2v1h-2zM25 21h5v1h-5zM31 21h2v1h-2zM6 22h2v1h-2zM9 22h4v1h-4zM14 22h1v1h-1zM17 22h3v1h-3zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM30 22h1v1h-1zM32 22h1v1h-1zM6 23h4v1h-4zM12 23h1v1h-1zM14 23h4v1h-4zM21 23h4v1h-4zM26 23h3v1h-3zM31 23h2v1h-2zM4 24h2v1h-2zM8 24h1v1h-1zM10 24h4v1h-4zM15 24h3v1h-3zM19 24h1v1h-1zM21 24h1v1h-1zM23 24h7v1h-7zM32 24h1v1h-1zM12 25h1v1h-1zM14 25h1v1h-1zM16 25h4v1h-4zM22 25h3v1h-3zM28 25h1v1h-1zM32 25h1v1h-1zM4 26h7v1h-7zM12 26h2v1h-2zM16 26h1v1h-1zM19 26h1v1h-1zM21 26h4v1h-4zM26 26h1v1h-1zM28 26h3v1h-3zM32 26h1v1h-1zM4 27h1v1h-1zM10 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM18 27h2v1h-2zM21 27h1v1h-1zM23 27h2v1h-2zM28 27h1v1h-1zM31 27h2v1h-2zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM12 28h2v1h-2zM16 28h4v1h-4zM21 28h1v1h-1zM23 28h7v1h-7zM4 29h1v1h-1zM6 29h3v1h-3zM10 29h1v1h-1zM13 29h1v1h-1zM16 29h1v1h-1zM19 29h2v1h-2zM23 29h1v1h-1zM25 29h1v1h-1zM32 29h1v1h-1zM4 30h1v1h-1zM6 30h3v1h-3zM10 30h1v1h-1zM13 30h3v1h-3zM17 30h3v1h-3zM23 30h3v1h-3zM29 30h4v1h-4zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h1v1h-1zM16 31h2v1h-2zM19 31h1v1h-1zM21 31h1v1h-1zM24 31h1v1h-1zM27 31h1v1h-1zM29 31h1v1h-1zM31 31h2v1h-2zM4 32h7v1h-7zM12 32h3v1h-3zM16 32h1v1h-1zM18 32h1v1h-1zM20 32h2v1h-2zM23 32h3v1h-3zM28 32h1v1h-1zM31 32h1v1h-1z"/></svg></div><div class="help">スマホやタブレットのカメラで読み取ると、このソフトを開けます。<br><a href="https://pikadrum.github.io/drum/" target="_blank" rel="noopener">https://pikadrum.github.io/drum/</a></div></div>
     </section>
-    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/23 14:30</div>
+    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/23 14:59</div>
     </div>
   </aside>
 </main>
@@ -1050,7 +1055,7 @@ function applyAux(){
     d.name=r.name+(i?"（AUX"+(i+1)+"）":""); const nt=+c.note||0; d.notes=nt?[nt]:[];
     if (c.on&&nt){ if(noteToPart[nt]&&!AUX_KEYS.includes(noteToPart[nt])) AUX_ORIG[nt]=noteToPart[nt]; noteToPart[nt]=k; } });
   try{ AUX_KEYS.forEach((k,i)=>{ if(auxActive(k)) KIT_POS[k]=AUX_SLOT[i].kit; else delete KIT_POS[k]; }); }catch(e){ setTimeout(applyAux,0); } } /* 読み込みの途中（KIT_POS がまだない）ときは、あとでもう一度 */
-function auxPads(tall){ const out=[]; AUX_KEYS.forEach((k,i)=>{ if(!auxCfg(i).on) return; const r=auxRole(k), p=tall?AUX_SLOT[i].padT:AUX_SLOT[i].padW; out.push([k,r.name,p[0],p[1],p[2],r.cym?"cym":"drum"]); }); return out; }
+function auxPads(tall){ const out=[], used=new Set(); AUX_KEYS.forEach((k,i)=>{ if(!auxCfg(i).on) return; const r=auxRole(k), rp=tall&&typeof PAD_ROLE_T!=="undefined"?PAD_ROLE_T[auxCfg(i).role]:null, p=rp&&!used.has(auxCfg(i).role)?(used.add(auxCfg(i).role),rp):tall?AUX_SLOT[i].padT:AUX_SLOT[i].padW; /* 縦長のときは役割ごとの置き場所（同じ役割が2つあれば2つ目はAUXの場所） */ out.push([k,r.name,p[0],p[1],p[2],r.cym?"cym":"drum"]); }); return out; }
 function auxSound(t,vel,dest,k){ const r=auxCfg(Math.max(0,auxIdx(k))).role||"splash", v=(vel/127)*.5;
   const nz=(ftype,fq,q,peak,dur)=>{ const src=ctx.createBufferSource(), fl=ctx.createBiquadFilter(), g=ctx.createGain(); src.buffer=noiseBuf; fl.type=ftype; fl.frequency.value=fq; fl.Q.value=q; g.gain.setValueAtTime(peak,t); g.gain.exponentialRampToValueAtTime(.001,t+dur); src.connect(fl).connect(g).connect(dest); src.start(t); src.stop(t+dur+.02); };
   const tone=(type,fq,peak,dur,to)=>{ const o=ctx.createOscillator(), g=ctx.createGain(); o.type=type; o.frequency.setValueAtTime(fq,t); if(to) o.frequency.exponentialRampToValueAtTime(to,t+Math.min(.08,dur)); g.gain.setValueAtTime(peak,t); g.gain.exponentialRampToValueAtTime(.001,t+dur); o.connect(g).connect(dest); o.start(t); o.stop(t+dur+.02); };
@@ -3298,7 +3303,38 @@ const PADS_W=[["crash","左クラッシュ",14,13,11,"cym"],["crash2","右クラ
 const PADS_T=[["crash","左クラッシュ",20,14,15,"cym"],["crash2","右クラッシュ",78,13,14,"cym"],["ride","ライド",82,45,15,"cym"],
   ["tom1","タム1",39,33,11,"drum"],["tom2","タム2",61,31,11,"drum"],["hh","ハイハット",15,47,13.5,"cym"],["hhOpen","オープンHH",13,74,10,"cym"],
   ["snare","スネア",37,62,13,"drum"],["tom3","フロア",73,77,14,"drum"],["kick","キック",47,95,17,"kick"],["hhp","HHペダル",19,100,7,"pedal"]];
-let PADS=PADS_W, padTall=null;
+
+/* 縦長の画面の並べ方：画面の縦横比（sy＝上下に広げる倍率）に合わせて、パッドどうしが少しのすき間で並ぶように計算する
+   ・タム1・タム2・タム4とオープンHHの真ん中の高さをそろえ、ライドも同じ高さに合わせる
+   ・スネアは、ハイハットとライドの真ん中。タム2のすぐ下（すき間はオープンHHとタム1の間と同じくらい）
+   ・ハイハットとキックは同じ大きさ。キックはスネアとハイハットの真ん中の、なるべく高い所。フロアはタム4の真下 */
+const PAD_ROLE_T={splash:[50,13,9],china:[33,6,7.5],cowbell:[67,6,7],lowtom:[79,31,10]};
+function layoutPadsT(sy){ const Y=v=>4+(v-4)*sy, iY=v=>4+(v-4)/sy, gap=3, r1=v=>+v.toFixed(2);
+  const tom1=[32,31,12], tom2=[56,31,12], ride=[89,51,12], ho=[9,31,8];
+  const hh=[15,0,15]; hh[1]=iY(Math.max(Y(tom1[1])+Math.sqrt((tom1[2]+hh[2]+gap)**2-(tom1[0]-hh[0])**2), Y(ho[1])+Math.sqrt((ho[2]+hh[2]+gap)**2-(hh[0]-ho[0])**2)));
+  const sn=[(hh[0]+ride[0])/2,0,18]; sn[1]=iY(Y(tom2[1])+Math.sqrt((tom2[2]+sn[2]+gap)**2-(sn[0]-tom2[0])**2));
+  const kk=[(sn[0]+hh[0])/2,0,15]; kk[1]=iY(Math.max(Y(sn[1])+Math.sqrt(Math.max(0,(sn[2]+15+gap)**2-(sn[0]-kk[0])**2)), Y(hh[1])+Math.sqrt(Math.max(0,(hh[2]+15+gap)**2-(hh[0]-kk[0])**2))));
+  const fl=[79,0,12]; fl[1]=iY(Math.max(Y(ride[1])+Math.sqrt((ride[2]+fl[2]+gap)**2-(fl[0]-ride[0])**2), Y(sn[1])+Math.sqrt(Math.max(0,(sn[2]+fl[2]+gap)**2-(fl[0]-sn[0])**2))));
+  const hp=[9,iY(Y(hh[1])+hh[2]+9+gap+2),9];
+  PADS_T.length=0;
+  [["crash","左クラッシュ",14,13,12,"cym"],["crash2","右クラッシュ",86,13,12,"cym"],["ride","ライド",...ride,"cym"],["hhOpen","オープンHH",...ho,"cym"],
+   ["tom1","タム1",...tom1,"drum"],["tom2","タム2",...tom2,"drum"],["hh","ハイハット",...hh,"cym"],["tom3","フロア",...fl,"drum"],["kick","キック",...kk,"kick"],
+   ["snare","スネア",...sn,"drum"],["hhp","HHペダル",...hp,"pedal"]].forEach(p=>PADS_T.push(p.map(v=>typeof v==="number"?r1(v):v))); }
+/* ---- パッドの配置を変える：ドラッグで移動（ふちを引くと大きさ）。配置は画面の向きごとに覚える ---- */
+let PAD_EDIT=false;
+function padLayKey(tall){ return tall?"T":"W"; }
+function applyPadLay(tall,VH){ const L=(S.padLay||{})[padLayKey(tall)]; if(!L) return; PADS=PADS.map(q=>{ const o=L[q[0]]; return o?[q[0],q[1],o[0],+(o[1]*VH/(o[3]||VH)).toFixed(2),o[2],q[5]]:q; }); }
+function padEditStart(){ PAD_EDIT=true; document.body.classList.add("padEdit"); $("padEditBtn").textContent="✓ 配置を決める"; $("padResetBtn").hidden=false; flash("パッドを引っぱると移動、ふちを引っぱると大きさが変わります","--ok",null); }
+function padDrag(e,el){ const g=$("padGrid"), sv=g.querySelector("svg"), m=sv&&sv.getScreenCTM(); if(!m) return; const inv=m.inverse(), id=el.dataset.p, i=PADS.findIndex(q=>q[0]===id); if(i<0) return;
+  const P=x=>new DOMPoint(x.clientX,x.clientY).matrixTransform(inv), p0=P(e), q=[...PADS[i]], d0=Math.hypot(p0.x-q[2],p0.y-q[3]), rim=d0>q[4]*0.72;
+  const tall=padTall, key=padLayKey(tall), save=()=>{ S.padLay=S.padLay||{}; const L=S.padLay[key]=S.padLay[key]||{}; const c=PADS[i]; L[id]=[+c[2].toFixed(2),+c[3].toFixed(2),+c[4].toFixed(2),padVH]; saveSettings(); };
+  el.setPointerCapture&&el.setPointerCapture(e.pointerId); el.classList.add("dragging");
+  const mv=ev=>{ const p=P(ev); if(rim){ PADS[i][4]=Math.max(3,Math.min(30,q[4]*Math.hypot(p.x-q[2],p.y-q[3])/Math.max(1,d0))); } else { PADS[i][2]=Math.max(0,Math.min(100,q[2]+p.x-p0.x)); PADS[i][3]=Math.max(0,Math.min(padVH,q[3]+p.y-p0.y)); }
+    const c=PADS[i]; el.setAttribute("transform",`translate(${c[2]-q[2]} ${c[3]-q[3]}) translate(${q[2]} ${q[3]}) scale(${c[4]/q[4]}) translate(${-q[2]} ${-q[3]})`); };
+  const up=()=>{ el.removeEventListener("pointermove",mv); el.removeEventListener("pointerup",up); el.removeEventListener("pointercancel",up); save(); buildPads(); };
+  el.addEventListener("pointermove",mv); el.addEventListener("pointerup",up); el.addEventListener("pointercancel",up); }
+function padEditEnd(){ PAD_EDIT=false; document.body.classList.remove("padEdit"); $("padEditBtn").textContent="✥ パッドの配置を変える"; $("padResetBtn").hidden=true; }
+let PADS=PADS_W, padTall=null, padVH=72;
 function padPlay(id,vel,note){ audio(); if(ctx.state==="suspended") ctx.resume();
   const part=id==="hhOpen"?"hh":id, t=ctx.currentTime+0.005, op=id==="hhOpen"; drumSound(t,part,vel,op,undefined,note);
   const art=note!=null?ART[note]:null, show=art&&art!=="bow"&&art!=="head"?art:null; st.lastArt=st.lastArt||{}; st.lastArt[part]=show?{art:show,at:performance.now()}:null;
@@ -3325,7 +3361,9 @@ function buildPads(){ const g=$("padGrid"); if(!g) return; const km=keyMap();
   const tall=g.clientWidth>0&&g.clientHeight>g.clientWidth*0.95; padTall=tall;
   /* 縦長のときは、画面の縦横比に合わせて上下に広げる */
   const VH=tall?Math.max(120,Math.min(175,g.clientHeight/g.clientWidth*100)):72, sy=tall?(VH-8)/112:1;
+  if (tall) layoutPadsT(sy); padVH=VH;
   PADS=(tall?PADS_T:PADS_W).concat(auxPads(tall)).map(q=>tall?[q[0],q[1],q[2],+(4+(q[3]-4)*sy).toFixed(2),q[4],q[5]]:q);
+  applyPadLay(tall,VH);
   let h='<svg viewBox="0 0 100 '+VH.toFixed(1)+'" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><defs>'
    +'<radialGradient id="cymG" cx="45%" cy="40%" r="65%"><stop offset="0" stop-color="#f6dd8a"/><stop offset=".55" stop-color="#d9ae45"/><stop offset="1" stop-color="#9c7322"/></radialGradient>'
    +'<radialGradient id="headG" cx="45%" cy="40%" r="70%"><stop offset="0" stop-color="#fbf8f0"/><stop offset="1" stop-color="#dcd5c3"/></radialGradient></defs>';
@@ -3346,10 +3384,12 @@ function buildPads(){ const g=$("padGrid"); if(!g) return; const km=keyMap();
       +(k?'<text class="ky" x="'+x+'" y="'+(kind==="pedal"?y:ty+2.2).toFixed(2)+'" fill="'+tc+'">'+k.toUpperCase()+'</text>':'')+'</g>'; });
   g.innerHTML=h+'</svg>';
   /* 打面の中心ほど強く、ふちほど弱く鳴らす */
-  g.querySelectorAll(".pad").forEach(el=>el.addEventListener("pointerdown",e=>{ e.preventDefault(); const id=el.dataset.p, p=PADS.find(q=>q[0]===id), sv=g.querySelector("svg"), m=sv.getScreenCTM();
+  g.querySelectorAll(".pad").forEach(el=>el.addEventListener("pointerdown",e=>{ e.preventDefault(); if(PAD_EDIT){ padDrag(e,el); return; } const id=el.dataset.p, p=PADS.find(q=>q[0]===id), sv=g.querySelector("svg"), m=sv.getScreenCTM();
     let f=0; if(m){ const pt=new DOMPoint(e.clientX,e.clientY).matrixTransform(m.inverse()); f=Math.min(1,Math.hypot(pt.x-p[2],pt.y-p[3])/p[4]); }
     const [nt,vv]=padZone(id,f); padPlay(id,vv,nt); })); }
 buildPads();
+$("padEditBtn").onclick=()=>{ PAD_EDIT?padEditEnd():padEditStart(); };
+$("padResetBtn").onclick=()=>{ if(S.padLay) delete S.padLay[padLayKey(padTall)]; saveSettings(); buildPads(); flash("パッドの配置を標準に戻しました","--ok",null); };
 addEventListener("resize",()=>{ const g=$("padGrid"); if(!g||$("empty").hidden) return; const tall=g.clientHeight>g.clientWidth*0.95; if(tall!==padTall||tall) buildPads(); });
 /* 最初の画面が出ているあいだは body に padOn（横向きのスマホでは下の欄を隠してパッドを広く） */
 new MutationObserver(()=>{ const on=!$("empty").hidden; if(document.body.classList.contains("padOn")!==on){ document.body.classList.toggle("padOn",on); dispatchEvent(new Event("resize")); } if(on) requestAnimationFrame(buildPads); }).observe($("empty"),{attributes:true,attributeFilter:["hidden"]});
