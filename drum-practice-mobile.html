@@ -634,9 +634,14 @@ header .tStep{min-width:28px;padding:4px 5px}
 .pad .nm{font-size:3.1px;font-weight:700}
 .pad .ky{font-size:2.4px;font-family:var(--mono);opacity:.75}
 @media (orientation:landscape){ body.padOn #dock,body.padOn.land #dockTabs{display:none} }
-body.land #dockTabs{padding:0;margin-left:auto;gap:4px}body.land #dockTabs button{flex:none;border-radius:8px;border-bottom:1px solid var(--line);padding:6px 12px}body.land #dockTabs #dockFold{width:auto}
-body.land #dock{border-top:0;border-bottom:1px solid var(--line)}
-body.land #zoomIn{top:4px}body.land #zoomOut{top:46px} /* 横画面では譜面の欄が低いので、拡大・縮小は上に寄せる */body.land #dockBody{border-top:0}
+/* 横画面：入力のパッドは出さない（狭いので）。上下の欄は隠せる */
+body.land #padKit{display:none} body.land #empty:not([hidden]){bottom:auto;background:transparent} body.land.freeOn #empty{display:none!important}
+body.land.hideTop header{display:none} body.land.hideBot #dock{display:none}
+#topHandle,#botHandle{display:none;position:fixed;left:50%;transform:translateX(-50%);z-index:65;width:64px;height:16px;padding:0;border:1px solid var(--line);background:var(--panel);opacity:.85}
+#topHandle{top:0;border-top:0;border-radius:0 0 10px 10px} #botHandle{bottom:0;border-bottom:0;border-radius:10px 10px 0 0}
+#topHandle::after,#botHandle::after{content:"";display:block;width:28px;height:3px;margin:0 auto;border-radius:2px;background:var(--dim)}
+body.land.hideTop #topHandle,body.land.hideBot #botHandle{display:block}
+body.land #zoomIn{top:4px}body.land #zoomOut{top:46px} /* 横画面では譜面の欄が低いので、拡大・縮小は上に寄せる */
 @media (max-height:520px){ .padHelp{display:none} #empty{padding:6px 10px;gap:6px} #empty .card.emptyBar{padding:6px 10px} } /* 横向きのスマホなど低い画面 */
 /* 設定の折りたたみ説明とQRコード、フェーダーの「裏」、アクセントの位置 */
 .mmDots{padding:2px 0}.mmDot.acc{border-color:var(--miss)}.mmDot.acc.on{background:var(--miss);border-color:var(--miss)}.mmLight.acc{border-color:var(--miss)}.mmCard>*{flex-shrink:0} /* 縦に詰まって重ならないように */.mmChk{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end}.mmChk label{display:inline-flex;align-items:center;gap:4px;cursor:pointer;white-space:nowrap}.mmAccBox>summary{cursor:pointer;color:var(--accent);font-size:13px;text-align:center;padding:2px 0}.mmAccBox[open]>summary{margin-bottom:6px}#mmAccGrid table{width:auto;border-collapse:separate;border-spacing:3px;margin:0 auto}#mmAccGrid td,#mmAccGrid th{border:none;padding:0}#mmAccGrid th{font-size:12px;color:var(--dim);font-weight:500;padding:0 4px}#mmAccGrid button{width:40px;height:34px;min-width:0;padding:0;font-size:14px;color:var(--miss)}#mmAccGrid button.on{border-color:var(--miss);background:var(--sunk)}.mmAccBtns{display:flex;gap:8px;justify-content:center;margin:6px 0}.mmAccBtns button{font-size:12px;padding:4px 10px}.mmSubPre{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap}.mmSubPre button{min-width:52px;padding:5px 8px;font-weight:700}
@@ -776,7 +781,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <div id="empty" hidden>
         <div class="card emptyBar">
           <b>MIDIファイルを開いて練習を始めましょう</b>
-          <span class="emptyBtns"><button id="openBig">MIDIファイルを開く</button><button id="tryEx">練習パターンを試す</button><button id="freeBtn" title="叩いた音がそのまま譜面になります。録ってMIDIファイルに保存もできます">🎙 採譜</button></span>
+          <span class="emptyBtns"><button id="openBig">MIDIファイルを開く</button><button id="tryEx">練習パターンを試す</button></span>
           
           <p id="loadErr" style="color:var(--miss)" hidden></p>
         </div>
@@ -1027,13 +1032,13 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
             <li>設定の「最初の空白の小節を譜面に表示しない」をオンにすると、曲の頭の空白の小節を譜面に出しません（小節番号は元の曲のまま）。「譜面の細かさ」は、標準では32分音符まで（それより細かいずれは近い位置にまとめて描く）、「64分音符まで」にすると64分音符も描きます。</li>
             <li>再生中は、今の段の最後の小節に入ったところで、弾き終わった段を次の段に書き換えます。曲全体が画面に収まるときは書き換えません。</li>
             <li>電子ドラムが叩き分けの信号を送ってくるときは、パッドの図と下のドラムの図に、どこを叩いたかが出ます（ライド・シンバルのカップは中心の点、エッジやリムショットはふちの輪、クロススティックはふちの線）。</li>
-            <li>横画面（高さが低いとき）では、上下の幅をかせぐため、「音量／ドラム／パート」のタブは上の操作バーに、その欄は譜面の上に出ます。</li>
+            <li>横画面（高さが低いとき）では、譜面を広く見せるため、譜面を触ると上の操作バーと下の欄が隠れます。画面の上の端を下に引く（下の端を上に引く）か、端の小さなつまみを押すと出ます。最初の画面のパッドは、横画面では出しません。</li>
             <li>設定やメニュー、結果などを開いているときにスマホの「戻る」を押すと、ページを離れずに、まずそれを閉じます。</li>
             <li>横画面にすると、画面を触ったときに全画面になります（設定の「横画面にしたら全画面にする」。Android など）。iPhone・iPad は、Safari の共有ボタンから「ホーム画面に追加」して開くと、ブラウザのバーが出ずに広く使えます。</li>
             <li>最初の画面のパッドは、押した場所で叩き分けます。ライドの真ん中はカップ、シンバル・ハイハットのふちはエッジ、スネア・タムのふちはリムショットの音です（それ以外は、真ん中ほど強く鳴ります）。左右のクラッシュは別の音で鳴り、判定で◯にするときだけ、設定でどちらでも正解にできます。</li>
             <li>タッチできる端末では、ゲーム表示の判定線の下に、指で叩けるパッドが出ます。</li>
             <li>表示の「横スクロール」は、叩く位置の線が左に止まっていて、音符が右から左へ流れてくる表示です。</li>
-            <li>「🎙 採譜」（最初の画面、または設定の「✎ 編集」「🖨 楽譜出力」の隣）では、叩いた音がそのまま譜面になります（表示は、採譜のバーで譜面・グリッドを切り替えます。グリッドでは、画面の左下のボタンで横スクロールにもできます）。テンポ・拍子・長さ（止めるまで／小節数）・そろえ方（8分・16分・32分、3連系も）を決めて「● 録音」を押すと、カウントのあとに録り始めます。開いていた曲や、mp3などの音楽ファイルを流しながら録ることもできます。録ったあとで「📐 位置を直す」を押し、小節の頭にしたい音を2つ選ぶと、小節線の位置とテンポを合わせ直せます。「✎ 編集・保存」で手直しして、MIDIファイルに保存できます。</li>
+            <li>「🎙 採譜」（設定の「✎ 編集」「🖨 楽譜出力」の隣）では、叩いた音がそのまま譜面になります（表示は、採譜のバーで譜面・グリッドを切り替えます。グリッドでは、画面の左下のボタンで横スクロールにもできます）。テンポ・拍子・長さ（止めるまで／小節数）・そろえ方（8分・16分・32分、3連系も）を決めて「● 録音」を押すと、カウントのあとに録り始めます。開いていた曲や、mp3などの音楽ファイルを流しながら録ることもできます。録ったあとで「📐 位置を直す」を押し、小節の頭にしたい音を2つ選ぶと、小節線の位置とテンポを合わせ直せます。「✎ 編集・保存」で手直しして、MIDIファイルに保存できます。</li>
             <li>編集の「今聞いている音で保存」をオンにすると、ミュートしたパートを外し、ミキサーの音量と、鳴らしているカウント・メトロノームの音も入れてMIDIファイルに保存します。</li>
             <li>設定の「叩き分けごとに音を鳴らし分ける」がオンのときは、ライドのカップ・エッジ、リムショット、クロススティックなどを、それぞれ近い音で鳴らします。</li>
             <li>同期中は、メトロノームの音色・鳴らし方・アクセントも相手とそろい、メトロノーム専用モードも同じ拍で鳴ります（設定でオフにできます）。</li>
@@ -1097,7 +1102,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <h2>このソフトのURL</h2>
       <div class="qrBox"><div class="qrImg" role="img" aria-label="配布先URL（https://pikadrum.github.io/drum/）のQRコード"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><rect width="37" height="37" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM12 4h3v1h-3zM22 4h1v1h-1zM26 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h2v1h-2zM16 5h1v1h-1zM20 5h4v1h-4zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM13 6h2v1h-2zM16 6h2v1h-2zM19 6h3v1h-3zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h3v1h-3zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h5v1h-5zM18 7h3v1h-3zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h3v1h-3zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h3v1h-3zM20 8h3v1h-3zM26 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h2v1h-2zM15 9h5v1h-5zM21 9h1v1h-1zM23 9h2v1h-2zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h7v1h-7zM12 11h3v1h-3zM16 11h1v1h-1zM18 11h1v1h-1zM21 11h1v1h-1zM4 12h1v1h-1zM8 12h1v1h-1zM10 12h4v1h-4zM15 12h1v1h-1zM17 12h5v1h-5zM24 12h6v1h-6zM32 12h1v1h-1zM6 13h1v1h-1zM11 13h2v1h-2zM15 13h1v1h-1zM21 13h2v1h-2zM26 13h7v1h-7zM7 14h2v1h-2zM10 14h3v1h-3zM14 14h6v1h-6zM21 14h1v1h-1zM26 14h1v1h-1zM32 14h1v1h-1zM4 15h1v1h-1zM6 15h3v1h-3zM11 15h2v1h-2zM16 15h2v1h-2zM19 15h4v1h-4zM24 15h4v1h-4zM29 15h1v1h-1zM31 15h2v1h-2zM4 16h1v1h-1zM6 16h1v1h-1zM10 16h2v1h-2zM13 16h2v1h-2zM16 16h2v1h-2zM21 16h1v1h-1zM23 16h1v1h-1zM25 16h1v1h-1zM31 16h1v1h-1zM4 17h1v1h-1zM6 17h2v1h-2zM11 17h1v1h-1zM14 17h2v1h-2zM17 17h2v1h-2zM20 17h3v1h-3zM25 17h8v1h-8zM4 18h2v1h-2zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM24 18h3v1h-3zM28 18h3v1h-3zM32 18h1v1h-1zM4 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM14 19h3v1h-3zM18 19h1v1h-1zM21 19h2v1h-2zM25 19h1v1h-1zM27 19h2v1h-2zM31 19h2v1h-2zM7 20h1v1h-1zM10 20h6v1h-6zM17 20h3v1h-3zM21 20h2v1h-2zM24 20h2v1h-2zM31 20h1v1h-1zM4 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM21 21h2v1h-2zM25 21h5v1h-5zM31 21h2v1h-2zM6 22h2v1h-2zM9 22h4v1h-4zM14 22h1v1h-1zM17 22h3v1h-3zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM30 22h1v1h-1zM32 22h1v1h-1zM6 23h4v1h-4zM12 23h1v1h-1zM14 23h4v1h-4zM21 23h4v1h-4zM26 23h3v1h-3zM31 23h2v1h-2zM4 24h2v1h-2zM8 24h1v1h-1zM10 24h4v1h-4zM15 24h3v1h-3zM19 24h1v1h-1zM21 24h1v1h-1zM23 24h7v1h-7zM32 24h1v1h-1zM12 25h1v1h-1zM14 25h1v1h-1zM16 25h4v1h-4zM22 25h3v1h-3zM28 25h1v1h-1zM32 25h1v1h-1zM4 26h7v1h-7zM12 26h2v1h-2zM16 26h1v1h-1zM19 26h1v1h-1zM21 26h4v1h-4zM26 26h1v1h-1zM28 26h3v1h-3zM32 26h1v1h-1zM4 27h1v1h-1zM10 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM18 27h2v1h-2zM21 27h1v1h-1zM23 27h2v1h-2zM28 27h1v1h-1zM31 27h2v1h-2zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM12 28h2v1h-2zM16 28h4v1h-4zM21 28h1v1h-1zM23 28h7v1h-7zM4 29h1v1h-1zM6 29h3v1h-3zM10 29h1v1h-1zM13 29h1v1h-1zM16 29h1v1h-1zM19 29h2v1h-2zM23 29h1v1h-1zM25 29h1v1h-1zM32 29h1v1h-1zM4 30h1v1h-1zM6 30h3v1h-3zM10 30h1v1h-1zM13 30h3v1h-3zM17 30h3v1h-3zM23 30h3v1h-3zM29 30h4v1h-4zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h1v1h-1zM16 31h2v1h-2zM19 31h1v1h-1zM21 31h1v1h-1zM24 31h1v1h-1zM27 31h1v1h-1zM29 31h1v1h-1zM31 31h2v1h-2zM4 32h7v1h-7zM12 32h3v1h-3zM16 32h1v1h-1zM18 32h1v1h-1zM20 32h2v1h-2zM23 32h3v1h-3zM28 32h1v1h-1zM31 32h1v1h-1z"/></svg></div><div class="help">スマホやタブレットのカメラで読み取ると、このソフトを開けます。<br><a href="https://pikadrum.github.io/drum/" target="_blank" rel="noopener">https://pikadrum.github.io/drum/</a></div></div>
     </section>
-    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/23 13:59</div>
+    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/23 14:06</div>
     </div>
   </aside>
 </main>
@@ -1135,16 +1140,21 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
   window.setDock=(tab,fold)=>{ if(tab) dock.dataset.tab=tab; if(fold!==undefined) dock.classList.toggle("fold",fold);
     try{ localStorage.setItem(DK,JSON.stringify({tab:dock.dataset.tab,fold:dock.classList.contains("fold")})); }catch(e){}
     tVol.setAttribute("aria-selected",String(dock.dataset.tab==="vol")); tDrum.setAttribute("aria-selected",String(dock.dataset.tab==="drum")); tMix.setAttribute("aria-selected",String(dock.dataset.tab==="mix"));
-    const up=document.body.classList.contains("land"); tFold.textContent=dock.classList.contains("fold")?(up?"▼":"▲"):(up?"▲":"▼"); window.dispatchEvent(new Event("resize")); };
+    tFold.textContent=dock.classList.contains("fold")?"▲":"▼"; window.dispatchEvent(new Event("resize")); };
   tVol.onclick=()=>setDock("vol",false); tDrum.onclick=()=>setDock("drum",false); tMix.onclick=()=>setDock("mix",false); tFold.onclick=()=>setDock(null,!dock.classList.contains("fold"));
   setDock(["vol","drum","mix"].includes(saved.tab)?saved.tab:"vol", true); /* 開いたときは下の欄をたたんでおく（タブを押すと開く） */
-  /* 横画面（高さが低いとき）は、上下の幅をかせぐため、音量・ドラム・パートのタブを上の操作バーに入れ、欄はその下（譜面の上）に出す */
-  const landMQ=matchMedia("(orientation: landscape) and (max-height: 520px)");
-  const placeDock=()=>{ const L=landMQ.matches; document.body.classList.toggle("land",L);
-    if (L){ if(tabs.parentElement!==hdr) hdr.appendChild(tabs); if(main.firstElementChild!==dock) main.prepend(dock); }
-    else { if(tabs.parentElement!==dock) dock.prepend(tabs); if(main.lastElementChild!==dock) main.appendChild(dock); }
-    setDock(); };
+  /* 横画面（高さが低いとき）は、譜面を広く見せるため、上の操作バーと下の欄を隠せる。
+     譜面を触ると両方隠れ、画面の上の端を下に引く（下の端を上に引く）か、端の小さなつまみを押すと出る */
+  const landMQ=matchMedia("(orientation: landscape) and (max-height: 520px)"), B=document.body;
+  const hT=document.createElement("button"), hB=document.createElement("button"); hT.id="topHandle"; hB.id="botHandle"; hT.setAttribute("aria-label","上のメニューを出す"); hB.setAttribute("aria-label","下の欄を出す"); B.append(hT,hB);
+  const bars=(top,bot)=>{ if(top!==undefined) B.classList.toggle("hideTop",!top); if(bot!==undefined) B.classList.toggle("hideBot",!bot); window.dispatchEvent(new Event("resize")); };
+  const placeDock=()=>{ const L=landMQ.matches; B.classList.toggle("land",L); if(!L) bars(true,true); };
   if (landMQ.addEventListener) landMQ.addEventListener("change",placeDock); else if (landMQ.addListener) landMQ.addListener(placeDock); placeDock();
+  hT.onclick=()=>bars(true); hB.onclick=()=>bars(undefined,true);
+  $$("stage").addEventListener("pointerdown",e=>{ if(!B.classList.contains("land")||e.target.closest("button")) return; if(!B.classList.contains("hideTop")||!B.classList.contains("hideBot")) setTimeout(()=>bars(false,false),60); });
+  let sy=null, edge=0;
+  addEventListener("touchstart",e=>{ if(!B.classList.contains("land")) return; const y=e.touches[0].clientY; edge=y<28?1:y>innerHeight-28?-1:0; sy=edge?y:null; },{passive:true});
+  addEventListener("touchmove",e=>{ if(sy==null) return; const dy=e.touches[0].clientY-sy; if(edge===1&&dy>24){ bars(true); sy=null; } else if(edge===-1&&dy<-24){ bars(undefined,true); sy=null; } },{passive:true});
   /* スマホの「戻る」：設定やメニューなどを開いているときは、ページを離れずに、まずそれを閉じる */
   const panels=[["mMenu",()=>setMenu(false)],["settings",()=>{ $$("settings").hidden=true; }],["results",()=>{ $$("results").hidden=true; }],["printDlg",()=>{ $$("printDlg").hidden=true; }],["recFix",()=>{ $$("recFix").hidden=true; }],["metroMode",()=>{ const b=$$("mmClose")||$$("mmBack"); if(b) b.click(); else $$("metroMode").hidden=true; }]];
   const anyOpen=()=>panels.some(([id])=>{ const e=$$(id); return e&&!e.hidden; });
@@ -2687,7 +2697,7 @@ function rfNudge(kind,d){ if(kind==="bpm") $("rBpm").value=(Math.max(20,(+$("rBp
       REC.audio={buf,name:f.name.replace(/\.[^.]+$/,"")}; REC.r0=0; REC.raw=[]; $("rSong").checked=false; REC.src=null; recUse(recBlank()); recBuild();
       recSay(`「${f.name}」を流しながら録ります（${Math.round(buf.duration)}秒）。テンポを合わせてから録音するか、録ったあとで「📐 位置を直す」で合わせてください`); }
       catch(err){ showError("音楽ファイルを読み込めませんでした："+err.message); } });
-    $("freeBtn").onclick=recEnter; if($("freeMenu")) $("freeMenu").onclick=recEnter;
+    if($("freeBtn")) $("freeBtn").onclick=recEnter; if($("freeMenu")) $("freeMenu").onclick=recEnter;
     document.querySelectorAll("#recBar [data-rv]").forEach(b=>b.onclick=()=>{ S.view=b.dataset.rv; saveSettings(); applyView(); recViewBtns(); });
   };
   bind();

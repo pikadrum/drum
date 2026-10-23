@@ -663,7 +663,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <div id="empty" hidden>
         <div class="card emptyBar">
           <b>MIDIファイルを開いて練習を始めましょう</b>
-          <span class="emptyBtns"><button id="openBig">MIDIファイルを開く</button><button id="tryEx">練習パターンを試す</button><button id="freeBtn" title="叩いた音がそのまま譜面になります。録ってMIDIファイルに保存もできます">🎙 採譜</button></span>
+          <span class="emptyBtns"><button id="openBig">MIDIファイルを開く</button><button id="tryEx">練習パターンを試す</button></span>
           <span class="help">ファイルはこの画面にドラッグしても開けます。</span>
           <p id="loadErr" style="color:var(--miss)" hidden></p>
         </div>
@@ -918,7 +918,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
             <li>最初の画面のパッドは、押した場所で叩き分けます。ライドの真ん中はカップ、シンバル・ハイハットのふちはエッジ、スネア・タムのふちはリムショットの音です（それ以外は、真ん中ほど強く鳴ります）。左右のクラッシュは別の音で鳴り、判定で◯にするときだけ、設定でどちらでも正解にできます。</li>
             <li>タッチできる端末では、ゲーム表示の判定線の下に、指で叩けるパッドが出ます。</li>
             <li>表示の「横スクロール」は、叩く位置の線が左に止まっていて、音符が右から左へ流れてくる表示です。</li>
-            <li>「🎙 採譜」（最初の画面、または設定の「✎ 編集」「🖨 楽譜出力」の隣）では、叩いた音がそのまま譜面になります（表示は、採譜のバーで譜面・グリッドを切り替えます。グリッドでは、画面の左下のボタンで横スクロールにもできます）。テンポ・拍子・長さ（止めるまで／小節数）・そろえ方（8分・16分・32分、3連系も）を決めて「● 録音」を押すと、カウントのあとに録り始めます。開いていた曲や、mp3などの音楽ファイルを流しながら録ることもできます。録ったあとで「📐 位置を直す」を押し、小節の頭にしたい音を2つ選ぶと、小節線の位置とテンポを合わせ直せます。「✎ 編集・保存」で手直しして、MIDIファイルに保存できます。</li>
+            <li>「🎙 採譜」（設定の「✎ 編集」「🖨 楽譜出力」の隣）では、叩いた音がそのまま譜面になります（表示は、採譜のバーで譜面・グリッドを切り替えます。グリッドでは、画面の左下のボタンで横スクロールにもできます）。テンポ・拍子・長さ（止めるまで／小節数）・そろえ方（8分・16分・32分、3連系も）を決めて「● 録音」を押すと、カウントのあとに録り始めます。開いていた曲や、mp3などの音楽ファイルを流しながら録ることもできます。録ったあとで「📐 位置を直す」を押し、小節の頭にしたい音を2つ選ぶと、小節線の位置とテンポを合わせ直せます。「✎ 編集・保存」で手直しして、MIDIファイルに保存できます。</li>
             <li>編集の「今聞いている音で保存」をオンにすると、ミュートしたパートを外し、ミキサーの音量と、鳴らしているカウント・メトロノームの音も入れてMIDIファイルに保存します。</li>
             <li>設定の「叩き分けごとに音を鳴らし分ける」がオンのときは、ライドのカップ・エッジ、リムショット、クロススティックなどを、それぞれ近い音で鳴らします。</li>
             <li>同期中は、メトロノームの音色・鳴らし方・アクセントも相手とそろい、メトロノーム専用モードも同じ拍で鳴ります（設定でオフにできます）。</li>
@@ -982,7 +982,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <h2>このソフトのURL</h2>
       <div class="qrBox"><div class="qrImg" role="img" aria-label="配布先URL（https://pikadrum.github.io/drum/）のQRコード"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><rect width="37" height="37" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM12 4h3v1h-3zM22 4h1v1h-1zM26 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h2v1h-2zM16 5h1v1h-1zM20 5h4v1h-4zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM13 6h2v1h-2zM16 6h2v1h-2zM19 6h3v1h-3zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h3v1h-3zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h5v1h-5zM18 7h3v1h-3zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h3v1h-3zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h3v1h-3zM20 8h3v1h-3zM26 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h2v1h-2zM15 9h5v1h-5zM21 9h1v1h-1zM23 9h2v1h-2zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h7v1h-7zM12 11h3v1h-3zM16 11h1v1h-1zM18 11h1v1h-1zM21 11h1v1h-1zM4 12h1v1h-1zM8 12h1v1h-1zM10 12h4v1h-4zM15 12h1v1h-1zM17 12h5v1h-5zM24 12h6v1h-6zM32 12h1v1h-1zM6 13h1v1h-1zM11 13h2v1h-2zM15 13h1v1h-1zM21 13h2v1h-2zM26 13h7v1h-7zM7 14h2v1h-2zM10 14h3v1h-3zM14 14h6v1h-6zM21 14h1v1h-1zM26 14h1v1h-1zM32 14h1v1h-1zM4 15h1v1h-1zM6 15h3v1h-3zM11 15h2v1h-2zM16 15h2v1h-2zM19 15h4v1h-4zM24 15h4v1h-4zM29 15h1v1h-1zM31 15h2v1h-2zM4 16h1v1h-1zM6 16h1v1h-1zM10 16h2v1h-2zM13 16h2v1h-2zM16 16h2v1h-2zM21 16h1v1h-1zM23 16h1v1h-1zM25 16h1v1h-1zM31 16h1v1h-1zM4 17h1v1h-1zM6 17h2v1h-2zM11 17h1v1h-1zM14 17h2v1h-2zM17 17h2v1h-2zM20 17h3v1h-3zM25 17h8v1h-8zM4 18h2v1h-2zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM24 18h3v1h-3zM28 18h3v1h-3zM32 18h1v1h-1zM4 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM14 19h3v1h-3zM18 19h1v1h-1zM21 19h2v1h-2zM25 19h1v1h-1zM27 19h2v1h-2zM31 19h2v1h-2zM7 20h1v1h-1zM10 20h6v1h-6zM17 20h3v1h-3zM21 20h2v1h-2zM24 20h2v1h-2zM31 20h1v1h-1zM4 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM21 21h2v1h-2zM25 21h5v1h-5zM31 21h2v1h-2zM6 22h2v1h-2zM9 22h4v1h-4zM14 22h1v1h-1zM17 22h3v1h-3zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM30 22h1v1h-1zM32 22h1v1h-1zM6 23h4v1h-4zM12 23h1v1h-1zM14 23h4v1h-4zM21 23h4v1h-4zM26 23h3v1h-3zM31 23h2v1h-2zM4 24h2v1h-2zM8 24h1v1h-1zM10 24h4v1h-4zM15 24h3v1h-3zM19 24h1v1h-1zM21 24h1v1h-1zM23 24h7v1h-7zM32 24h1v1h-1zM12 25h1v1h-1zM14 25h1v1h-1zM16 25h4v1h-4zM22 25h3v1h-3zM28 25h1v1h-1zM32 25h1v1h-1zM4 26h7v1h-7zM12 26h2v1h-2zM16 26h1v1h-1zM19 26h1v1h-1zM21 26h4v1h-4zM26 26h1v1h-1zM28 26h3v1h-3zM32 26h1v1h-1zM4 27h1v1h-1zM10 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM18 27h2v1h-2zM21 27h1v1h-1zM23 27h2v1h-2zM28 27h1v1h-1zM31 27h2v1h-2zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM12 28h2v1h-2zM16 28h4v1h-4zM21 28h1v1h-1zM23 28h7v1h-7zM4 29h1v1h-1zM6 29h3v1h-3zM10 29h1v1h-1zM13 29h1v1h-1zM16 29h1v1h-1zM19 29h2v1h-2zM23 29h1v1h-1zM25 29h1v1h-1zM32 29h1v1h-1zM4 30h1v1h-1zM6 30h3v1h-3zM10 30h1v1h-1zM13 30h3v1h-3zM17 30h3v1h-3zM23 30h3v1h-3zM29 30h4v1h-4zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h1v1h-1zM16 31h2v1h-2zM19 31h1v1h-1zM21 31h1v1h-1zM24 31h1v1h-1zM27 31h1v1h-1zM29 31h1v1h-1zM31 31h2v1h-2zM4 32h7v1h-7zM12 32h3v1h-3zM16 32h1v1h-1zM18 32h1v1h-1zM20 32h2v1h-2zM23 32h3v1h-3zM28 32h1v1h-1zM31 32h1v1h-1z"/></svg></div><div class="help">スマホやタブレットのカメラで読み取ると、このソフトを開けます。<br><a href="https://pikadrum.github.io/drum/" target="_blank" rel="noopener">https://pikadrum.github.io/drum/</a></div></div>
     </section>
-    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/23 13:59</div>
+    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/23 14:06</div>
     </div>
   </aside>
 </main>
@@ -2528,7 +2528,7 @@ function rfNudge(kind,d){ if(kind==="bpm") $("rBpm").value=(Math.max(20,(+$("rBp
       REC.audio={buf,name:f.name.replace(/\.[^.]+$/,"")}; REC.r0=0; REC.raw=[]; $("rSong").checked=false; REC.src=null; recUse(recBlank()); recBuild();
       recSay(`「${f.name}」を流しながら録ります（${Math.round(buf.duration)}秒）。テンポを合わせてから録音するか、録ったあとで「📐 位置を直す」で合わせてください`); }
       catch(err){ showError("音楽ファイルを読み込めませんでした："+err.message); } });
-    $("freeBtn").onclick=recEnter; if($("freeMenu")) $("freeMenu").onclick=recEnter;
+    if($("freeBtn")) $("freeBtn").onclick=recEnter; if($("freeMenu")) $("freeMenu").onclick=recEnter;
     document.querySelectorAll("#recBar [data-rv]").forEach(b=>b.onclick=()=>{ S.view=b.dataset.rv; saveSettings(); applyView(); recViewBtns(); });
   };
   bind();
