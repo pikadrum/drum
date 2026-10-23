@@ -526,11 +526,12 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
     <button id="rewind" title="先頭へ">⏮</button>
   </div>
   <div class="group viewWrap">
-    <button id="viewBtn" aria-haspopup="true" aria-expanded="false" title="画面表示を切り替え（譜面・グリッド・ゲーム）">表示：譜面 ▾</button>
+    <button id="viewBtn" aria-haspopup="true" aria-expanded="false" title="画面表示を切り替え（譜面・グリッド・ゲーム・横スクロール）">表示：譜面 ▾</button>
     <div id="viewMenu" class="popMenu" role="menu" hidden>
       <button id="viewScore" role="menuitemradio" aria-pressed="true">譜面</button>
       <button id="viewGrid" role="menuitemradio" aria-pressed="false" title="パーツごとの横線に、叩く位置を並べた表示">グリッド</button>
       <button id="viewGame" role="menuitemradio" aria-pressed="false">ゲーム</button>
+      <button id="viewScroll" role="menuitemradio" aria-pressed="false" title="叩く位置の線は止まったまま、音符が右から左へ流れてくる表示">横スクロール</button>
       <hr class="menuSep">
       <button id="fsBtn" role="menuitem" title="全画面表示（Escキーかもう一度押すと戻ります）">全画面</button>
       <button id="themeBtn" role="menuitem" title="黒い画面と白い画面を切り替える">白背景にする</button>
@@ -2374,6 +2375,47 @@ function drawGame(now){
   if (st.combo>1){ g.fillStyle=C["--accent"]; g.font=`500 22px ${C["--mono"]}`; g.fillText(st.combo+" COMBO",16,92); }
 }
 
+/* ================= 横スクロール表示：叩く位置の線は左に止まっていて、音符が右から左へ流れてくる ================= */
+const SCROLL_ORDER=["crash2","crash","hh","ride","tom1","tom2","snare","tom3","kick","hhp"];
+function drawScroll(now){
+  const {w,h}=G, used=new Set(song.notes.map(n=>n.part));
+  let lanes=SCROLL_ORDER.filter(k=>!S.hidden[k]&&used.has(k)); if(!lanes.length) lanes=SCROLL_ORDER.filter(k=>!S.hidden[k]);
+  const top=58, bot=h-14, laneH=Math.max(16,Math.min(46,(bot-top)/lanes.length)), y0=top+((bot-top)-laneH*lanes.length)/2;
+  const labW=w<520?44:96, hitX=labW+Math.max(40,(w-labW)*0.16), pps=Math.max(120,(w-labW)*0.42)*S.gameSpeed/100, rate=st.playing?st.rate:1;
+  const xAt=time=>hitX+((time-now)/rate)*pps, t=performance.now(), yOfL=i=>y0+i*laneH+laneH/2;
+  /* 段の帯と、叩いたときの光 */
+  lanes.forEach((k,i)=>{ const ly=y0+i*laneH; g.fillStyle=i%2?C["--lane1"]:C["--lane2"]; g.fillRect(labW,ly,w-labW,laneH);
+    const ih=st.lastIn[k], a=ih?(t-ih)/260:9; if(a<1){ const v=Math.max(.15,Math.pow(Math.min(127,st.lastInVel[k]??100)/127,1.6)); const grd=g.createLinearGradient(hitX-60,0,hitX+40,0); grd.addColorStop(0,"rgba(0,0,0,0)"); grd.addColorStop(.6,PARTS[k].color); grd.addColorStop(1,"rgba(0,0,0,0)"); g.globalAlpha=.5*(1-a)*v; g.fillStyle=grd; g.fillRect(hitX-60,ly,100,laneH); g.globalAlpha=1; } });
+  /* 小節線・拍の線と小節番号 */
+  const tMin=now-(hitX-labW)/pps*rate, tMax=now+(w-hitX)/pps*rate;
+  for (const b of song.beats){ if(b.time<tMin-0.1) continue; if(b.time>tMax) break; const x=Math.round(xAt(b.time))+.5;
+    g.strokeStyle=b.accent?"rgba(141,147,160,.6)":"rgba(141,147,160,.18)"; g.lineWidth=b.accent?1.5:1; g.beginPath(); g.moveTo(x,y0); g.lineTo(x,y0+laneH*lanes.length); g.stroke();
+    if (b.accent&&x>labW+8){ g.fillStyle=C["--dim"]; g.font=`${Math.max(10,Math.min(13,laneH*.4))}px ${C["--mono"]}`; g.textAlign="left"; g.textBaseline="bottom"; g.fillText(String(b.bar+1),x+3,y0-3); } }
+  /* 音符 */
+  const r=Math.max(5,Math.min(15,laneH*.32));
+  for (const n of song.notes){ if(n.time<tMin-0.2) continue; if(n.time>tMax+0.05) break;
+    const i=lanes.indexOf(n.part); if(i<0) continue; const x=xAt(n.time), y=yOfL(i), col=PARTS[n.part].color, cym=PARTS[n.part].cym;
+    g.globalAlpha=n.judge==="miss"?.35:1; g.fillStyle=col; g.strokeStyle=col; g.lineWidth=2.2;
+    if (cym){ const k=r*.85; g.beginPath(); g.moveTo(x-k,y-k); g.lineTo(x+k,y+k); g.moveTo(x+k,y-k); g.lineTo(x-k,y+k); g.stroke(); if(n.open){ g.lineWidth=1.4; g.beginPath(); g.arc(x,y-r*1.25,r*.38,0,Math.PI*2); g.stroke(); } }
+    else { g.beginPath(); g.ellipse(x,y,r*1.15,r*.82,0,0,Math.PI*2); g.fill(); }
+    g.globalAlpha=1;
+    if (n.judge&&S.marks){ const mc=markColor(n), rr=r*1.55; g.strokeStyle=mc; g.lineWidth=Math.max(1.8,r*.22); g.beginPath();
+      if (n.judge==="miss"&&n.wrong){ const k=rr*.7; g.moveTo(x-k,y-k); g.lineTo(x+k,y+k); g.moveTo(x+k,y-k); g.lineTo(x-k,y+k); }
+      else if (n.judge==="miss"){ const k=rr*.85; g.moveTo(x,y-k); g.lineTo(x+k*.95,y+k*.65); g.lineTo(x-k*.95,y+k*.65); g.closePath(); }
+      else g.arc(x,y,rr,0,Math.PI*2);
+      g.stroke(); } }
+  /* 叩いた位置（ちょうど＝緑、早い＝水色、遅い＝橙）と、外れた叩き（×） */
+  const pw=perfWin()*1000;
+  for (const ht of st.hits){ if(ht.time<tMin-0.2||ht.time>tMax) continue; const i=lanes.indexOf(ht.part); if(i<0) continue; const x=xAt(ht.time), y=yOfL(i);
+    if (!ht.ok&&!ht.usedWrong){ if(!S.marks) continue; const k=r*.9; g.strokeStyle=C[S.judgeStyle==="dt1"?"--dtNg":"--missWrong"]; g.lineWidth=Math.max(1.8,r*.22); g.beginPath(); g.moveTo(x-k,y-k); g.lineTo(x+k,y+k); g.moveTo(x+k,y-k); g.lineTo(x-k,y+k); g.stroke(); continue; }
+    g.strokeStyle=!ht.ok?C[S.judgeStyle==="dt1"?"--dtNg":"--missWrong"]:Math.abs(ht.ms)<=pw?C["--perfect"]:ht.ms<0?C["--early"]:C["--late"]; g.lineWidth=2; g.beginPath(); g.moveTo(x,y+laneH*.28); g.lineTo(x,y+laneH*.48); g.stroke(); }
+  /* 叩く位置の線 */
+  g.fillStyle=C["--accent"]; g.fillRect(hitX-1.5,y0-6,3,laneH*lanes.length+12);
+  /* 左のパーツ名（流れてきた音符の上に重ねる） */
+  g.fillStyle=C["--bg"]; g.fillRect(0,y0-20,labW,laneH*lanes.length+40);
+  lanes.forEach((k,i)=>{ g.fillStyle=PARTS[k].color; g.textAlign="right"; g.textBaseline="middle"; g.font=`700 ${Math.max(10,Math.min(14,laneH*.42))}px ${C["--font"]}`; g.fillText(w<520?PARTS[k].short:PARTS[k].name,labW-6,yOfL(i)); });
+}
+
 // ================= 曲全体のシークバー（譜面エリアの一番下） =================
 const SEEK_L=12, SEEK_R=12;
 function seekBarAtX(px){ const c=$("seek"), W=c.clientWidth-SEEK_L-SEEK_R, last=song.bars[song.bars.length-1], total=last.end||song.length;
@@ -2428,9 +2470,10 @@ function drawFrame(){
   layout(); g.fillStyle=C["--bg"]; g.fillRect(0,0,G.w,G.h);
   const now=songNow();
   if (S.view==="game") drawGame(now);
+  else if (S.view==="scroll") drawScroll(now);
   else drawScore(now);
   { const c=st.cnt||{}, has=(c.p||0)+(c.g||0)+(c.m||0)+(c.x||0)>0&&!st.playing; if($("showRes").hidden===has) $("showRes").hidden=!has; }
-  { $("seek").style.visibility=$("empty").hidden?"":"hidden"; const hide=S.view==="game"||!$("empty").hidden||!song.bars||song.bars.length<2; if($("barPrev").hidden!==hide){ ["barPrev","barNext","zoomIn","zoomOut"].forEach(id=>$(id).hidden=hide); } }
+  { $("seek").style.visibility=$("empty").hidden?"":"hidden"; const hide=S.view==="game"||S.view==="scroll"||!$("empty").hidden||!song.bars||song.bars.length<2; if($("barPrev").hidden!==hide){ ["barPrev","barNext","zoomIn","zoomOut"].forEach(id=>$(id).hidden=hide); } }
   drawVelMini();
   drawSeek(now);
   drawKitView();
@@ -2677,7 +2720,7 @@ $("closeSettings").onclick=()=>{ $("settings").hidden=true; };
 /* 設定を開いているときに、設定の外（譜面など）を押したら閉じる。設定を開くボタンや、ほかの画面（結果・印刷など）の上は除く */
 document.addEventListener("pointerdown",e=>{ const sp=$("settings"); if(sp.hidden) return; const t=e.target; if(!(t instanceof Element)||!t.isConnected) return;
   if (t.closest("#settings,#toggleAside,#results,#printDlg,[role=dialog],.popMenu,dialog")) return; sp.hidden=true; },true);
-function applyView(){ if($("viewBtn")) $("viewBtn").textContent="表示："+({grid:"グリッド",game:"ゲーム"}[S.view]||"譜面")+" ▾"; $("viewScore").setAttribute("aria-pressed",String(S.view==="score"||!S.view)); $("viewGrid").setAttribute("aria-pressed",String(S.view==="grid")); $("viewGame").setAttribute("aria-pressed",String(S.view==="game")); }
+function applyView(){ if($("viewBtn")) $("viewBtn").textContent="表示："+({grid:"グリッド",game:"ゲーム",scroll:"横スクロール"}[S.view]||"譜面")+" ▾"; $("viewScroll").setAttribute("aria-pressed",String(S.view==="scroll")); $("viewScore").setAttribute("aria-pressed",String(S.view==="score"||!S.view)); $("viewGrid").setAttribute("aria-pressed",String(S.view==="grid")); $("viewGame").setAttribute("aria-pressed",String(S.view==="game")); }
 $("drumMute").onclick=()=>{ const ds=song.strips.find(x=>x.kind==="drum"); if(!ds) return; ds.mute=!ds.mute; updateStripStates(); };
 // ほかの画面を開くときは、結果の表示を自動で閉じる（重なって見えないように）
 function closeResults(){ const r=$("results"); if(r&&!r.hidden) r.hidden=true; }
@@ -2685,9 +2728,10 @@ function closeResults(){ const r=$("results"); if(r&&!r.hidden) r.hidden=true; }
 $("toggleAside").onclick=()=>{ $("settings").hidden=!$("settings").hidden; requestAnimationFrame(drawPartPreview); };
 $("viewScore").onclick=()=>{ S.view="score"; saveSettings(); applyView(); };
 $("viewGame").onclick=()=>{ if(st.edit){ setEdit(false); flash("ゲーム画面では編集できないため、編集を終了しました","--ok",null); } /* ゲーム画面では編集しない */ S.view="game"; saveSettings(); applyView(); };
+$("viewScroll").onclick=()=>{ if(st.edit){ setEdit(false); flash("横スクロールでは編集できないため、編集を終了しました","--ok",null); } S.view="scroll"; saveSettings(); applyView(); };
 $("viewBtn").onclick=e=>{ e.stopPropagation(); const m=$("viewMenu"); m.hidden=!m.hidden; $("viewBtn").setAttribute("aria-expanded",String(!m.hidden)); };
 document.addEventListener("pointerdown",e=>{ const m=$("viewMenu"); if(!m.hidden&&!m.contains(e.target)&&e.target!==$("viewBtn")){ m.hidden=true; $("viewBtn").setAttribute("aria-expanded","false"); } });
-["viewScore","viewGrid","viewGame","fsBtn","themeBtn"].forEach(id=>$(id).addEventListener("click",()=>{ $("viewMenu").hidden=true; $("viewBtn").setAttribute("aria-expanded","false"); }));
+["viewScore","viewGrid","viewGame","viewScroll","fsBtn","themeBtn"].forEach(id=>$(id).addEventListener("click",()=>{ $("viewMenu").hidden=true; $("viewBtn").setAttribute("aria-expanded","false"); }));
 ["editBtn","printBtn"].forEach(id=>$(id).addEventListener("click",()=>{ $("settings").hidden=true; }));
 // 音量のまとめ：全体・ドラム・ドラム以外・メトロノーム
 function syncVolGroup(){ $("masterVolV").textContent=S.masterVol; $("backVol").value=S.backVol??100; $("backVolV").textContent=(S.backVol??100)+"%";
@@ -2881,7 +2925,7 @@ function zoomStep(dir){ // dir: -1=拡大（表示を減らす）, +1=縮小（�
   flash(`${S.rows}段 × ${S.barsPerRow}小節`,"--ok",null);
 }
 let wheelAcc=0;
-cv.addEventListener("wheel",e=>{ if(S.view==="game") return; e.preventDefault();
+cv.addEventListener("wheel",e=>{ if(S.view==="game"||S.view==="scroll") return; e.preventDefault();
   if (st.edit&&!(e.ctrlKey||e.metaKey)){
     const r=cv.getBoundingClientRect(), px=e.clientX-r.left, py=e.clientY-r.top;
     let n=null; const lh=laneHit(px,py); if(lh) n=lh.n; else { const t=editPoint(e); if(t&&t.part) n=findNoteAt(t); }
@@ -2905,7 +2949,7 @@ function setLoop(a,b,on){ $("loopA").value=a+1; $("loopB").value=b+1; $("loop").
 function applyLoopBtn(){ const on=$("loop").checked; $("loopBtn").classList.toggle("on",on); $("loopBtn").setAttribute("aria-pressed",String(on));
   $("loopBtn").textContent=on?"⟳ ループ中":"⟳ ループ"; } // 範囲は右の入力欄に出ているのでボタンには書かない
 cv.addEventListener("pointerdown",e=>{
-  if (S.view==="game"||e.button>0||st.edit) return;
+  if (S.view==="game"||S.view==="scroll"||e.button>0||st.edit) return;
   if (touchPts.size>1) return; // 2本指はピンチ
   const bi=barFromPoint(e), touch=e.pointerType==="touch"; if(bi<0&&!touch) return;
   st.drag={a:bi,b:bi,moved:false,x:e.clientX,y:e.clientY,t:performance.now(),touch}; try{ cv.setPointerCapture(e.pointerId); }catch(_){}
@@ -2935,7 +2979,7 @@ function isSwipe(d,e){ const dx=e.clientX-d.x, dy=e.clientY-d.y;
 const touchPts=new Map(); let pinch=null;
 function pinchDist(){ const [a,b]=[...touchPts.values()]; return Math.hypot(a.x-b.x,a.y-b.y); }
 cv.addEventListener("pointerdown",e=>{
-  if (e.pointerType!=="touch"||S.view==="game"||st.edit) return;
+  if (e.pointerType!=="touch"||S.view==="game"||S.view==="scroll"||st.edit) return;
   touchPts.set(e.pointerId,{x:e.clientX,y:e.clientY});
   if (touchPts.size===2){ st.drag=null; st.eDrag=null; st.band=null; pinch={d0:pinchDist()}; }
 },true);
@@ -3368,7 +3412,7 @@ function selectInBand(){
   updSelInfo();
 }
 cv.addEventListener("pointerdown",e=>{
-  if (!st.edit||S.view==="game") return;
+  if (!st.edit||S.view==="game"||S.view==="scroll") return;
   e.preventDefault();
   if (touchPts.size>1) return;
   const r=cv.getBoundingClientRect(), px=e.clientX-r.left, py=e.clientY-r.top;
@@ -3475,7 +3519,7 @@ function drawEditOverlay(bases){
 function setEdit(on){
   st.edit=on; st.editHover=null; st.eDrag=null; st.band=null; clearSel();
   $("editBar").hidden=!on; $("editBtn").classList.toggle("on",on); $("editBtn").textContent=on?"✎ 編集中":"✎ 編集";
-  if (on&&S.view==="game"){ S.view="score"; applyView(); } // 譜面とグリッドはどちらでも編集できる
+  if (on&&(S.view==="game"||S.view==="scroll")){ S.view="score"; applyView(); } // 譜面とグリッドはどちらでも編集できる
   $("eUndo").disabled=!st.undo.length; $("eRedo").disabled=!st.redo.length;
   if (on) flash("編集モード：クリックで音符を追加・削除できます","--ok",null);
 }
