@@ -107,6 +107,7 @@ th{color:var(--dim);font-weight:500}
  #editBar{flex:none;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;padding:6px 12px;background:color-mix(in srgb,var(--accent) 14%,var(--panel));border-bottom:2px solid var(--accent);font-size:13px}
 #editBar b{color:var(--accent);letter-spacing:.06em}
 #editBar label{gap:4px}
+.eMixL{font-size:12px;color:var(--dim);display:inline-flex;align-items:center}
 #editBar select{padding:3px 6px;font-size:13px}
 #editBar input[type=range]{width:90px}
 #editBar .hint{color:var(--dim);font-size:11.5px}
@@ -597,7 +598,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <button id="eSelMode" aria-pressed="false" title="オンにすると、ドラッグで範囲選択、音符のクリックで選択（スマホ向け）。パソコンではShiftを押しながらでも同じ操作ができます">範囲選択</button>
       <button id="eAll">全選択</button><button id="eCopy">コピー</button><button id="eCut">切り取り</button><button id="ePaste">貼り付け</button><button id="eDel">削除</button>
       <button id="eUndo" title="元に戻す（Ctrl+Z）">↶ 元に戻す</button><button id="eRedo" title="やり直し（Ctrl+Y）">↷ やり直し</button>
-      <button id="eSave">新しいファイルとして保存</button>
+      <button id="eSave">新しいファイルとして保存</button><label class="eMixL" title="ミュートしたパートを外し、ミキサーの音量（全体の音量以外）、鳴らしているカウントとメトロノームの音も入れて保存します"><input type="checkbox" id="eMix"> 今聞いている音で保存</label>
       <button id="eDone">編集を終了</button>
       <span class="hint">空いた所をクリック＝追加／音符をクリック＝削除／音符をドラッグ＝移動（左右で位置、上下でパーツ）／Shift＋ドラッグ＝範囲選択（選んだ音符はまとめて移動）／Ctrl+C・X・V＝コピー・切り取り・貼り付け（マウスの位置へ）／音符の上でホイール、または譜面の下の棒を上下にドラッグ＝強さ</span>
     </div>
@@ -778,6 +779,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <details class="tip"><summary>外部のMIDI音源で鳴らすには</summary><div class="help">「このソフトの音」以外を選ぶと、パソコンにつながったMIDI機器で鳴らします。ドラムは「TD-17」がおすすめです。Windows の「Microsoft GS Wavetable Synth」は、ブラウザ（Chrome・Edge・Firefox）の制限で一覧に出ず、使えません。ドラムの音源にTD-17などを選ぶと、左の音量欄に「外部ドラムの音量」が出ます。</div></details>
       <div class="row"><label for="extCurve">外部ドラム音源の音量の効き</label><select id="extCurve"><option value="0.6">弱め</option><option value="1">標準</option><option value="1.6">強め</option></select></div>
       <details class="tip"><summary>音量の効きについて</summary><div class="help">TD-17などに鳴らすとき、ミキサーの音量は「叩く強さ」に置き換えて送ります。標準は、このソフトの音と同じ比率で変わります。変化が小さいと感じたら「強め」にしてください。</div></details>
+      <div class="row"><label for="artSound" title="ライドのカップ・エッジ、シンバルやハイハットのエッジ、リムショット、クロススティックを、それぞれ近い音で鳴らします（このソフトの音のとき）">叩き分けごとに音を鳴らし分ける</label><input type="checkbox" id="artSound" checked></div>
       <div class="row"><label for="outDelay">外部音源のタイミング補正 (ms)</label><input type="number" id="outDelay" value="0" step="5"></div>
     </section>
     <section>
@@ -1290,9 +1292,25 @@ function click(t,kind,gainMul,lvl){
     default: osc("square",1175*pm,.75,.06*dm);
   }
 }
-function drumSound(t,part,vel,open,dest){
+function drumSound(t,part,vel,open,dest,note){
   dest=dest||masterGain;
   const v=(vel/127)*.5, def=PARTS[part]||{cym:true};
+  /* 叩き分け（設定でオン）：MIDIの番号ごとに、本来の音に近い音で鳴らす */
+  const art=S.artSound!==false&&note!=null?ART[note]:null;
+  if (art&&art!=="bow"&&art!=="head"){
+    const nz=(ftype,fq,q,peak,dur)=>{ const src=ctx.createBufferSource(), fl=ctx.createBiquadFilter(), g=ctx.createGain(); src.buffer=noiseBuf; fl.type=ftype; fl.frequency.value=fq; fl.Q.value=q; g.gain.setValueAtTime(peak,t); g.gain.exponentialRampToValueAtTime(.001,t+dur); src.connect(fl).connect(g).connect(dest); src.start(t); src.stop(t+dur+.02); };
+    const tone=(type,fq,peak,dur,to)=>{ const o=ctx.createOscillator(), g=ctx.createGain(); o.type=type; o.frequency.setValueAtTime(fq,t); if(to) o.frequency.exponentialRampToValueAtTime(to,t+Math.min(.08,dur)); g.gain.setValueAtTime(peak,t); g.gain.exponentialRampToValueAtTime(.001,t+dur); o.connect(g).connect(dest); o.start(t); o.stop(t+dur+.02); };
+    if (art==="bell"){ /* ライドのカップ：金属的に「キーン」と鳴る */
+      [[620,1],[1340,.55],[2010,.35],[2950,.2]].forEach(([fq,a])=>tone("sine",fq,v*.5*a,1.1)); nz("highpass",6500,.7,v*.35,.25); return; }
+    if (art==="edge"){ /* シンバルのエッジ：ボウより厚く長く */
+      if (part==="hh"){ nz("highpass",5200,.7,v*.75,open?.45:.09); nz("bandpass",8000,1,v*.3,open?.4:.07); return; }
+      nz("highpass",part==="ride"?3800:4800,.7,v*.75,part==="ride"?1.1:1.6); nz("bandpass",6500,.8,v*.35,.6); return; }
+    if (art==="rim"){ /* リムショット：胴の音に、高く硬い「カン」が乗る */
+      if (part==="snare"){ tone("triangle",(def.freq||190)*2.4,v*.9,.12,(def.freq||190)*1.5); nz("bandpass",3200,2.5,v*1.1,.06); nz("highpass",2000,.7,v*.7,.16); return; }
+      tone("sine",(def.freq||150)*2,v,.3,def.freq||150); nz("bandpass",3000,3,v*.7,.04); return; }
+    if (art==="xstick"){ /* クロススティック：木の短い「コッ」 */
+      tone("triangle",1650,v*.9,.05); tone("sine",820,v*.6,.07); nz("bandpass",2600,4,v*.6,.03); return; }
+  }
   if (part==="perc"){
     const src=ctx.createBufferSource(), f=ctx.createBiquadFilter(), g=ctx.createGain();
     src.buffer=noiseBuf; f.type="bandpass"; f.frequency.value=3500; f.Q.value=2;
@@ -1436,7 +1454,7 @@ function scheduler(){
     if (ds&&f>0){
       const pd=outPort("drum");
       if (pd){ const v=Math.round(n.vel*extDrumGain(ds,pc)); if(v>=1){ midiSend(pd,[0x99,n.note,Math.min(127,v)],t); midiSend(pd,[0x89,n.note,0],t+0.08); } }
-      else drumSound(t,n.part,n.vel*f,n.open,ds.node);
+      else drumSound(t,n.part,n.vel*f,n.open,ds.node,n.note);
       meterHit(ds,t,n.vel/127); meterHit(pc,t,n.vel/127*f); }
     else if (pc) meterHit(pc,t,n.vel/127); // ミュート中のパーツも、レベルは薄いグレーで動かす
   }
@@ -2548,6 +2566,7 @@ function applyExtTrimRow(){ $("extTrimRow").hidden=!$("outDrum").value; }
 $("extTrim").value=S.extTrim; $("extTrimV").textContent=S.extTrim+"%";
 $("extTrim").addEventListener("input",()=>{ S.extTrim=+$("extTrim").value; $("extTrimV").textContent=S.extTrim+"%"; saveSettings(); });
 $("outDrum").addEventListener("change",applyExtTrimRow);
+$("artSound").checked=S.artSound!==false; $("artSound").onchange=()=>{ S.artSound=$("artSound").checked; saveSettings(); };
 $("hideLead").checked=!!S.hideLead; $("hideLead").onchange=()=>{ S.hideLead=$("hideLead").checked; saveSettings(); st.viewPage=pageOf(barAt(st.pos)); };
 $("skipLead").checked=S.skipLead; $("skipLead").onchange=()=>{ S.skipLead=$("skipLead").checked; saveSettings(); if(!st.playing){ st.pos=songStart(); st.viewPage=pageOf(barAt(st.pos)); } };
 $("extCurve").value=String(S.extCurve); $("extCurve").onchange=()=>{ S.extCurve=+$("extCurve").value; saveSettings(); };
@@ -3375,7 +3394,7 @@ cv.addEventListener("pointerdown",e=>{
     clearSel();
     const nn={tick:t.tick,note:noteFor(t.part,t.open),vel:+$("eVel").value,ch:drumCh0(),prog:0,dur:Math.round(song.ppq/8)};
     song.src.rawNotes.push(nn); rebuildSong(); st.eDrag={n:nn,moved:true,t0:t,items:[item(nn)]};
-    audio(); drumSound(ctx.currentTime+0.01,t.part,nn.vel,t.open);
+    audio(); drumSound(ctx.currentTime+0.01,t.part,nn.vel,t.open,undefined,nn.note);
   }
 });
 cv.addEventListener("pointermove",e=>{
@@ -3502,6 +3521,43 @@ function readTracks(buf){
   }
   return tracks;
 }
+/* 「今聞いている音で保存」：ミキサーの状態（全体の音量以外）を、書き出すMIDIに反映する
+   ・ミュートしたパート（ドラムを含む）は外す　・パートの音量はチャンネルの音量（CC7）に　・ドラムのパーツごとの音量は叩く強さに
+   ・鳴らしているカウントとメトロノームは、ウッドブロックの音（チャンネル10）で入れる。カウントがあるときは曲の前に1小節足す */
+function mixTracks(tracks,dr){
+  const s=song.src, ds=song.strips.find(x=>x.kind==="drum"), dset=new Set(s.drumChAll||[9]), ccv=g=>Math.max(0,Math.min(127,Math.round(g*127)));
+  const chGain={}; song.strips.forEach(x=>{ if(x.kind==="inst") chGain[x.ch]=effGain(x); });
+  const dg=ds?effGain(ds):1;
+  for (const t of tracks){ if (t===dr) continue;
+    for (let i=t.length-1;i>=0;i--){ const e=t[i], b=e.d[0]; if (b>=0xf0) continue; const hi=b&0xf0, ch=b&15;
+      if (hi===0xb0&&e.d[1]===7){ t.splice(i,1); continue; } /* 元の音量の指定は、ミキサーの音量で置き換える */
+      if ((hi===0x90||hi===0x80||hi===0xa0)&&!dset.has(ch)&&(chGain[ch]??1)===0) t.splice(i,1); } }
+  if (tracks[0]) Object.keys(chGain).forEach(ch=>tracks[0].push({tick:0,o:-2,d:[0xb0|+ch,7,ccv(chGain[ch])]}));
+  /* ドラム */
+  const keep=[]; let o=0;
+  for (let i=0;i<dr.length;i++){ const e=dr[i], b=e.d[0]; if (b>=0xf0){ keep.push(e); continue; } const hi=b&0xf0;
+    if (hi!==0x90&&hi!==0x80){ keep.push(e); continue; }
+    const part=noteToPart[e.d[1]], pc=song.strips.find(x=>x.kind==="piece"&&x.part===part), pg=pc?pieceGain(pc):1;
+    if (dg===0||pg===0) continue;
+    keep.push(hi===0x90?{...e,d:[e.d[0],e.d[1],Math.max(1,Math.min(127,Math.round(e.d[2]*Math.min(1.27,pg))))]}:e); }
+  dr.length=0; keep.forEach(e=>dr.push(e)); [...dset].forEach(ch=>dr.push({tick:0,o:-2,d:[0xb0|ch,7,ccv(dg)]}));
+  /* カウントとメトロノーム */
+  const useCount=$("countin").checked&&S.countVol>0, useMetro=$("metro").checked&&S.metroVol>0;
+  if (!useCount&&!useMetro) return;
+  const ck=[{tick:0,o:0,d:[0xff,0x03,5,...new TextEncoder().encode("Click")]}]; let q=1;
+  const put=(tick,kind,lv,vol)=>{ const v=Math.max(1,Math.min(127,Math.round(127*lv/100*Math.min(1,vol/25)))), n=kind==="bar"?76:77; ck.push({tick:Math.round(tick),o:q++,d:[0x99,n,v]}); ck.push({tick:Math.round(tick)+Math.round(s.ppq/16),o:-1,d:[0x89,n,0]}); };
+  let shift=0;
+  if (useCount){ const b0=song.bars[0]; shift=b0.len; const bt=b0.len/b0.num;
+    for(let i=0;i<b0.num;i++) for(const [fr,k,lv] of beatPlan(i,i===0)) put(i*bt+fr*bt,k,lv,S.countVol); }
+  if (useMetro){ const beats=song.beats;
+    for (let bi=0;bi<beats.length;bi++){ const b=beats[bi], t0=song.s2t(b.time), t1=song.s2t(bi+1<beats.length?beats[bi+1].time:song.bars[b.bar].end);
+      for (const [fr,k,lv] of beatPlan(b.idx||0,b.accent)) put(shift+t0+(t1-t0)*fr,k,lv,S.metroVol); } }
+  if (shift){ /* 曲全体を1小節うしろにずらし、頭にテンポと拍子を置く */
+    tracks.forEach(t=>t.forEach(e=>{ e.tick+=shift; }));
+    const t0=(s.tempos&&s.tempos[0])||{uspq:500000}, g0=song.bars[0];
+    ck.push({tick:0,o:-3,d:[0xff,0x51,3,(t0.uspq>>16)&255,(t0.uspq>>8)&255,t0.uspq&255]}); ck.push({tick:0,o:-3,d:[0xff,0x58,4,g0.num,Math.round(Math.log2(g0.den)),24,8]}); }
+  tracks.push(ck);
+}
 function exportMidi(){
   const s=song.src, ppq=s.ppq, tracks=[];
   if (s.buf){
@@ -3519,6 +3575,7 @@ function exportMidi(){
   const name=[...new TextEncoder().encode("Drums")], dr=[{tick:0,o:0,d:[0xFF,0x03,name.length,...name]}]; let q=1;
   s.rawNotes.forEach(n=>{ const ch=(n.ch===undefined?9:n.ch)&15; dr.push({tick:n.tick,o:q++,d:[0x90|ch,n.note,Math.max(1,Math.min(127,n.vel))]}); dr.push({tick:n.tick+Math.max(1,n.dur||Math.round(ppq/8)),o:-1,d:[0x80|ch,n.note,0]}); });
   tracks.push(dr);
+  if ($("eMix")&&$("eMix").checked) mixTracks(tracks,dr);
   const body=[]; tracks.forEach(t=>{ const b=encTrack(t); for(const x of b) body.push(x); });
   const hdr=[0x4D,0x54,0x68,0x64,0,0,0,6,0,1,(tracks.length>>8)&255,tracks.length&255,(ppq>>8)&255,ppq&255];
   return new Uint8Array([...hdr,...body]);
