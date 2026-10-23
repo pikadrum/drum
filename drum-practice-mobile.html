@@ -107,6 +107,21 @@ th:first-child,td:first-child{text-align:left}
 th{color:var(--dim);font-weight:500}
 #histo,#velChart{width:100%;height:110px;display:block}
  #editBar{flex:none;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;padding:6px 12px;background:color-mix(in srgb,var(--accent) 14%,var(--panel));border-bottom:2px solid var(--accent);font-size:13px}
+#recBar{flex:none;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;padding:6px 12px;background:color-mix(in srgb,#e5484d 12%,var(--panel));border-bottom:2px solid #e5484d;font-size:13px}
+#recBar[hidden],#recFix[hidden]{display:none}
+#recBar b{color:#e5484d;letter-spacing:.04em}
+#recBar select{padding:3px 6px;font-size:13px}
+#recBar .hint{color:var(--dim);font-size:11.5px}
+#recBar .recGo{background:#e5484d;color:#fff;border-color:#e5484d;font-weight:700}
+#recBar .recGo.on{animation:recBlink 1s steps(2) infinite}
+@keyframes recBlink{50%{opacity:.55}}
+#recFix{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);padding:12px}
+#recFix .card{width:min(880px,100%);display:flex;flex-direction:column;gap:10px}
+#recFix .rfRow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px}
+body.freeOn #empty{top:auto;height:46%;border-top:2px solid #e5484d}
+body.freeOn #empty .emptyBar,body.freeOn #empty .padHelp{display:none}
+@media (max-height:520px){ body.freeOn #empty{height:60%} }
+@media (max-width:600px){ #recBar{font-size:12px;gap:4px 8px;padding:4px 8px} #recBar select,#recBar input[type=number]{font-size:12px;padding:2px 4px} #recBar button{padding:4px 8px;font-size:12px} }
 #editBar b{color:var(--accent);letter-spacing:.06em}
 #editBar label{gap:4px}
 .eMixL{font-size:12px;color:var(--dim);display:inline-flex;align-items:center}
@@ -635,6 +650,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <button id="viewGrid" role="menuitemradio" aria-pressed="false" title="パーツごとの横線に、叩く位置を並べた表示">グリッド</button>
       <button id="viewGame" role="menuitemradio" aria-pressed="false">ゲーム</button>
       <button id="viewScroll" role="menuitemradio" aria-pressed="false" title="叩く位置の線は止まったまま、音符が右から左へ流れてくる表示">横スクロール</button>
+      <button id="freeMenu" role="menuitem" title="叩いた音がそのまま譜面になります">🎙 フリーモード（採譜）</button>
       <hr class="menuSep">
       <button id="fsBtn" role="menuitem" title="全画面表示（Escキーかもう一度押すと戻ります）">全画面</button>
       <button id="themeBtn" role="menuitem" title="黒い画面と白い画面を切り替える">白背景にする</button>
@@ -693,6 +709,33 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
     <div id="strips"></div>
   </div>
   <div id="center">
+  <div id="recBar" hidden>
+      <b>🎙 フリーモード（採譜）</b>
+      <label for="rBpm">テンポ</label><input type="number" id="rBpm" min="30" max="300" step="1" value="100" style="width:64px">
+      <label for="rNum">拍子</label><span><select id="rNum"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option><option>7</option><option>9</option><option>12</option></select>／<select id="rDen"><option selected>4</option><option>8</option></select></span>
+      <label for="rLen">長さ</label><select id="rLen"><option value="0">止めるまで</option><option value="4">4小節</option><option value="8" selected>8小節</option><option value="16">16小節</option><option value="32">32小節</option></select>
+      <label for="rGrid">そろえ方</label><select id="rGrid"><option value="8">8分</option><option value="16" selected>16分</option><option value="32">32分</option></select>
+      <label title="3連符・6連符のマス目にもそろえる"><input type="checkbox" id="rTrip" checked> 3連系も</label>
+      <label id="rSongL" title="開いていた曲（伴奏）を流しながら録ります。録ったドラムで、曲のドラムを置き換えます"><input type="checkbox" id="rSong"> 曲に合わせて録る</label>
+      <button id="rAudio" title="mp3・wavなどの音楽ファイルを流しながら録ります">🎵 音楽ファイル</button><input type="file" id="rAudioFile" accept="audio/*,.mp3,.wav,.m4a,.ogg" hidden>
+      <button id="rGo" class="recGo">● 録音</button>
+      <button id="rFix" title="録った音の中から小節の頭を2つ選んで、小節線の位置とテンポを合わせ直します">📐 位置を直す</button>
+      <button id="rEdit" title="録った譜面を編集して、MIDIファイルとして保存します">✎ 編集・保存</button>
+      <button id="rClose">フリーモードを終える</button>
+      <span id="rInfo" class="hint"></span>
+  </div>
+  <div id="recFix" hidden>
+    <div class="card" role="dialog" aria-labelledby="rfTitle">
+      <div class="resHead"><h2 id="rfTitle">📐 位置を直す</h2><div class="cardBtns"><button id="rfClose">閉じる</button></div></div>
+      <p class="help" id="rfMsg">録った音が、叩いた順に左から並んでいます。小節の頭にしたい音を2つ押してください（例：1小節目と5小節目のクラッシュ）。</p>
+      <canvas id="rfCv" style="width:100%;height:150px;display:block;border:1px solid var(--line);border-radius:6px;touch-action:none"></canvas>
+      <div class="rfRow"><span>1つ目の音 → </span><input type="number" id="rfA" min="1" value="1" style="width:56px"><span>小節目の頭</span>
+        <span style="margin-left:12px">2つ目の音 → </span><input type="number" id="rfB" min="2" value="5" style="width:56px"><span>小節目の頭</span>
+        <button id="rfApply">合わせる</button></div>
+      <div class="rfRow"><span>細かく直す：</span><button data-rf="bpm" data-d="-0.1">テンポ −0.1</button><button data-rf="bpm" data-d="0.1">テンポ ＋0.1</button>
+        <button data-rf="off" data-d="-0.01">−10ms</button><button data-rf="off" data-d="0.01">＋10ms</button><span id="rfNow" class="mono"></span></div>
+    </div>
+  </div>
   <div id="editBar" hidden>
       <b>✎ 編集中</b>
       <label for="eGrid">グリッド</label><select id="eGrid"><option value="4">4分</option><option value="8">8分</option><option value="16" selected>16分</option><option value="32">32分</option><option value="8t">8分3連</option><option value="16t">16分3連</option></select>
@@ -720,7 +763,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <div id="empty" hidden>
         <div class="card emptyBar">
           <b>MIDIファイルを開いて練習を始めましょう</b>
-          <span class="emptyBtns"><button id="openBig">MIDIファイルを開く</button><button id="tryEx">練習パターンを試す</button></span>
+          <span class="emptyBtns"><button id="openBig">MIDIファイルを開く</button><button id="tryEx">練習パターンを試す</button><button id="freeBtn" title="叩いた音がそのまま譜面になります。録ってMIDIファイルに保存もできます">🎙 フリーモード（採譜）</button></span>
           
           <p id="loadErr" style="color:var(--miss)" hidden></p>
         </div>
@@ -1235,7 +1278,7 @@ function buildSong(name, ppq, rawNotes, rawBack, tempos, sigs, info={}){
   // 再生用のドラム（譜面にないパーカッションも鳴らす）
   song.drumAudio=rawNotes.map(n=>({ note:n.note, vel:n.vel, part:noteToPart[n.note]||"perc", open:PARTS.hh.open.includes(n.note), time:song.t2s(n.tick) })).sort((a,b)=>a.time-b.time);
   song.strips=makeStrips(song, info);
-  let lastTick=ppq*4-1; for(const n of rawNotes) lastTick=Math.max(lastTick,n.tick); for(const n of rawBack) lastTick=Math.max(lastTick,n.tick+n.dur-1);
+  let lastTick=Math.max(ppq*4-1,(info.minTick||0)-1); for(const n of rawNotes) lastTick=Math.max(lastTick,n.tick); for(const n of rawBack) lastTick=Math.max(lastTick,n.tick+n.dur-1);
   song.bars=[]; let tick=0, si=0;
   while (tick<=lastTick){
     while (si+1<sigs.length&&sigs[si+1].tick<=tick) si++;
@@ -1558,7 +1601,7 @@ function songStart(){ return (S.skipLead&&song.leadBars>0)?song.bars[song.leadBa
 function play(){
   if (st.playing){ stop(); return; }
   $("results").hidden=true;
-  $("empty").hidden=true; /* 再生したら最初の案内を閉じる */
+  if (!REC.mode) $("empty").hidden=true; /* 再生したら最初の案内を閉じる（フリーモードではパッドを残す） */
   const lr=loopRange(); let pos=st.pos;
   if (lr&&(pos<lr.start||pos>=lr.end)) pos=lr.start;
   if (pos>=song.length-1e-3) pos=songStart();
@@ -1571,6 +1614,7 @@ function stop(){
   midiAllOff();
   st.pos=Math.max(0,Math.min(songNow(),song.length)); st.playing=false; $("play").textContent="▶ 再生";
   st.viewPage=pageOf(barAt(st.pos));
+  recAudioStop(); if (REC.on) recFinish();
 }
 function scheduler(){
   if (!st.playing) return;
@@ -1588,7 +1632,7 @@ function scheduler(){
   while (st.drumIdx<song.drumAudio.length&&song.drumAudio[st.drumIdx].time<lim){
     const n=song.drumAudio[st.drumIdx++], pc=song.strips.find(x=>x.kind==="piece"&&x.part===n.part);
     const f=pc?pieceGain(pc):1, t=st.origin+n.time/st.rate;
-    if (ds&&f>0){
+    if (ds&&f>0&&!REC.on){ /* 録音中は、録った音をもう一度鳴らさない */
       const pd=outPort("drum");
       if (pd){ const v=Math.round(n.vel*extDrumGain(ds,pc)); if(v>=1){ midiSend(pd,[0x99,n.note,Math.min(127,v)],t); midiSend(pd,[0x89,n.note,0],t+0.08); } }
       else drumSound(t,n.part,n.vel*f,n.open,ds.node,n.note);
@@ -1604,12 +1648,12 @@ function scheduler(){
       meterHit(s,t,n.vel/127); }
   }
   const now=songNow(), w=win()*st.rate;
-  if (judgeActive()&&!S.noMiss) for (const n of song.notes){ if(n.time>now) break; if(!n.judge&&now-n.time>w&&n.time>=st.startPos-1e-3) judgeNote(n,"miss"); }
+  if (judgeActive()&&!S.noMiss&&!REC.on) for (const n of song.notes){ if(n.time>now) break; if(!n.judge&&now-n.time>w&&n.time>=st.startPos-1e-3) judgeNote(n,"miss"); }
   if (lr&&now>=lr.end){
     resetJudge(lr.start,lr.end);
     st.origin+=(lr.end-lr.start)/st.rate; st.startPos=lr.start;
     setIdx(lr.start);
-  } else if (!lr&&now>song.length+0.3){ stop(); st.pos=songStart(); st.viewPage=pageOf(barAt(st.pos)); showResults(); }
+  } else if (!lr&&now>song.length+0.3){ const fr=REC.mode; stop(); st.pos=songStart(); st.viewPage=pageOf(barAt(st.pos)); if(!fr) showResults(); }
 }
 setInterval(()=>{ try{ scheduler(); }catch(e){ console.error(e); showError("再生中のエラー："+e.message); } },20);
 
@@ -1634,8 +1678,9 @@ function judgeNote(n,j){
 // 判定するか：設定がオフなら常に判定。オンなら、MIDI入力がつながっているか、キーボードで試し打ちしたときだけ判定
 function judgeActive(){ return !S.judgeNoMidi||!!currentInput||st.kbdUsed; }
 function applyJudgeState(){ const on=judgeActive(); $("judgeOff").hidden=on; $("score").querySelectorAll("span:not(#judgeOff)").forEach(e=>e.hidden=!on); }
-function hit(part,ctxTime,vel,open){ /* open：ハイハットのオープン（true）／クローズ（false）。わからない入力は undefined */
+function hit(part,ctxTime,vel,open,note){ /* open：ハイハットのオープン（true）／クローズ（false）。わからない入力は undefined。note：MIDIの番号（わかるとき） */
   audio();
+  if (recHit(part,ctxTime,vel,open,note)){ st.lastHit[part]={at:performance.now(),judge:"free"}; st.vels.push({part,vel}); return; } /* フリーモードで録音中 */
   if (mm.running) mmHit(ctxTime);
   st.lastHit[part]={at:performance.now(),judge:"bad"};
   st.vels.push({part,vel}); if(st.vels.length>2000) st.vels.shift();
@@ -1801,7 +1846,7 @@ function onMidi(e){
   const part=noteToPart[a]; if(!part) return;
   st.lastIn[part]=performance.now(); st.lastInVel[part]=b;
   const op=part==="hh"?PARTS.hh.open.includes(a):undefined, art=noteArt(part,a); st.lastArt=st.lastArt||{}; st.lastArt[part]=art?{art,at:performance.now()}:null; padLight(op?"hhOpen":part,b,art);
-  audio(); hit(part, ctx.currentTime-(performance.now()-e.timeStamp)/1000, b, op);
+  audio(); hit(part, ctx.currentTime-(performance.now()-e.timeStamp)/1000, b, op, a);
 }
 
 // ================= エラー表示（止まらずに知らせる） =================
@@ -2055,7 +2100,7 @@ function layout(){
   const dpr=window.devicePixelRatio||1, w=cv.clientWidth, h=cv.clientHeight;
   if (cv.width!==Math.round(w*dpr)||cv.height!==Math.round(h*dpr)){ cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr); }
   g.setTransform(dpr,0,0,dpr,0,0);
-  const top=40, units=16+S.rowGap, kitH=0, hs=h;
+  const top=40, units=16+S.rowGap, kitH=0, hs=document.body.classList.contains("freeOn")?Math.max(h*0.35,h-($("empty").offsetHeight||0)):h; /* フリーモードでは下半分にパッドを出すので、譜面は上に収める */
   let worst=0; for(let b=0;b<song.bars.length;b+=S.barsPerRow){ let sum=0; for(let c=0;c<S.barsPerRow;c++) sum+=barMap(Math.min(song.bars.length-1,b+c)).total; worst=Math.max(worst,sum); }
   const byH=(hs-top-10)/(S.rows*units), byW=(w-36)/(worst*1.35/W32+6);
   const sp=Math.max(5,Math.min(30,byH,byW))*S.zoom/100; // 小節が少ないときは大きく表示できるよう上限を広げた
@@ -2507,6 +2552,107 @@ function drawGame(now){
   if (st.combo>1){ g.fillStyle=C["--accent"]; g.font=`500 22px ${C["--mono"]}`; g.fillText(st.combo+" COMBO",16,92); }
 }
 
+/* ================= フリーモード（採譜）：叩いた音をそのまま譜面にする。録ってMIDIファイルに保存もできる =================
+   ・曲を開かずにクリックだけで叩く（テンポ・拍子・長さを決める）か、開いていた曲や音楽ファイルを流しながら叩く
+   ・叩いた時刻は、マス目にそろえる前の「生の時刻」で覚えておく。そろえ方や小節線の位置を直しても、元の演奏は崩れない */
+const REC={mode:false,on:false,raw:[],r0:0,base:null,prevVal:"",audio:null,src:null,gain:null,tmr:0,last:0,pick:[]};
+const DEF_NOTE={kick:36,snare:38,hh:42,hhp:44,crash:49,crash2:57,ride:51,tom1:48,tom2:45,tom3:43};
+const recNote=(part,open)=>part==="hh"&&open?46:(DEF_NOTE[part]||38);
+function recSay(t){ $("rInfo").textContent=t; }
+function recBarTicks(){ return song.ppq*4*song.bars[0].num/song.bars[0].den; }
+/* 白紙の曲を作る（テンポ・拍子・小節数） */
+function recBlank(){ const bpm=Math.max(30,Math.min(300,+$("rBpm").value||100)), num=+$("rNum").value, den=+$("rDen").value, ppq=480, bl=ppq*4*num/den;
+  let bars=+$("rLen").value||16; if (REC.audio) bars=Math.max(bars,Math.ceil((REC.audio.buf.duration-REC.r0)/(60/bpm*num*4/den))+1);
+  if (!+$("rLen").value&&REC.raw.length){ const last=Math.max(...REC.raw.map(r=>r.time-REC.r0)); bars=Math.max(bars,Math.ceil(last/(60/bpm*num*4/den))+2); }
+  return buildSong(REC.audio?REC.audio.name:"フリー演奏",ppq,[],[],[{tick:0,uspq:6e7/bpm}],[{tick:0,num,den}],{chName:{},minTick:bars*bl}); }
+function recUse(sg){ if(st.playing) stop(); if (song&&song.strips) song.strips.forEach(s=>{ if(s.node){ try{ s.node.disconnect(); }catch(e){} } });
+  song=sg; curSongVal="rec:"; st.pos=0; st.viewPage=0; resetStats(); if($("songBtnTxt")) $("songBtnTxt").textContent="🎙 "+song.name;
+  $("bpm").value=$("bpmRange").value=Math.round(song.baseBpm); $("bpm").dataset.exact=song.baseBpm; $("origBpm").textContent="原曲 ♩="+fmtBpm(song.baseBpm);
+  audio(); ensureNodes(); renderStrips(); if (typeof syncVolGroup==="function"&&$("backVolV")){ syncVolGroup(); syncMuteBtns(); } }
+/* 録った音を、そろえ方に合わせて譜面にする */
+function recQuant(tick){ const ppq=song.ppq, b=+$("rGrid").value, u=ppq*4/b, tr=$("rTrip").checked?(b>=16?[ppq/3,ppq/6]:[ppq/3]):[];
+  let best=Math.round(tick/u)*u, bd=Math.abs(tick-best); for(const t of tr){ const q=Math.round(tick/t)*t, d=Math.abs(tick-q); if(d<bd-0.5){ best=q; bd=d; } } return Math.max(0,Math.round(best)); }
+function recBuild(){ if(!song||!song.src) return; const s=song.src, seen=new Set(), notes=[];
+  for (const r of REC.raw){ const tm=r.time-REC.r0; if(tm<-0.05) continue; const q=recQuant(song.s2t(Math.max(0,tm))), k=q+":"+r.note; if(seen.has(k)) continue; seen.add(k); notes.push({tick:q,note:r.note,vel:r.vel,ch:9,dur:Math.round(s.ppq/8)}); }
+  s.rawNotes.length=0; notes.forEach(n=>s.rawNotes.push(n));
+  if (!+$("rLen").value&&!REC.src){ const bl=recBarTicks(), lastTick=notes.reduce((m,n)=>Math.max(m,n.tick),0), cur=st.playing?song.s2t(Math.max(0,songNow())):0; s.info.minTick=Math.max(16*bl,(Math.floor(Math.max(lastTick,cur)/bl)+(REC.on?8:1))*bl); }
+  const d=st.dirty; rebuildSong(); st.dirty=REC.raw.length>0||d; recSay(REC.raw.length?`${REC.raw.length}個の音`:""); }
+function recLive(){ const n=performance.now(); clearTimeout(REC.tmr); if(n-REC.last>120){ REC.last=n; recBuild(); } else REC.tmr=setTimeout(()=>{ REC.last=performance.now(); recBuild(); },130); }
+/* 叩いた音を記録する（録音中だけ）。記録したら判定はしない */
+function recHit(part,ctxTime,vel,open,note){ if(!REC.on||!st.playing) return false;
+  const t=(ctxTime-S.latency/1000-st.origin)*st.rate; REC.raw.push({time:t+REC.r0,part,note:note??recNote(part,open),vel:Math.max(1,Math.min(127,Math.round(vel||100)))}); recLive(); return true; }
+/* 白紙の曲（または開いていた曲）を準備する */
+function recPrepare(){
+  if ($("rSong").checked&&REC.base){ const b=REC.base.src, sg=buildSong(REC.base.name+"_採譜",b.ppq,[],b.rawBack,b.tempos,b.sigs,{...b.info}); sg.src.buf=b.buf; sg.src.drumChAll=b.drumChAll; REC.src=b; recUse(sg); }
+  else { REC.src=null; recUse(recBlank()); }
+  recBuild(); }
+function recEnter(){ if(st.edit) setEdit(false); if(st.playing) stop();
+  REC.mode=true; REC.base=song&&curSongVal&&!curSongVal.startsWith("rec:")?song:REC.base; REC.prevVal=curSongVal.startsWith("rec:")?REC.prevVal:curSongVal;
+  $("rSongL").hidden=!REC.base; $("rSong").checked=false; REC.raw=[]; REC.r0=0;
+  if (song&&song.baseBpm) $("rBpm").value=Math.round(song.baseBpm);
+  $("recBar").hidden=false; $("empty").hidden=false; document.body.classList.add("freeOn"); if(S.view==="game"){ S.view="score"; applyView(); }
+  $("metro").checked=true; recPrepare(); requestAnimationFrame(()=>{ if(typeof buildPads==="function") buildPads(); });
+  recSay("● 録音を押すと、カウントのあとに録り始めます。叩いた音がそのまま譜面になります"); }
+function recExit(){ if(st.playing) stop(); REC.mode=false; REC.on=false; recAudioStop(); $("recBar").hidden=true; $("recFix").hidden=true; document.body.classList.remove("freeOn"); $("empty").hidden=true;
+  if (REC.prevVal&&REC.prevVal!=="rec:"&&(st.dirty?confirm("録った譜面を閉じて、元の曲に戻りますか？（保存していない譜面は消えます）"):true)) selectSong(REC.prevVal);
+  requestAnimationFrame(()=>{ if(typeof buildPads==="function") buildPads(); }); }
+function recGo(){ if(REC.on){ stop(); return; }
+  if (st.edit) setEdit(false); document.body.classList.add("freeOn"); $("empty").hidden=false; requestAnimationFrame(()=>{ if(typeof buildPads==="function") buildPads(); });
+  if (REC.raw.length&&!confirm("録り直しますか？（今の録音は消えます）")) return;
+  REC.raw=[]; REC.r0=REC.audio?REC.r0:0; recPrepare(); REC.on=true; $("rGo").textContent="■ 止める"; $("rGo").classList.add("on"); st.kbdUsed=true;
+  st.pos=0; startAt(0,true); recAudioStart(0); recSay("録音中… 止めるときは「■ 止める」か再生の■"); }
+function recFinish(){ REC.on=false; $("rGo").textContent="● 録音"; $("rGo").classList.remove("on"); recAudioStop(); recBuild();
+  recSay(REC.raw.length?`録音しました（${REC.raw.length}個）。「✎ 編集・保存」で直したり、MIDIファイルに保存したりできます`:"音が記録されませんでした"); }
+/* ---- 音楽ファイル（段階3）：読み込んだ曲を流しながら録る ---- */
+function recAudioStart(songPos){ recAudioStop(); if(!REC.audio||!REC.mode) return; audio();
+  const src=ctx.createBufferSource(); src.buffer=REC.audio.buf; src.playbackRate.value=st.rate;
+  if (!REC.gain){ REC.gain=ctx.createGain(); REC.gain.connect(masterGain||ctx.destination); }
+  REC.gain.gain.value=st.backMute?0:(S.backVol??100)/100; src.connect(REC.gain);
+  const at=st.origin+songPos/st.rate, off=REC.r0+songPos; /* 曲の0秒＝音楽ファイルの r0 秒 */
+  if (off>=0) src.start(Math.max(ctx.currentTime,at),off); else src.start(at-off/st.rate,0);
+  REC.audio.node=src; }
+function recAudioStop(){ if(REC.audio&&REC.audio.node){ try{ REC.audio.node.stop(); }catch(e){} REC.audio.node=null; } }
+/* ---- 位置を直す（段階2）：録った音から小節の頭を2つ選び、テンポと1小節目の位置を決め直す ---- */
+function rfDraw(){ const c=$("rfCv"); if(!c||$("recFix").hidden) return; const [x,w,h]=prepCanvas(c); x.fillStyle=C["--sunk"]; x.fillRect(0,0,w,h);
+  const rs=REC.raw; if(!rs.length) return; const t0=Math.min(...rs.map(r=>r.time)), t1=Math.max(...rs.map(r=>r.time))+0.01, X=t=>8+(t-t0)/(t1-t0)*(w-16);
+  REC.rfX=X; const lanes=SCROLL_ORDER, lh=(h-20)/lanes.length;
+  /* 今の小節線 */
+  const bpm=+$("rBpm").value, num=+$("rNum").value, den=+$("rDen").value, L=60/bpm*num*4/den;
+  x.strokeStyle="rgba(141,147,160,.35)"; x.fillStyle=C["--dim"]; x.font=`10px ${C["--mono"]}`;
+  for (let k=Math.floor((t0-REC.r0)/L); REC.r0+k*L<=t1; k++){ const xx=X(REC.r0+k*L); if(xx<0) continue; x.beginPath(); x.moveTo(xx,0); x.lineTo(xx,h); x.stroke(); x.fillText(String(k+1),xx+2,10); }
+  rs.forEach((r,i)=>{ const li=Math.max(0,lanes.indexOf(r.part)), y=14+li*lh+lh/2, sel=REC.pick.includes(i); x.fillStyle=PARTS[r.part]?PARTS[r.part].color:"#aaa"; x.beginPath(); x.arc(X(r.time),y,sel?6:3.2,0,Math.PI*2); x.fill(); if(sel){ x.strokeStyle="#fff"; x.lineWidth=2; x.stroke(); x.fillStyle="#fff"; x.fillText(REC.pick.indexOf(i)===0?"①":"②",X(r.time)-5,y-9); } });
+  $("rfNow").textContent=`　今：♩=${(+$("rBpm").value).toFixed(2)}　1小節目の位置 ${Math.round(REC.r0*1000)}ms`; }
+function rfApply(){ if(REC.pick.length<2){ $("rfMsg").textContent="音を2つ選んでください。"; return; }
+  let [a,b]=REC.pick.map(i=>REC.raw[i].time).sort((p,q)=>p-q), A=Math.max(1,+$("rfA").value||1), B=Math.max(A+1,+$("rfB").value||A+1);
+  const num=+$("rNum").value, den=+$("rDen").value, L=(b-a)/(B-A), bpm=60/(L/(num*4/den));
+  if (!(bpm>=20&&bpm<=400)){ $("rfMsg").textContent="テンポが極端になりました。選んだ音か小節の番号を確かめてください。"; return; }
+  $("rBpm").value=bpm.toFixed(2); REC.r0=a-(A-1)*L; REC.src=null; $("rSong").checked=false; recUse(recBlank()); recBuild(); rfDraw();
+  $("rfMsg").textContent=`合わせました：♩=${bpm.toFixed(2)}。違っていたら、選び直すか、下のボタンで細かく直してください。`; }
+function rfNudge(kind,d){ if(kind==="bpm") $("rBpm").value=(Math.max(20,(+$("rBpm").value)+d)).toFixed(2); else REC.r0+=d; if(!REC.src){ recUse(recBlank()); } recBuild(); rfDraw(); }
+{
+  const bind=()=>{
+    $("rGo").onclick=recGo; $("rClose").onclick=recExit;
+    $("rEdit").onclick=()=>{ if(st.playing) stop(); if(!REC.raw.length){ flash("まだ録音していません","--ok",null); return; } document.body.classList.remove("freeOn"); $("empty").hidden=true; setEdit(true); };
+    $("rFix").onclick=()=>{ if(st.playing) stop(); if(REC.src){ flash("曲に合わせて録ったときは、位置は曲に合っています","--ok",null); return; } if(REC.raw.length<2){ flash("先に録音してください","--ok",null); return; } REC.pick=[]; $("recFix").hidden=false; requestAnimationFrame(rfDraw); };
+    $("rfClose").onclick=()=>{ $("recFix").hidden=true; };
+    $("rfApply").onclick=rfApply;
+    document.querySelectorAll("[data-rf]").forEach(b=>b.onclick=()=>rfNudge(b.dataset.rf,+b.dataset.d));
+    $("rfCv").addEventListener("pointerdown",e=>{ if(!REC.rfX||!REC.raw.length) return; const r=$("rfCv").getBoundingClientRect(), px=e.clientX-r.left; let bi=-1, bd=1e9;
+      REC.raw.forEach((h,i)=>{ const d=Math.abs(REC.rfX(h.time)-px); if(d<bd){ bd=d; bi=i; } }); if(bd>14) return;
+      if (REC.pick.length>=2) REC.pick=[]; if(!REC.pick.includes(bi)) REC.pick.push(bi); $("rfMsg").textContent=REC.pick.length===1?"2つ目の音を押してください。":"小節の番号を確かめて「合わせる」を押してください。"; rfDraw(); });
+    ["rBpm","rNum","rDen","rLen"].forEach(id=>$(id).addEventListener("change",()=>{ if(REC.on) return; if(!REC.src){ recUse(recBlank()); recBuild(); } }));
+    ["rGrid","rTrip"].forEach(id=>$(id).addEventListener("change",()=>{ recBuild(); }));
+    $("rSong").addEventListener("change",()=>{ if(REC.on) return; if(REC.raw.length&&!confirm("今の録音は消えます。よいですか？")){ $("rSong").checked=!$("rSong").checked; return; } REC.raw=[]; REC.r0=0; recPrepare(); });
+    $("rAudio").onclick=()=>$("rAudioFile").click();
+    $("rAudioFile").addEventListener("change",async e=>{ const f=e.target.files[0]; e.target.value=""; if(!f) return; try{ audio(); const ab=await f.arrayBuffer(); const buf=await ctx.decodeAudioData(ab);
+      REC.audio={buf,name:f.name.replace(/\.[^.]+$/,"")}; REC.r0=0; REC.raw=[]; $("rSong").checked=false; REC.src=null; recUse(recBlank()); recBuild();
+      recSay(`「${f.name}」を流しながら録ります（${Math.round(buf.duration)}秒）。テンポを合わせてから録音するか、録ったあとで「📐 位置を直す」で合わせてください`); }
+      catch(err){ showError("音楽ファイルを読み込めませんでした："+err.message); } });
+    $("freeBtn").onclick=recEnter; if($("freeMenu")) $("freeMenu").onclick=recEnter;
+  };
+  bind();
+}
+
 /* ================= 横スクロール表示：叩く位置の線は左に止まっていて、音符が右から左へ流れてくる ================= */
 const SCROLL_ORDER=["crash2","crash","hh","ride","tom1","tom2","snare","tom3","kick","hhp"];
 function drawScroll(now){
@@ -2856,7 +3002,7 @@ function closeResults(){ const r=$("results"); if(r&&!r.hidden) r.hidden=true; }
 ["toggleAside","printBtn","editBtn","mmBtn","viewBtn","showXml","eSave"].forEach(id=>{ const el=$(id); if(el) el.addEventListener("click",()=>{ if(id!=="showRes") closeResults(); },true); });
 ["songSel"].forEach(id=>$(id).addEventListener("change",()=>setMenu(false)));
 $("loadBtn").addEventListener("click",()=>setMenu(false));
-["viewScore","viewGrid","viewGame","viewScroll","fsBtn","themeBtn","toggleAside"].forEach(id=>$(id).addEventListener("click",()=>setMenu(false)));
+["viewScore","viewGrid","viewGame","viewScroll","freeMenu","fsBtn","themeBtn","toggleAside"].forEach(id=>$(id).addEventListener("click",()=>setMenu(false)));
 // 再生中・メトロノーム中は画面が消えないようにする
 let wakeLock=null;
 async function keepAwake(on){ try{
@@ -2884,7 +3030,7 @@ $("viewGame").onclick=()=>{ if(st.edit){ setEdit(false); flash("ゲーム画面�
 $("viewScroll").onclick=()=>{ if(st.edit){ setEdit(false); flash("横スクロールでは編集できないため、編集を終了しました","--ok",null); } S.view="scroll"; saveSettings(); applyView(); };
 $("viewBtn").onclick=e=>{ e.stopPropagation(); const m=$("viewMenu"); m.hidden=!m.hidden; $("viewBtn").setAttribute("aria-expanded",String(!m.hidden)); };
 document.addEventListener("pointerdown",e=>{ const m=$("viewMenu"); if(!m.hidden&&!m.contains(e.target)&&e.target!==$("viewBtn")){ m.hidden=true; $("viewBtn").setAttribute("aria-expanded","false"); } });
-["viewScore","viewGrid","viewGame","viewScroll","fsBtn"].forEach(id=>$(id).addEventListener("click",()=>{ $("viewMenu").hidden=true; $("viewBtn").setAttribute("aria-expanded","false"); }));
+["viewScore","viewGrid","viewGame","viewScroll","freeMenu","fsBtn"].forEach(id=>$(id).addEventListener("click",()=>{ $("viewMenu").hidden=true; $("viewBtn").setAttribute("aria-expanded","false"); }));
 ["editBtn","printBtn"].forEach(id=>$(id).addEventListener("click",()=>{ $("settings").hidden=true; }));
 // 音量のまとめ：全体・ドラム・ドラム以外・メトロノーム
 function syncVolGroup(){ $("masterVolV").textContent=S.masterVol; $("backVol").value=S.backVol??100; $("backVolV").textContent=(S.backVol??100)+"%";
