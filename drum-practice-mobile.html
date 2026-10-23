@@ -602,6 +602,7 @@ header .tStep{min-width:28px;padding:4px 5px}
 .padGrid svg{width:100%;height:100%;display:block;overflow:visible}
 .pad{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .pad>g{transform-box:fill-box;transform-origin:center;transition:transform .06s,filter .08s}
+.pad .art{opacity:0;transition:opacity .3s;pointer-events:none}.pad .art.show{opacity:.95;transition:none}
 .pad.on>g{transform:scale(calc(1 - .06*var(--pv,1)));filter:brightness(calc(1 + .9*var(--pv,1))) drop-shadow(0 0 calc(1px + 12px*var(--pv,1)) var(--pc))}
 .pad text{pointer-events:none;font-family:var(--font);text-anchor:middle;dominant-baseline:middle}
 .pad .nm{font-size:3.1px;font-weight:700}
@@ -848,6 +849,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <div class="row"><label for="ball">バウンドボール</label><input type="checkbox" id="ball" checked></div>
       <div class="row"><label for="cursor">再生位置の縦棒</label><input type="checkbox" id="cursor" checked></div>
       <div class="row"><label for="headColor">音符の玉の色でも判定を表示（緑・水色／橙・赤）</label><input type="checkbox" id="headColor"></div>
+      <div class="row"><label for="scoreFine">譜面の細かさ</label><select id="scoreFine"><option value="std">標準（32分音符まで）</option><option value="64">64分音符まで</option></select></div>
       <div class="row"><label for="judgeStyle">判定の色の付け方</label><select id="judgeStyle"><option value="std">標準（緑・水色／橙・赤）</option><option value="dt1">DT-1風（正解は青◯、外れは赤×・△）</option></select></div>
       <div class="row"><label for="marks">○×マーク（緑○・黄○、叩き忘れ＝薄い赤×、叩き間違い＝濃い赤×）</label><input type="checkbox" id="marks" checked></div>
       <div class="row"><label for="velShow">叩いた強さの表示（譜面の下）</label><select id="velShow"><option value="bar">バー</option><option value="num">バー＋数字</option><option value="off">表示しない</option></select></div>
@@ -882,6 +884,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
     <section>
       <h2>再生</h2>
       <div class="row"><label for="skipLead">最初の空白の小節を飛ばして再生する</label><input type="checkbox" id="skipLead" checked></div>
+      <div class="row"><label for="hideLead">最初の空白の小節を譜面に表示しない</label><input type="checkbox" id="hideLead"></div>
       <details class="syncBox" id="syncBox"><summary><span>ほかのソフト・別の端末と同期する</span><span id="syncBadge"></span></summary><div class="syncIn">
         <div class="row"><label for="syncOn">ほかのソフトと同期する（同じ端末のブラウザ）</label><input type="checkbox" id="syncOn"></div>
         <div id="syncStat" class="help"></div>
@@ -960,6 +963,10 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
             <li>ドラムのパーツごと・伴奏のパートごとに音量とソロを設定できます。名前を押すとミュート、数字を押すと音量のスライダーが出ます。ミュート中もレベルは薄いグレーで動きます。</li>
             <li>ドラムの各パーツは色分けされていて、叩くとミキサーが叩いた強さに合わせて光ります。曲で使っていないパーツも表示します。</li>
             <li>テンポは−／＋で変えられます（初めは1回で±10。長押しで出る「1・5・10」から選ぶと、そのあとはその幅で変わります）。テンポの数字を押すとスライダーが出て、「テンポ／原曲」の文字を押すと原曲のテンポに戻ります。</li>
+            <li>設定の「最初の空白の小節を譜面に表示しない」をオンにすると、曲の頭の空白の小節を譜面に出しません（小節番号は元の曲のまま）。「譜面の細かさ」は、標準では32分音符まで（それより細かいずれは近い位置にまとめて描く）、「64分音符まで」にすると64分音符も描きます。</li>
+            <li>再生中は、今の段の最後の小節に入ったところで、弾き終わった段を次の段に書き換えます。曲全体が画面に収まるときは書き換えません。</li>
+            <li>電子ドラムが叩き分けの信号を送ってくるときは、パッドの図と下のドラムの図に、どこを叩いたかが出ます（ライド・シンバルのカップは中心の点、エッジやリムショットはふちの輪、クロススティックはふちの線）。</li>
+            <li>タッチできる端末では、ゲーム表示の判定線の下に、指で叩けるパッドが出ます。</li>
             <li>設定の「再生」で「クリックを左、それ以外の音を右に分けて出す」をオンにすると、メトロノーム・カウントの音を左、曲やドラムの音を右から出せます（ミキサーで別々に扱うときに）。</li>
             <li>設定の「再生」にある「ほかのソフト・別の端末と同期する」のボタンを押して開き、「ほかのソフトと同期する」をオンにすると、同じブラウザで開いた対応ソフト（鍵盤の練習ソフトなど）と、再生・停止・小節の移動・テンポがそろいます（どちらで操作してもよい）。別の端末とは、同じ部屋番号を入れて「つなぐ」を押すと同期します。ループ範囲・カウント・曲の受け渡し・相手が弾くパートのミュート・再生中のずれの補正・端末ごとの音の遅れの調整・MIDIクロック（DAWなどとの同期）にも対応しています。</li>
             <li>ループボタンを押すと曲全体をループします。譜面上で小節をなぞると、その範囲（1小節から）をループします。</li>
@@ -1020,7 +1027,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <h2>このソフトのURL</h2>
       <div class="qrBox"><div class="qrImg" role="img" aria-label="配布先URL（https://pikadrum.github.io/drum/）のQRコード"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><rect width="37" height="37" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM12 4h3v1h-3zM22 4h1v1h-1zM26 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h2v1h-2zM16 5h1v1h-1zM20 5h4v1h-4zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM13 6h2v1h-2zM16 6h2v1h-2zM19 6h3v1h-3zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h3v1h-3zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h5v1h-5zM18 7h3v1h-3zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h3v1h-3zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h3v1h-3zM20 8h3v1h-3zM26 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h2v1h-2zM15 9h5v1h-5zM21 9h1v1h-1zM23 9h2v1h-2zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h7v1h-7zM12 11h3v1h-3zM16 11h1v1h-1zM18 11h1v1h-1zM21 11h1v1h-1zM4 12h1v1h-1zM8 12h1v1h-1zM10 12h4v1h-4zM15 12h1v1h-1zM17 12h5v1h-5zM24 12h6v1h-6zM32 12h1v1h-1zM6 13h1v1h-1zM11 13h2v1h-2zM15 13h1v1h-1zM21 13h2v1h-2zM26 13h7v1h-7zM7 14h2v1h-2zM10 14h3v1h-3zM14 14h6v1h-6zM21 14h1v1h-1zM26 14h1v1h-1zM32 14h1v1h-1zM4 15h1v1h-1zM6 15h3v1h-3zM11 15h2v1h-2zM16 15h2v1h-2zM19 15h4v1h-4zM24 15h4v1h-4zM29 15h1v1h-1zM31 15h2v1h-2zM4 16h1v1h-1zM6 16h1v1h-1zM10 16h2v1h-2zM13 16h2v1h-2zM16 16h2v1h-2zM21 16h1v1h-1zM23 16h1v1h-1zM25 16h1v1h-1zM31 16h1v1h-1zM4 17h1v1h-1zM6 17h2v1h-2zM11 17h1v1h-1zM14 17h2v1h-2zM17 17h2v1h-2zM20 17h3v1h-3zM25 17h8v1h-8zM4 18h2v1h-2zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM24 18h3v1h-3zM28 18h3v1h-3zM32 18h1v1h-1zM4 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM14 19h3v1h-3zM18 19h1v1h-1zM21 19h2v1h-2zM25 19h1v1h-1zM27 19h2v1h-2zM31 19h2v1h-2zM7 20h1v1h-1zM10 20h6v1h-6zM17 20h3v1h-3zM21 20h2v1h-2zM24 20h2v1h-2zM31 20h1v1h-1zM4 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM21 21h2v1h-2zM25 21h5v1h-5zM31 21h2v1h-2zM6 22h2v1h-2zM9 22h4v1h-4zM14 22h1v1h-1zM17 22h3v1h-3zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM30 22h1v1h-1zM32 22h1v1h-1zM6 23h4v1h-4zM12 23h1v1h-1zM14 23h4v1h-4zM21 23h4v1h-4zM26 23h3v1h-3zM31 23h2v1h-2zM4 24h2v1h-2zM8 24h1v1h-1zM10 24h4v1h-4zM15 24h3v1h-3zM19 24h1v1h-1zM21 24h1v1h-1zM23 24h7v1h-7zM32 24h1v1h-1zM12 25h1v1h-1zM14 25h1v1h-1zM16 25h4v1h-4zM22 25h3v1h-3zM28 25h1v1h-1zM32 25h1v1h-1zM4 26h7v1h-7zM12 26h2v1h-2zM16 26h1v1h-1zM19 26h1v1h-1zM21 26h4v1h-4zM26 26h1v1h-1zM28 26h3v1h-3zM32 26h1v1h-1zM4 27h1v1h-1zM10 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM18 27h2v1h-2zM21 27h1v1h-1zM23 27h2v1h-2zM28 27h1v1h-1zM31 27h2v1h-2zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM12 28h2v1h-2zM16 28h4v1h-4zM21 28h1v1h-1zM23 28h7v1h-7zM4 29h1v1h-1zM6 29h3v1h-3zM10 29h1v1h-1zM13 29h1v1h-1zM16 29h1v1h-1zM19 29h2v1h-2zM23 29h1v1h-1zM25 29h1v1h-1zM32 29h1v1h-1zM4 30h1v1h-1zM6 30h3v1h-3zM10 30h1v1h-1zM13 30h3v1h-3zM17 30h3v1h-3zM23 30h3v1h-3zM29 30h4v1h-4zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h1v1h-1zM16 31h2v1h-2zM19 31h1v1h-1zM21 31h1v1h-1zM24 31h1v1h-1zM27 31h1v1h-1zM29 31h1v1h-1zM31 31h2v1h-2zM4 32h7v1h-7zM12 32h3v1h-3zM16 32h1v1h-1zM18 32h1v1h-1zM20 32h2v1h-2zM23 32h3v1h-3zM28 32h1v1h-1zM31 32h1v1h-1z"/></svg></div><div class="help">スマホやタブレットのカメラで読み取ると、このソフトを開けます。<br><a href="https://pikadrum.github.io/drum/" target="_blank" rel="noopener">https://pikadrum.github.io/drum/</a></div></div>
     </section>
-    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/20 14:16</div>
+    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/23 12:13</div>
     </div>
   </aside>
 </main>
@@ -1214,10 +1221,11 @@ function buildSong(name, ppq, rawNotes, rawBack, tempos, sigs, info={}){
     song.baseBpm=best?+best[0]:60e6/tempos[0].uspq;
     song.tempoChanges=Object.keys(dur).length>1; }
   song.notes=rawNotes.filter(n=>noteToPart[n.note]).sort((a,b)=>a.tick-b.tick).map(n=>{
+    const uq=S.scoreFine==="64"?u:u*2; /* 標準は32分音符のマス目に寄せる（64分ほどの小さなずれで音符が離れて見えないように）。「64分音符まで」はそのまま */
     const q64=Math.round(n.tick/u)*u, q3=Math.round(n.tick/u3)*u3;
     const e64=Math.abs(n.tick-q64), e3=Math.abs(n.tick-q3);
     const trip = e3+ppq*0.01<e64 && Math.abs(q3/u-Math.round(q3/u))>0.01;
-    return { tick:n.tick, q:trip?q3:q64, note:n.note, vel:n.vel, part:noteToPart[n.note],
+    return { tick:n.tick, q:trip?q3:Math.round(n.tick/uq)*uq, note:n.note, vel:n.vel, part:noteToPart[n.note],
       open:PARTS.hh.open.includes(n.note), time:song.t2s(n.tick), judge:null };
   });
   song.back=rawBack.map(n=>({ note:n.note, vel:n.vel, ch:n.ch, prog:n.prog, time:song.t2s(n.tick), end:song.t2s(n.tick+Math.max(n.dur,ppq/8)) })).sort((a,b)=>a.time-b.time);
@@ -1323,7 +1331,7 @@ function selectSong(val){
   if (song&&song.strips) song.strips.forEach(s=>{ if(s.node){ try{ s.node.disconnect(); }catch(e){} } });
   const [kind,idx]=val.split(":");
   song = kind==="ex" ? makeEx(EXERCISES[+idx]) : loadedFiles[+idx].song;
-  st.pos=songStart(); st.viewPage=Math.floor(barAt(st.pos)/perPage()); resetStats();
+  st.pos=songStart(); st.viewPage=pageOf(barAt(st.pos)); resetStats();
   if (song.leadBars>0&&S.skipLead) flash(`空白の${song.leadBars===1?"1小節目":"最初の"+song.leadBars+"小節"}を飛ばして再生します`,"--ok",null);
   $("bpm").value=$("bpmRange").value=Math.round(song.baseBpm);
   $("bpm").dataset.exact=song.baseBpm;
@@ -1543,7 +1551,7 @@ function play(){
 function stop(){
   midiAllOff();
   st.pos=Math.max(0,Math.min(songNow(),song.length)); st.playing=false; $("play").textContent="▶ 再生";
-  st.viewPage=Math.floor(barAt(st.pos)/perPage());
+  st.viewPage=pageOf(barAt(st.pos));
 }
 function scheduler(){
   if (!st.playing) return;
@@ -1582,7 +1590,7 @@ function scheduler(){
     resetJudge(lr.start,lr.end);
     st.origin+=(lr.end-lr.start)/st.rate; st.startPos=lr.start;
     setIdx(lr.start);
-  } else if (!lr&&now>song.length+0.3){ stop(); st.pos=songStart(); st.viewPage=Math.floor(barAt(st.pos)/perPage()); showResults(); }
+  } else if (!lr&&now>song.length+0.3){ stop(); st.pos=songStart(); st.viewPage=pageOf(barAt(st.pos)); showResults(); }
 }
 setInterval(()=>{ try{ scheduler(); }catch(e){ console.error(e); showError("再生中のエラー："+e.message); } },20);
 
@@ -1766,11 +1774,14 @@ function selectInput(){
   else { ms.textContent="未接続"; ms.className=""; }
   applyJudgeState();
 }
+/* 叩き分け：その番号が届いたときだけ、どこを叩いたかを図に出す（ボウ・エッジ・カップ／ヘッド・リム・クロススティック） */
+const ART={51:"bow",59:"edge",53:"bell",49:"bow",55:"edge",57:"bow",52:"edge",42:"bow",22:"edge",46:"bow",26:"edge",38:"head",40:"rim",37:"xstick",48:"head",50:"rim",45:"head",47:"rim",43:"head",58:"rim"};
+function noteArt(part,note){ const a=ART[note]; if(!a) return null; st.artSeen=st.artSeen||{}; if(a!=="bow"&&a!=="head") st.artSeen[part]=true; if((a==="bow"||a==="head")&&!st.artSeen[part]) return null; return a; }
 function onMidi(e){
   const [s,a,b]=e.data; if((s&0xf0)!==0x90||!b) return;
   const part=noteToPart[a]; if(!part) return;
   st.lastIn[part]=performance.now(); st.lastInVel[part]=b;
-  const op=part==="hh"?PARTS.hh.open.includes(a):undefined; padLight(op?"hhOpen":part,b);
+  const op=part==="hh"?PARTS.hh.open.includes(a):undefined, art=noteArt(part,a); st.lastArt=st.lastArt||{}; st.lastArt[part]=art?{art,at:performance.now()}:null; padLight(op?"hhOpen":part,b,art);
   audio(); hit(part, ctx.currentTime-(performance.now()-e.timeStamp)/1000, b, op);
 }
 
@@ -2059,21 +2070,24 @@ function xIn(i,col,bi,tick){
   const a=m.t[k-1], b=m.t[k], f=b>a?Math.min(1,Math.max(0,(tick-a)/(b-a))):0;
   return x0+pad+(m.w[k-1]+(m.w[k]-m.w[k-1])*f)*sc;
 }
+/* 譜面の表示を始める小節（「最初の空白の小節を譜面に表示しない」のとき、空白の小節を飛ばす。小節番号は元のまま） */
+function viewOff(){ return S.hideLead&&song&&song.leadBars>0?song.leadBars:0; }
+function pageOf(bi){ return Math.max(0,Math.floor((bi-viewOff())/perPage())); }
 function slotBases(now){
   if (PRINT_BASES) return PRINT_BASES;
   const pp=perPage(), bases=[];
   if (st.playing&&S.preview){
-    // 段（行）単位で考える。今の段の「半分」を過ぎたら、いちばん古い段を次の段に入れ替える
-    // 半分＝ceil(1段の小節数/2) 番目の小節の頭（奇数なら半分を完全に超えた小節の頭）
-    const R=S.rows, bpr=S.barsPerRow, cur=barAt(Math.max(st.startPos||0,now)), c=Math.floor(cur/bpr);
-    const past=(cur-c*bpr)>=Math.ceil(bpr/2);
-    let L=c+R-2+(past?1:0); if (L<R-1) L=R-1;
+    /* 段（行）単位で考える。今の段の最後の小節に入ったら、いちばん古い段を次の段に入れ替える（1段2小節以下は後半に入ったら）。
+       曲の小節が全部画面に収まるときは、入れ替えずに全部表示したままにする */
+    const off=viewOff(), R=S.rows, bpr=S.barsPerRow, cur=Math.max(off,barAt(Math.max(st.startPos||0,now))), c=Math.floor((cur-off)/bpr);
+    const past=(cur-off-c*bpr)>=Math.max(1,bpr-1);
+    let L=c+R-2+(past?1:0); if (L<R-1||song.bars.length-off<=R*bpr) L=R-1;
     for(let i=0;i<R;i++) bases.push(-1);
-    for(let gI=L-R+1; gI<=L; gI++) bases[((gI%R)+R)%R]=gI*bpr;
+    for(let gI=L-R+1; gI<=L; gI++) bases[((gI%R)+R)%R]=off+gI*bpr;
   } else if (st.playing){
-    const cur=barAt(Math.max(0,now)), page=Math.floor(cur/pp);
-    for(let i=0;i<S.rows;i++) bases.push(page*pp+i*S.barsPerRow);
-  } else for(let i=0;i<S.rows;i++) bases.push(st.viewPage*pp+i*S.barsPerRow);
+    const off=viewOff(), cur=barAt(Math.max(0,now)), page=pageOf(cur);
+    for(let i=0;i<S.rows;i++) bases.push(off+page*pp+i*S.barsPerRow);
+  } else { const off=viewOff(); for(let i=0;i<S.rows;i++) bases.push(off+st.viewPage*pp+i*S.barsPerRow); }
   return bases;
 }
 function locate(bases,bi){ for(let i=0;i<bases.length;i++){ if(bases[i]<0) continue; const c=bi-bases[i]; if(c>=0&&c<S.barsPerRow) return {row:i,col:c}; } return null; }
@@ -2412,6 +2426,13 @@ function drawKitView(){
     if (r>0){ const rr=r*H; k.beginPath(); k.arc(cx,cy,rr,0,Math.PI*2); if(L>0){ k.globalAlpha=.1+.9*L; } k.fill(); k.globalAlpha=.55+.45*L; k.shadowBlur=0; k.stroke(); }
     else { const rw=p==="kick"?W*0.16:W*0.08, rh=H*0.2; if(L>0) k.globalAlpha=.1+.9*L; k.fillRect(cx-rw/2,cy-rh/2,rw,rh); k.globalAlpha=.55+.45*L; k.shadowBlur=0; k.strokeRect(cx-rw/2,cy-rh/2,rw,rh); }
     k.restore();
+    const la=st.lastArt&&st.lastArt[p]; if (la&&lit>0&&ih>=la.at-5){ /* 叩き分けの印 */
+      k.save(); k.globalAlpha=Math.min(1,.35+lit); k.strokeStyle="#fff"; k.fillStyle="#fff"; k.lineCap="round"; const rr=r>0?r*H:H*0.1;
+      if (la.art==="bell"){ k.beginPath(); k.arc(cx,cy,rr*.3,0,Math.PI*2); k.fill(); }
+      else if (la.art==="edge"||la.art==="rim"){ k.lineWidth=Math.max(1.5,rr*.18); k.beginPath(); k.arc(cx,cy,rr*.9,0,Math.PI*2); k.stroke(); }
+      else if (la.art==="xstick"){ k.lineWidth=Math.max(1.5,rr*.18); k.beginPath(); k.arc(cx,cy,rr*.9,Math.PI*.55,Math.PI*.95); k.stroke(); k.beginPath(); k.moveTo(cx-rr*.6,cy+rr*.6); k.lineTo(cx+rr*.35,cy-rr*.35); k.stroke(); }
+      else if (la.art==="bow"){ k.beginPath(); k.arc(cx+rr*.5,cy-rr*.3,Math.max(1.5,rr*.18),0,Math.PI*2); k.fill(); }
+      k.restore(); }
     k.fillStyle=L>0.4?"#14171c":C["--dim"]; k.font=`9px ${C["--mono"]}`; k.textAlign="center"; k.textBaseline="middle"; k.fillText(PARTS[p].short,cx,cy);
   }
 }
@@ -2427,9 +2448,17 @@ function drawVelMini(){
 }
 
 // ================= ゲーム画面 =================
+/* タッチできる端末か（スマホ・タブレット・Windowsのタブレットなど） */
+const IS_TOUCH=(navigator.maxTouchPoints||0)>0||matchMedia("(pointer:coarse)").matches;
+let GAME_PADS=null;
+/* ゲーム表示で、判定線の下のパッドを押したら叩いたことにする */
+cv.addEventListener("pointerdown",e=>{ const gp=GAME_PADS; if(S.view!=="game"||!gp||!gp.on||st.edit) return; const r=cv.getBoundingClientRect(), x=e.clientX-r.left, y=e.clientY-r.top;
+  if (y<gp.hitY+4) return; const i=Math.floor((x-gp.x0)/gp.laneW); if(i<0||i>=gp.lanes.length) return; e.preventDefault(); e.stopImmediatePropagation();
+  const part=gp.lanes[i]; audio(); if(ctx.state==="suspended") ctx.resume(); const t=ctx.currentTime+0.005; drumSound(t,part,100,false); st.lastIn[part]=performance.now(); st.lastInVel[part]=100; if(!st.kbdUsed){ st.kbdUsed=true; applyJudgeState(); } hit(part,t,100); },true);
 function drawGame(now){
   const {w,h}=G, lanes=GAME_ORDER.filter(k=>!S.hidden[k]);
-  const laneW=Math.min(110,(w-60)/lanes.length), x0=(w-laneW*lanes.length)/2, hitY=h-80;
+  const touch=IS_TOUCH, laneW=Math.min(110,(w-60)/lanes.length), x0=(w-laneW*lanes.length)/2, hitY=h-(touch?Math.min(170,Math.max(110,h*0.22)):80);
+  GAME_PADS={x0,laneW,lanes,hitY,on:touch};
   const pps=280*S.gameSpeed/100, t=performance.now(), rate=st.playing?st.rate:1;
   const yAt=time=>hitY-((time-now)/rate)*pps;
   lanes.forEach((k,i)=>{
@@ -2449,8 +2478,11 @@ function drawGame(now){
     g.fillRect(bx,y-bh/2,bw,bh); g.globalAlpha=1;
   }
   g.fillStyle=C["--fg"]; g.fillRect(x0,hitY-1,laneW*lanes.length,3);
-  lanes.forEach((k,i)=>{ const cx=x0+i*laneW+laneW/2; g.fillStyle=PARTS[k].color; g.font=`700 13px ${C["--mono"]}`; g.textAlign="center"; g.textBaseline="middle"; g.fillText(PARTS[k].short,cx,hitY+22);
-    g.fillStyle=C["--dim"]; g.font=`11px ${C["--font"]}`; g.fillText(PARTS[k].name,cx,hitY+42); });
+  if (touch){ /* タッチできる端末：判定線の下を、指で叩けるパッドにする */
+    lanes.forEach((k,i)=>{ const lx=x0+i*laneW+3, ly=hitY+10, lw=laneW-6, lhh=h-hitY-16, lh=st.lastIn[k], age=lh?(t-lh)/200:9, v=Math.max(.15,Math.pow(Math.min(127,st.lastInVel[k]??100)/127,1.6));
+      g.fillStyle=PARTS[k].color; g.globalAlpha=.16+(age<1?(1-age)*.6*v:0); g.beginPath(); g.roundRect?g.roundRect(lx,ly,lw,lhh,10):g.rect(lx,ly,lw,lhh); g.fill(); g.globalAlpha=.7; g.strokeStyle=PARTS[k].color; g.lineWidth=1.5; g.stroke(); g.globalAlpha=1; }); }
+  lanes.forEach((k,i)=>{ const cx=x0+i*laneW+laneW/2, ly=touch?hitY+10+(h-hitY-16)/2-10:hitY+22; g.fillStyle=PARTS[k].color; g.font=`700 13px ${C["--mono"]}`; g.textAlign="center"; g.textBaseline="middle"; g.fillText(PARTS[k].short,cx,ly);
+    g.fillStyle=C["--dim"]; g.font=`11px ${C["--font"]}`; g.fillText(PARTS[k].name,cx,ly+20); });
   g.textAlign="left"; g.textBaseline="alphabetic"; g.fillStyle=C["--fg"]; g.font=`500 28px ${C["--mono"]}`; g.fillText(String(st.score).padStart(7,"0"),16,44);
   g.fillStyle=C["--dim"]; g.font=`12px ${C["--font"]}`; g.fillText("SCORE",16,60);
   if (st.combo>1){ g.fillStyle=C["--accent"]; g.font=`500 22px ${C["--mono"]}`; g.fillText(st.combo+" COMBO",16,92); }
@@ -2493,9 +2525,9 @@ function drawSeek(now){
 { const c=$("seek");
   const pos=e=>e.clientX-c.getBoundingClientRect().left;
   c.addEventListener("pointerdown",e=>{ if(!song||!song.bars) return; e.preventDefault(); try{ c.setPointerCapture(e.pointerId); }catch(_){}
-    st.seekDrag=seekBarAtX(pos(e)); if(!st.playing){ st.pos=song.bars[st.seekDrag].time; st.viewPage=Math.floor(st.seekDrag/perPage()); } });
+    st.seekDrag=seekBarAtX(pos(e)); if(!st.playing){ st.pos=song.bars[st.seekDrag].time; st.viewPage=pageOf(st.seekDrag); } });
   c.addEventListener("pointermove",e=>{ if(st.seekDrag==null) return; const b=seekBarAtX(pos(e)); if(b===st.seekDrag) return; st.seekDrag=b;
-    if(!st.playing){ st.pos=song.bars[b].time; st.viewPage=Math.floor(b/perPage()); } });
+    if(!st.playing){ st.pos=song.bars[b].time; st.viewPage=pageOf(b); } });
   const end=()=>{ if(st.seekDrag==null) return; const b=st.seekDrag; st.seekDrag=null;
     if (st.playing){ const cur=barAt(Math.max(st.startPos,songNow())); if(b!==cur) seekBars(b-cur); }
     else flash(`${b+1}小節目`,"--ok",null); };
@@ -2633,7 +2665,7 @@ function drawPartPreview(){
 ["barsPerRow","rows","zoom","headSize","gameSpeed","latency","rowGap"].forEach(id=>{
   const el=$(id); el.value=S[id];
   el.addEventListener("input",()=>{ const v=+el.value; if(!isFinite(v)) return; S[id]=v;
-    if(id==="barsPerRow"||id==="rows"){ S[id]=Math.max(1,Math.round(v)); st.viewPage=Math.floor(barAt(st.pos)/perPage()); }
+    if(id==="barsPerRow"||id==="rows"){ S[id]=Math.max(1,Math.round(v)); st.viewPage=pageOf(barAt(st.pos)); }
     saveSettings(); });
 });
 document.querySelectorAll(".stepBtn").forEach(b=>b.onclick=()=>{ const el=$(b.dataset.for), v=Math.max(+el.min||1,Math.min(+el.max||99,(+el.value||0)+(+b.dataset.d)));
@@ -2648,9 +2680,11 @@ function applyExtTrimRow(){ $("extTrimRow").hidden=!$("outDrum").value; }
 $("extTrim").value=S.extTrim; $("extTrimV").textContent=S.extTrim+"%";
 $("extTrim").addEventListener("input",()=>{ S.extTrim=+$("extTrim").value; $("extTrimV").textContent=S.extTrim+"%"; saveSettings(); });
 $("outDrum").addEventListener("change",applyExtTrimRow);
-$("skipLead").checked=S.skipLead; $("skipLead").onchange=()=>{ S.skipLead=$("skipLead").checked; saveSettings(); if(!st.playing){ st.pos=songStart(); st.viewPage=Math.floor(barAt(st.pos)/perPage()); } };
+$("hideLead").checked=!!S.hideLead; $("hideLead").onchange=()=>{ S.hideLead=$("hideLead").checked; saveSettings(); st.viewPage=pageOf(barAt(st.pos)); };
+$("skipLead").checked=S.skipLead; $("skipLead").onchange=()=>{ S.skipLead=$("skipLead").checked; saveSettings(); if(!st.playing){ st.pos=songStart(); st.viewPage=pageOf(barAt(st.pos)); } };
 $("extCurve").value=String(S.extCurve); $("extCurve").onchange=()=>{ S.extCurve=+$("extCurve").value; saveSettings(); };
 $("outDelay").value=S.outDelay; $("outDelay").addEventListener("input",()=>{ S.outDelay=+$("outDelay").value||0; saveSettings(); });
+$("scoreFine").value=S.scoreFine==="64"?"64":"std"; $("scoreFine").onchange=()=>{ S.scoreFine=$("scoreFine").value; saveSettings(); if(song&&song.src){ const d=st.dirty; rebuildSong(); st.dirty=d; } };
 $("judgeStyle").value=S.judgeStyle==="dt1"?"dt1":"std"; document.body.classList.toggle("dt1",S.judgeStyle==="dt1"); $("judgeStyle").onchange=()=>{ S.judgeStyle=$("judgeStyle").value; document.body.classList.toggle("dt1",S.judgeStyle==="dt1"); if(S.judgeStyle==="dt1"){ S.velShow="off"; $("velShow").value="off"; } /* DT-1風では強さのバーを出さない（あとから表示に戻せる） */ saveSettings(); };
 $("headColor").checked=S.headColor; $("headColor").onchange=()=>{ S.headColor=$("headColor").checked; saveSettings(); };
 $("velShow").value=S.velShow; $("velShow").onchange=()=>{ S.velShow=$("velShow").value; saveSettings(); };
@@ -2774,7 +2808,7 @@ function applyOrientation(){
   // 小節数は向きで決め、段数は譜面の欄の高さに入るだけ（下の欄を開くと段を減らして全部見えるように）
   const portrait=window.innerWidth<window.innerHeight, nb=portrait?2:4;
   let nr=portrait?4:2; if(song&&song.bars&&cv.clientHeight>0){ const keepB=S.barsPerRow; S.barsPerRow=nb; nr=fitRows(); S.barsPerRow=keepB; }
-  if (S.barsPerRow!==nb||S.rows!==nr){ S.barsPerRow=nb; S.rows=nr; $("barsPerRow").value=nb; $("rows").value=nr; if(song) st.viewPage=Math.floor(barAt(st.pos)/perPage()); saveSettings(); }
+  if (S.barsPerRow!==nb||S.rows!==nr){ S.barsPerRow=nb; S.rows=nr; $("barsPerRow").value=nb; $("rows").value=nr; if(song) st.viewPage=pageOf(barAt(st.pos)); saveSettings(); }
 }
 window.addEventListener("resize",applyOrientation); window.addEventListener("orientationchange",()=>setTimeout(applyOrientation,200));
 $("autoBars").checked=S.autoBars!==false; $("autoBars").onchange=()=>{ S.autoBars=$("autoBars").checked; saveSettings(); applyOrientation(); };
@@ -2813,11 +2847,11 @@ $("velToggle").onclick=()=>{ S.velOpen=S.velOpen===false; saveSettings(); applyV
 S.velOpen=!!currentInput; applyVelBox(); // 起動時：MIDI入力がつながるまでは畳んでおく
 $("viewGrid").onclick=()=>{ S.view="grid"; saveSettings(); applyView(); };
 $("play").onclick=play;
-$("rewind").onclick=()=>{ const was=st.playing; if(was) stop(); st.pos=songStart(); st.viewPage=Math.floor(barAt(st.pos)/perPage()); if(was) play(); };
+$("rewind").onclick=()=>{ const was=st.playing; if(was) stop(); st.pos=songStart(); st.viewPage=pageOf(barAt(st.pos)); if(was) play(); };
 $("showRes").onclick=()=>{ if(st.playing) stop(); showResults(); };
 $("closeRes").onclick=()=>{ $("results").hidden=true; };
 $("results").addEventListener("click",e=>{ if(e.target.id==="results") $("results").hidden=true; });
-$("retry").onclick=()=>{ $("results").hidden=true; st.pos=songStart(); st.viewPage=Math.floor(barAt(st.pos)/perPage()); play(); };
+$("retry").onclick=()=>{ $("results").hidden=true; st.pos=songStart(); st.viewPage=pageOf(barAt(st.pos)); play(); };
 function fmtBpm(v){ return Math.abs(v-Math.round(v))<0.05?String(Math.round(v)):v.toFixed(1); }
 // 入力欄が原曲の値のままなら、小数点以下も含めた原曲テンポで再生する
 function bpmTarget(){ const v=+$("bpm").value, ex=+$("bpm").dataset.exact; return (ex&&Math.round(ex)===v)?ex:(v||song.baseBpm); }
@@ -2904,7 +2938,7 @@ function seekBars(delta){
   const t=song.bars[to].time;
   if (st.playing){ midiAllOff(); st.playing=false; resetJudge(t,song.length+1); startAt(t,false); }
   else { st.pos=t; }
-  st.viewPage=Math.floor(to/perPage());
+  st.viewPage=pageOf(to);
   flash(`${to+1}小節目`,"--ok",null);
 }
 // 拡大縮小：段数と1段の小節数を組み合わせた段階（上ほど拡大）
@@ -2926,7 +2960,7 @@ function zoomStep(dir){ // dir: -1=拡大（表示を減らす）, +1=縮小（�
   if (S.rows===prevRows&&S.barsPerRow===prevBpr) return;
   S.autoBars=false; if($("autoBars")) $("autoBars").checked=false;
   $("rows").value=S.rows; $("barsPerRow").value=S.barsPerRow; saveSettings();
-  st.viewPage=Math.floor(cur/perPage());
+  st.viewPage=pageOf(cur);
   flash(`${S.rows}段 × ${S.barsPerRow}小節`,"--ok",null);
 }
 let wheelAcc=0;
@@ -2949,7 +2983,7 @@ function barFromPoint(e){
   if (col<0) return -1;
   const b0=slotBases(songNow())[row]; if(b0<0) return -1; const bi=b0+col; return bi<song.bars.length?bi:-1;
 }
-function jumpToBar(bi){ const was=st.playing; if(was) stop(); st.pos=song.bars[bi].time; st.viewPage=Math.floor(bi/perPage()); if(was) play(); }
+function jumpToBar(bi){ const was=st.playing; if(was) stop(); st.pos=song.bars[bi].time; st.viewPage=pageOf(bi); if(was) play(); }
 function setLoop(a,b,on){ $("loopA").value=a+1; $("loopB").value=b+1; $("loop").checked=on; applyLoopBtn(); }
 function applyLoopBtn(){ const on=$("loop").checked; $("loopBtn").classList.toggle("on",on); $("loopBtn").setAttribute("aria-pressed",String(on));
   $("loopBtn").textContent=on?`⟳${$("loopA").value}-${$("loopB").value}`:(window.innerWidth<460?"⟳":"⟳ ループ"); $("loopBtn").title=on?`ループ中：${$("loopA").value}〜${$("loopB").value}小節（押すと解除）`:"押すと曲全体をループ。譜面上で小節をなぞるとその範囲"; } // スマホは入力欄を隠すので、ボタンに範囲を出す
@@ -2972,7 +3006,7 @@ cv.addEventListener("pointerup",e=>{
   if (d.moved){
     const a=Math.min(d.a,d.b), b=Math.max(d.a,d.b);
     setLoop(a,b,true);
-    if (!st.playing){ st.pos=song.bars[a].time; st.viewPage=Math.floor(a/perPage()); }
+    if (!st.playing){ st.pos=song.bars[a].time; st.viewPage=pageOf(a); }
     flash(a===b?`${a+1}小節目だけをループします`:`${a+1}〜${b+1}小節をループします`,"--ok",null);
   } else jumpToBar(d.a);
 });
@@ -3078,8 +3112,16 @@ let PADS=PADS_W, padTall=null;
 function padPlay(id,vel){ audio(); if(ctx.state==="suspended") ctx.resume();
   const part=id==="hhOpen"?"hh":id, t=ctx.currentTime+0.005; drumSound(t,part,vel,id==="hhOpen");
   st.lastIn[part]=performance.now(); st.lastInVel[part]=vel; hit(part,t,vel,part==="hh"?id==="hhOpen":undefined); padLight(id,vel); }
+/* 叩き分けの印をパッドに出す（ボウ＝打面の中ほどの点、エッジ／リム＝ふちの輪、カップ＝中心の点、クロススティック＝ふちの線） */
+function padArt(el,id,art){ let a=el.querySelector(".art"); if(!art){ if(a) a.classList.remove("show"); return; } const p=PADS.find(q=>q[0]===id); if(!p) return; const [,,x,y,r]=p;
+  const W='fill="none" stroke="#fff" stroke-linecap="round"';
+  const m=art==="bell"?'<circle cx="'+x+'" cy="'+y+'" r="'+(r*.24).toFixed(2)+'" fill="#fff"/>'
+   :art==="edge"||art==="rim"?'<circle cx="'+x+'" cy="'+y+'" r="'+(r*.93).toFixed(2)+'" '+W+' stroke-width="'+(r*.13).toFixed(2)+'"/>'
+   :art==="xstick"?'<path d="M'+(x-r*.95).toFixed(2)+' '+(y+r*.25).toFixed(2)+' A'+r+' '+r+' 0 0 0 '+(x-r*.25).toFixed(2)+' '+(y+r*.95).toFixed(2)+'" '+W+' stroke-width="'+(r*.16).toFixed(2)+'"/><line x1="'+(x-r*.6).toFixed(2)+'" y1="'+(y+r*.6).toFixed(2)+'" x2="'+(x+r*.35).toFixed(2)+'" y2="'+(y-r*.35).toFixed(2)+'" '+W+' stroke-width="'+(r*.1).toFixed(2)+'"/>'
+   :art==="bow"?'<circle cx="'+(x+r*.5).toFixed(2)+'" cy="'+(y-r*.3).toFixed(2)+'" r="'+(r*.14).toFixed(2)+'" fill="#fff"/>':"";
+  if(!a){ a=document.createElementNS("http://www.w3.org/2000/svg","g"); a.setAttribute("class","art"); el.appendChild(a); } a.innerHTML=m; a.classList.remove("show"); void a.getBoundingClientRect(); a.classList.add("show"); clearTimeout(a._t); a._t=setTimeout(()=>a.classList.remove("show"),260); }
 /* パッド画面を、叩いた強さに応じた明るさで光らせる（画面のパッド・MIDI入力・キーボードとも） */
-function padLight(id,vel){ const el=document.querySelector('.pad[data-p="'+id+'"]'); if(!el) return; el.style.setProperty("--pv",Math.max(.08,Math.pow(Math.min(127,vel||100)/127,1.6)).toFixed(3)); el.classList.remove("on"); void el.getBoundingClientRect(); el.classList.add("on"); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove("on"),140); }
+function padLight(id,vel,art){ const el=document.querySelector('.pad[data-p="'+id+'"]'); if(!el) return; padArt(el,id,art); el.style.setProperty("--pv",Math.max(.08,Math.pow(Math.min(127,vel||100)/127,1.6)).toFixed(3)); el.classList.remove("on"); void el.getBoundingClientRect(); el.classList.add("on"); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove("on"),140); }
 function buildPads(){ const g=$("padGrid"); if(!g) return; const km=keyMap();
   /* 画面が縦長なら縦向きの配置にする */
   const tall=g.clientWidth>0&&g.clientHeight>g.clientWidth*0.95; padTall=tall;
@@ -3169,7 +3211,7 @@ function syncApply(m,tick){
       } else if (Math.abs(diff)>0.008){ st.origin+=Math.max(-0.01,Math.min(0.01,diff*0.5))/rate; } /* 小さなずれは少しずつ戻す（1回に最大10ms） */
     } else if (!tick){
       if (st.playing) stop();
-      st.pos=Math.max(0,Math.min(m.pos,song.length)); st.viewPage=Math.floor(barAt(st.pos)/perPage());
+      st.pos=Math.max(0,Math.min(m.pos,song.length)); st.viewPage=pageOf(barAt(st.pos));
     }
   } finally { SYNC.last=syncSnap(); SYNC.applying=false; }
 }
@@ -3288,7 +3330,7 @@ setInterval(()=>{ const p=CLK.out; if(!p||!song||!ctx){ CLK.running=false; retur
 },25);
 /* 受け取る：Start／Continue で再生、Stop で停止、Song Position で位置、Clock の間隔からテンポ */
 function clockIn(e){ const d=e.data, s=d[0]; if(!song) return;
-  if (s===0xF2){ const six=d[1]|(d[2]<<7); CLK.spp=song.t2s(six*song.ppq/4); if(!st.playing){ st.pos=CLK.spp; st.viewPage=Math.floor(barAt(st.pos)/perPage()); } return; }
+  if (s===0xF2){ const six=d[1]|(d[2]<<7); CLK.spp=song.t2s(six*song.ppq/4); if(!st.playing){ st.pos=CLK.spp; st.viewPage=pageOf(barAt(st.pos)); } return; }
   if (s===0xFA||s===0xFB){ const pos=s===0xFA?0:CLK.spp; if(st.playing){ midiAllOff(); st.playing=false; } $("empty").hidden=true; resetJudge(pos,song.length+1); startAt(pos,false); CLK.lastIn=[]; return; }
   if (s===0xFC){ if(st.playing) stop(); CLK.spp=st.pos; return; }
   if (s===0xF8){ const L=CLK.lastIn; L.push(e.timeStamp); if(L.length>49) L.shift();

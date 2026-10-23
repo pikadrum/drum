@@ -48,6 +48,7 @@ a.formBtn:hover{background:var(--accent);color:var(--onAccent)}
 .infos{display:grid;gap:6px}
 .feat ul,.feat ol{margin:0;padding-left:20px;font-size:14px;color:var(--dim)}
 .feat p+ul,.feat ul+p,.feat p+p{margin-top:6px}
+img.hero{display:block;width:100%;height:auto;margin:16px 0 0;border-radius:8px;border:1px solid var(--line)}
 footer{margin-top:34px;font-size:12px;color:var(--dim);border-top:1px solid var(--line);padding-top:12px}
 </style>
 </head>
@@ -63,11 +64,13 @@ footer{margin-top:34px;font-size:12px;color:var(--dim);border-top:1px solid var(
     <a class="choice" id="goMobile" href="drum-practice-mobile.html"><b>スマホ・タブレット版</b><span>タッチ操作向け</span></a>
   </div>
 
+  <img class="hero" src="img/score.jpg" alt="ドラム譜を表示して、叩いたタイミングを判定している画面">
+
   <h2>このソフトの特徴<span style="font-weight:400;letter-spacing:0">（押すと説明と画面が開きます）</span></h2>
   <div class="feats">
     <details class="feat"><summary>🥁 インストール不要・無料</summary><div><p>ブラウザで開くだけで使えます。パソコン版とスマホ・タブレット版があり、開いた端末に合わせておすすめの版を表示します。</p><img src="img/mobile.jpg" alt="インストール不要・無料の画面" loading="lazy" class="tall"></div></details>
     <details class="feat"><summary>🎼 MIDIファイルをドラム譜に</summary><div><p>市販のMIDIファイル（GS/XG）を読み込んで、ドラム譜を表示・再生します。表示は「譜面」「グリッド」「ゲーム」の3種類。32分音符や3連符にも対応しています。</p><img src="img/grid.jpg" alt="MIDIファイルをドラム譜にの画面" loading="lazy"></div></details>
-    <details class="feat"><summary>🎯 叩いたタイミングと強さを判定</summary><div><p>電子ドラムをUSBでつなぐと、叩くたびにジャスト・少しずれ・叩き忘れ・違うパッドを◯×で表示。強さは譜面の下にバーで出て、曲の終わりに結果が出ます。</p><img src="img/judge.jpg" alt="叩いたタイミングと強さを判定の画面" loading="lazy"></div></details>
+    <details class="feat"><summary>🎯 叩いたタイミングと強さを判定</summary><div><p>電子ドラムをUSBでつなぐと、叩くたびに◎（ジャスト）・○（少し早い／少し遅い）・×（外れ）・△（叩かなかった）で表示。強さは譜面の下にバーで出て、曲の終わりに結果が出ます。ローランドのDT-1風の表示にも切り替えられます。</p><img src="img/judge.jpg" alt="叩いたタイミングと強さを判定の画面" loading="lazy"></div></details>
     <details class="feat"><summary>🎚️ ミキサーとループで集中練習</summary><div><p>ドラムのパーツごと・伴奏のパートごとに音量・ミュート・ソロ。テンポを落としての練習や、譜面をなぞって選んだ小節のループもできます。</p></div></details>
     <details class="feat"><summary>🎵 内蔵の練習パターン21種類</summary><div><p>MIDIファイルがなくても、入門〜中級のパターン（ベースとピアノの伴奏つき）ですぐ練習できます。</p></div></details>
     <details class="feat"><summary>⏱️ こだわりのメトロノーム</summary><div><p>4分・8分・3連・16分・6連を、それぞれの音量で重ねて鳴らせます。裏拍だけ鳴らす、好きな位置にアクセント、無音の小節、自動テンポアップ、タップテンポも。</p><img src="img/metro.jpg" alt="こだわりのメトロノームの画面" loading="lazy" class="tall"></div></details>
