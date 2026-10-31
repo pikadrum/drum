@@ -927,6 +927,8 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
         <div class="row"><label for="dupMs">無視する時間（叩いてから）</label><span><input type="number" id="dupMs" min="5" max="200" value="60" style="width:64px"> ms</span></div>
         <div class="help">パーツごとのしきい値（この強さ以下を無視。0＝無視しない）</div>
         <div id="dupParts" class="dupParts"></div>
+        <div class="row"><label for="rimMuteOn" title="リムショットのとき、ミュートするために手の付け根や小指側で打面にも触れると、打面の信号がもう1つ来ることがあります">スネアのリムショットのすぐ後の打面の信号を無視</label><input type="checkbox" id="rimMuteOn" checked></div>
+        <div class="row"><label for="rimMuteMs">リムショットから</label><span><input type="number" id="rimMuteMs" min="10" max="300" value="100" style="width:64px"> ms 以内</span></div>
         <div class="help" id="dupLast">最後に無視した信号：－</div>
       </div></details>
     </section>
@@ -1071,7 +1073,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
             <li>横画面にすると、画面を触ったときに全画面になります（設定の「横画面にしたら全画面にする」。Android など）。iPhone・iPad は、Safari の共有ボタンから「ホーム画面に追加」して開くと、ブラウザのバーが出ずに広く使えます。</li>
             <li>最初の画面の「✥ パッドの配置を変える」を押すと、パッドを引っぱって動かせます（ふちを引っぱると大きさが変わります）。配置は画面の向きごとに覚え、「標準に戻す」で元に戻せます。</li>
             <li>最初の画面のパッドは、押した場所で叩き分けます。ライドとクラッシュの真ん中はカップ、シンバル・ハイハットのふちはエッジ（ハイハットはふちを広くとり、真ん中の少しだけがふつうの音です）、スネアは下側（3時〜7時）のふちだけリムショットの音です（4時〜6時は、パッドの少し外側を押してもリムショットになります）。タムとフロアは、どこを押しても打面の音です（それ以外は、真ん中ほど強く鳴ります）。左右のクラッシュは別の音で鳴り、判定で◯にするときだけ、設定でどちらでも正解にできます。オープンHHの隣の「ハーフHH」は、ハーフオープン（少しだけ開いた「チー」という音）で鳴り、判定はオープンと同じに数えます。電子ドラムでオープンを叩いたときは、ペダルの開き具合（CC4）が境目以下なら「オープンHH」、それより大きければ「ハーフHH」が光ります。境目は設定の「MIDI入力」で、ペダルの今の数を見ながら変えられます（初めは10）（ペダルの踏み具合 CC4 を送る機種のとき）。</li>
-            <li>電子ドラムが、叩いたすぐ後に小さな信号をもう一度出して×になってしまうときは、設定の「MIDI入力」の「ダブり（叩いたすぐ後の小さな信号）を無視する」で、無視する時間と、パーツごとのしきい値（この強さ以下を無視）を決められます。</li>
+            <li>電子ドラムが、叩いたすぐ後に小さな信号をもう一度出して×になってしまうときは、設定の「MIDI入力」の「ダブり（叩いたすぐ後の小さな信号）を無視する」で、無視する時間と、パーツごとのしきい値（この強さ以下を無視）を決められます。スネアのリムショットのすぐ後（初めは100ms以内）に来た打面の信号も、ミュートした手が当たったものとして無視します。</li>
             <li>設定の「追加のパッド（AUX1〜6）」で、TD-17 のAUXや、上位機種の追加の入力（最大6つ）を使えます。役割はスプラッシュ・チャイナ・カウベル・タム4・タム0・スネア2・キック2から選べ、番号は「叩いて覚える」で合わせます。キーボードの試し打ちは G・H・T・Y・B・N です。最初の画面のパッドには、MIDI機器をつないでいないときはスプラッシュ・チャイナ・カウベル・タム4・キック2を設定に関係なく出し、つないでいるときはAUXでオンにしたものだけを出します。</li>
             <li>ゲーム表示の判定線の下は、指でもマウスのクリックでも叩けるパッドです。</li>
             <li>表示の「横スクロール」は、叩く位置の線が左に止まっていて、音符が右から左へ流れてくる表示です。</li>
@@ -1139,7 +1141,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <h2>このソフトのURL</h2>
       <div class="qrBox"><div class="qrImg" role="img" aria-label="配布先URL（https://pikadrum.github.io/drum/）のQRコード"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><rect width="37" height="37" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM12 4h3v1h-3zM22 4h1v1h-1zM26 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h2v1h-2zM16 5h1v1h-1zM20 5h4v1h-4zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM13 6h2v1h-2zM16 6h2v1h-2zM19 6h3v1h-3zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h3v1h-3zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h5v1h-5zM18 7h3v1h-3zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h3v1h-3zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h3v1h-3zM20 8h3v1h-3zM26 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h2v1h-2zM15 9h5v1h-5zM21 9h1v1h-1zM23 9h2v1h-2zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h7v1h-7zM12 11h3v1h-3zM16 11h1v1h-1zM18 11h1v1h-1zM21 11h1v1h-1zM4 12h1v1h-1zM8 12h1v1h-1zM10 12h4v1h-4zM15 12h1v1h-1zM17 12h5v1h-5zM24 12h6v1h-6zM32 12h1v1h-1zM6 13h1v1h-1zM11 13h2v1h-2zM15 13h1v1h-1zM21 13h2v1h-2zM26 13h7v1h-7zM7 14h2v1h-2zM10 14h3v1h-3zM14 14h6v1h-6zM21 14h1v1h-1zM26 14h1v1h-1zM32 14h1v1h-1zM4 15h1v1h-1zM6 15h3v1h-3zM11 15h2v1h-2zM16 15h2v1h-2zM19 15h4v1h-4zM24 15h4v1h-4zM29 15h1v1h-1zM31 15h2v1h-2zM4 16h1v1h-1zM6 16h1v1h-1zM10 16h2v1h-2zM13 16h2v1h-2zM16 16h2v1h-2zM21 16h1v1h-1zM23 16h1v1h-1zM25 16h1v1h-1zM31 16h1v1h-1zM4 17h1v1h-1zM6 17h2v1h-2zM11 17h1v1h-1zM14 17h2v1h-2zM17 17h2v1h-2zM20 17h3v1h-3zM25 17h8v1h-8zM4 18h2v1h-2zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM24 18h3v1h-3zM28 18h3v1h-3zM32 18h1v1h-1zM4 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM14 19h3v1h-3zM18 19h1v1h-1zM21 19h2v1h-2zM25 19h1v1h-1zM27 19h2v1h-2zM31 19h2v1h-2zM7 20h1v1h-1zM10 20h6v1h-6zM17 20h3v1h-3zM21 20h2v1h-2zM24 20h2v1h-2zM31 20h1v1h-1zM4 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM21 21h2v1h-2zM25 21h5v1h-5zM31 21h2v1h-2zM6 22h2v1h-2zM9 22h4v1h-4zM14 22h1v1h-1zM17 22h3v1h-3zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM30 22h1v1h-1zM32 22h1v1h-1zM6 23h4v1h-4zM12 23h1v1h-1zM14 23h4v1h-4zM21 23h4v1h-4zM26 23h3v1h-3zM31 23h2v1h-2zM4 24h2v1h-2zM8 24h1v1h-1zM10 24h4v1h-4zM15 24h3v1h-3zM19 24h1v1h-1zM21 24h1v1h-1zM23 24h7v1h-7zM32 24h1v1h-1zM12 25h1v1h-1zM14 25h1v1h-1zM16 25h4v1h-4zM22 25h3v1h-3zM28 25h1v1h-1zM32 25h1v1h-1zM4 26h7v1h-7zM12 26h2v1h-2zM16 26h1v1h-1zM19 26h1v1h-1zM21 26h4v1h-4zM26 26h1v1h-1zM28 26h3v1h-3zM32 26h1v1h-1zM4 27h1v1h-1zM10 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM18 27h2v1h-2zM21 27h1v1h-1zM23 27h2v1h-2zM28 27h1v1h-1zM31 27h2v1h-2zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM12 28h2v1h-2zM16 28h4v1h-4zM21 28h1v1h-1zM23 28h7v1h-7zM4 29h1v1h-1zM6 29h3v1h-3zM10 29h1v1h-1zM13 29h1v1h-1zM16 29h1v1h-1zM19 29h2v1h-2zM23 29h1v1h-1zM25 29h1v1h-1zM32 29h1v1h-1zM4 30h1v1h-1zM6 30h3v1h-3zM10 30h1v1h-1zM13 30h3v1h-3zM17 30h3v1h-3zM23 30h3v1h-3zM29 30h4v1h-4zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h1v1h-1zM16 31h2v1h-2zM19 31h1v1h-1zM21 31h1v1h-1zM24 31h1v1h-1zM27 31h1v1h-1zM29 31h1v1h-1zM31 31h2v1h-2zM4 32h7v1h-7zM12 32h3v1h-3zM16 32h1v1h-1zM18 32h1v1h-1zM20 32h2v1h-2zM23 32h3v1h-3zM28 32h1v1h-1zM31 32h1v1h-1z"/></svg></div><div class="help">スマホやタブレットのカメラで読み取ると、このソフトを開けます。<br><a href="https://pikadrum.github.io/drum/" target="_blank" rel="noopener">https://pikadrum.github.io/drum/</a></div></div>
     </section>
-    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/31 20:58</div>
+    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/31 21:32</div>
     </div>
   </aside>
 </main>
@@ -2013,6 +2015,11 @@ let HH_CC=null; const hhOpenMax=()=>Number.isFinite(+S.hhOpenMax)?+S.hhOpenMax:1
 $("hhOpenMax").value=hhOpenMax(); $("hhOpenMax").onchange=()=>{ const v=Math.max(0,Math.min(127,Math.round(+$("hhOpenMax").value))); if(Number.isFinite(v)){ S.hhOpenMax=v; $("hhOpenMax").value=v; saveSettings(); } };
 /* ---- ダブり（叩いたすぐ後の小さな信号）を無視する：同じパーツで、時間内・しきい値以下の強さなら無視 ---- */
 const DUP_LAST={}; const dupThr=p=>{ const d=(S.dupThr||{})[p]; return Number.isFinite(+d)?+d:25; };
+let RIM_AT=-1e9; /* スネアのリムショットの時刻（その直後の打面の信号は、ミュートした手が当たったものとして無視） */
+function rimMuteIgnore(part,note,vel,ts){ if(part!=="snare") return false; const a=ART[note];
+  if (a==="rim"){ RIM_AT=ts; return false; }
+  if (S.rimMuteOn!==false&&a!=="xstick"&&ts-RIM_AT>=0&&ts-RIM_AT<=(+S.rimMuteMs||100)){ const el=$("dupLast"); if(el) el.textContent=`最後に無視した信号：スネアの打面 強さ ${vel}（リムショットの ${Math.round(ts-RIM_AT)}ms 後）`; return true; }
+  return false; }
 function dupIgnore(part,vel,ts){ if(S.dupOn===false) return false; const L=DUP_LAST[part], ms=+S.dupMs||60;
   if (L&&ts-L.t>=0&&ts-L.t<=ms&&vel<=dupThr(part)){ const el=$("dupLast"); if(el) el.textContent=`最後に無視した信号：${PARTS[part]?PARTS[part].name:part} 強さ ${vel}（${Math.round(ts-L.t)}ms 後。前の強さ ${L.v}）`; return true; }
   DUP_LAST[part]={t:ts,v:vel}; return false; }
@@ -2022,12 +2029,14 @@ function dupUI(){ const box=$("dupParts"); if(!box) return; box.innerHTML="";
     r.querySelector("input").onchange=e=>{ const v=Math.max(0,Math.min(127,Math.round(+e.target.value||0))); e.target.value=v; S.dupThr=S.dupThr||{}; S.dupThr[k]=v; saveSettings(); }; box.appendChild(r); }); }
 $("dupOn").checked=S.dupOn!==false; $("dupOn").onchange=()=>{ S.dupOn=$("dupOn").checked; saveSettings(); };
 $("dupMs").value=+S.dupMs||60; $("dupMs").onchange=()=>{ const v=Math.max(5,Math.min(200,Math.round(+$("dupMs").value||60))); $("dupMs").value=v; S.dupMs=v; saveSettings(); };
+$("rimMuteOn").checked=S.rimMuteOn!==false; $("rimMuteOn").onchange=()=>{ S.rimMuteOn=$("rimMuteOn").checked; saveSettings(); };
+$("rimMuteMs").value=+S.rimMuteMs||100; $("rimMuteMs").onchange=()=>{ const v=Math.max(10,Math.min(300,Math.round(+$("rimMuteMs").value||100))); $("rimMuteMs").value=v; S.rimMuteMs=v; saveSettings(); };
 $("dupBox").addEventListener("toggle",()=>{ if($("dupBox").open) dupUI(); }); dupUI();
 function onMidi(e){
   const [s,a,b]=e.data; if((s&0xf0)===0xB0&&a===4){ HH_CC=b; const el=$("hhCcNow"); if(el) el.textContent="ペダル："+b; return; } if((s&0xf0)!==0x90||!b) return;
   if (AUX_LEARN>=0){ const i=AUX_LEARN; AUX_LEARN=-1; const c=auxCfg(i); c.note=a; c.on=true; saveSettings(); applyAux(); auxUI(); buildPads(); if(song) renderStrips(); flash(`AUX${i+1}の番号を ${a} にしました`,"--ok",null); return; } /* 「叩いて覚える」 */
   const part=noteToPart[a]; if(!part) return;
-  if (dupIgnore(part,b,e.timeStamp||performance.now())) return; /* 叩いたすぐ後の小さな信号（ダブり）は無視 */
+  { const ts=e.timeStamp||performance.now(); if (rimMuteIgnore(part,a,b,ts)||dupIgnore(part,b,ts)) return; } /* リムショット直後の打面・叩いたすぐ後の小さな信号（ダブり）は無視 */
   st.lastIn[part]=performance.now(); st.lastInVel[part]=b;
   const op=part==="hh"?PARTS.hh.open.includes(a):undefined, art=noteArt(part,a); st.lastArt=st.lastArt||{}; st.lastArt[part]=art?{art,at:performance.now()}:null; padLight(op?(HH_CC!=null&&HH_CC>hhOpenMax()?"hhHalf":"hhOpen"):part,b,art);
   audio(); hit(part, ctx.currentTime-(performance.now()-e.timeStamp)/1000, b, op, a);
