@@ -994,8 +994,9 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
         <div class="row"><label for="clockIn">MIDIクロックに合わせる（DAWなどから）</label><select id="clockIn" style="max-width:200px"><option value="">使わない</option></select></div>
         <details class="tip"><summary>同期のしかた</summary><div class="help">同じブラウザで、同期に対応したソフト（鍵盤の練習ソフトなど）を別のタブやウインドウで開き、両方で同期をオンにします。両方で同じMIDIファイルを開くと、どちらで再生・停止・小節の移動・テンポの変更をしても、もう一方がついてきます。配布ページ（https://pikadrum.github.io/）から開いたソフトどうしで同期します。<br><b>別の端末と</b>：両方の端末で同じ部屋番号（4〜8桁の数字）を入れて「つなぐ」を押します。最初に押した端末が部屋の親になります。つなぐときだけ外部の仲介サーバー（PeerJS）を使い、つながったあとは端末どうしで直接やり取りします（曲のデータは送りません）。通信の制限が強いネットワークでは、つながらないことがあります。部屋の親が抜けても、残った端末が親を引き継ぎます。同じ端末の同期と別の端末の同期を両方オンにした端末は、両方の間を中継します（例：PCのドラム＋PCの鍵盤＋iPadの鍵盤）。<br><b>合わせ方</b>：最後に操作した端末が1秒ごとに位置を知らせ、ほかの端末は少しずつずれを直します。片方でループを決めると相手も同じ範囲をループし、カウント中に始めたときは相手もカウントを鳴らします。片方でMIDIファイルを開くと、相手でも自動で開きます。相手が弾くパート（鍵盤ソフトが弾くピアノなど）は、こちらでミュートされます。<br><b>音の遅れ</b>：Bluetoothのイヤホンやスピーカーなどで音が遅れて出る端末は、その遅れ（例：200）を「この端末の音の遅れ」に入れると、耳で聞いてそろうように早めに鳴らします。<br><b>MIDIクロック</b>：DAWなどの音楽ソフトや機器へ、Clock・Start・Stop・Continue・Song Position を送れます。「合わせる」を選ぶと、相手のStart／Stop／位置／テンポにこちらが従います。</div></details>
       </div></details>
-      <div class="row"><label for="splitOut">クリックを左、それ以外の音を右に分けて出す</label><input type="checkbox" id="splitOut"></div>
-      <details class="tip"><summary>分けて出すときの使い方</summary><div class="help">オンにすると、メトロノームとカウントの音は左だけ、曲やドラムなどほかの音は右だけから出ます。パソコンのイヤホン端子やオーディオ機器の出力を、ミキサーで左右別々に扱うときに使います（例：クリックは自分のヘッドホンだけ、曲は録音や会場のスピーカーへ）。外部のMIDI音源（TD-17など）で鳴らしている音は分けられません。</div></details>
+      <div class="row"><label for="splitOut">クリックとそれ以外の音を、左右に分けて出す</label><input type="checkbox" id="splitOut"></div>
+      <div class="row"><label for="splitSide">クリックを出す側</label><select id="splitSide"><option value="L">左（それ以外は右）</option><option value="R">右（それ以外は左）</option></select></div>
+      <details class="tip"><summary>分けて出すときの使い方</summary><div class="help">オンにすると、メトロノームとカウントの音は片側だけ、曲やドラムなどほかの音は反対側だけから出ます。どちらにクリックを出すかは「クリックを出す側」で選べます（初めは左）。パソコンのイヤホン端子やオーディオ機器の出力を、ミキサーで左右別々に扱うときに使います（例：クリックは自分のヘッドホンだけ、曲は録音や会場のスピーカーへ）。外部のMIDI音源（TD-17など）で鳴らしている音は分けられません。</div></details>
       <details class="tip"><summary>空白の小節について</summary><div class="help">市販のMIDIによくある、音の入っていない1小節目（音色の準備用）などを飛ばして、最初の音がある小節から始めます。</div></details>
     </section>
     <section>
@@ -1081,7 +1082,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
             <li>編集の「今聞いている音で保存」をオンにすると、ミュートしたパートを外し、ミキサーの音量と、鳴らしているカウント・メトロノームの音も入れてMIDIファイルに保存します。</li>
             <li>設定の「叩き分けごとに音を鳴らし分ける」がオンのときは、ライドのカップ・エッジ、リムショット、クロススティックなどを、それぞれ近い音で鳴らします。</li>
             <li>同期中は、メトロノームの音色・鳴らし方・アクセントも相手とそろい、メトロノーム専用モードも同じ拍で鳴ります（設定でオフにできます）。</li>
-            <li>設定の「再生」で「クリックを左、それ以外の音を右に分けて出す」をオンにすると、メトロノーム・カウントの音を左、曲やドラムの音を右から出せます（ミキサーで別々に扱うときに）。</li>
+            <li>設定の「再生」で「クリックとそれ以外の音を、左右に分けて出す」をオンにすると、メトロノーム・カウントの音を片側、曲やドラムの音を反対側から出せます（クリックを左右どちらにするかも選べます）（ミキサーで別々に扱うときに）。</li>
             <li>設定の「再生」にある「ほかのソフト・別の端末と同期する」のボタンを押して開き、「ほかのソフトと同期する」をオンにすると、同じブラウザで開いた対応ソフト（鍵盤の練習ソフトなど）と、再生・停止・小節の移動・テンポがそろいます（どちらで操作してもよい）。別の端末とは、同じ部屋番号を入れて「つなぐ」を押すと同期します。ループ範囲・カウント・曲の受け渡し・相手が弾くパートのミュート・再生中のずれの補正・端末ごとの音の遅れの調整・MIDIクロック（DAWなどとの同期）にも対応しています。</li>
             <li>ループボタンを押すと曲全体をループします。譜面上で小節をなぞると、その範囲（1小節から）をループします。</li>
             <li>音色は、内蔵の音、高音質の音色（FluidR3・Musyng Kite・FatBoy・GeneralUser GSの4種類から選べる）、パソコンにつないだMIDI機器（TD-17本体など）から選べます（設定の「音源」）。</li>
@@ -1141,7 +1142,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <h2>このソフトのURL</h2>
       <div class="qrBox"><div class="qrImg" role="img" aria-label="配布先URL（https://pikadrum.github.io/drum/）のQRコード"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><rect width="37" height="37" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM12 4h3v1h-3zM22 4h1v1h-1zM26 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h2v1h-2zM16 5h1v1h-1zM20 5h4v1h-4zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM13 6h2v1h-2zM16 6h2v1h-2zM19 6h3v1h-3zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h3v1h-3zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h5v1h-5zM18 7h3v1h-3zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h3v1h-3zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h3v1h-3zM20 8h3v1h-3zM26 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h2v1h-2zM15 9h5v1h-5zM21 9h1v1h-1zM23 9h2v1h-2zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h7v1h-7zM12 11h3v1h-3zM16 11h1v1h-1zM18 11h1v1h-1zM21 11h1v1h-1zM4 12h1v1h-1zM8 12h1v1h-1zM10 12h4v1h-4zM15 12h1v1h-1zM17 12h5v1h-5zM24 12h6v1h-6zM32 12h1v1h-1zM6 13h1v1h-1zM11 13h2v1h-2zM15 13h1v1h-1zM21 13h2v1h-2zM26 13h7v1h-7zM7 14h2v1h-2zM10 14h3v1h-3zM14 14h6v1h-6zM21 14h1v1h-1zM26 14h1v1h-1zM32 14h1v1h-1zM4 15h1v1h-1zM6 15h3v1h-3zM11 15h2v1h-2zM16 15h2v1h-2zM19 15h4v1h-4zM24 15h4v1h-4zM29 15h1v1h-1zM31 15h2v1h-2zM4 16h1v1h-1zM6 16h1v1h-1zM10 16h2v1h-2zM13 16h2v1h-2zM16 16h2v1h-2zM21 16h1v1h-1zM23 16h1v1h-1zM25 16h1v1h-1zM31 16h1v1h-1zM4 17h1v1h-1zM6 17h2v1h-2zM11 17h1v1h-1zM14 17h2v1h-2zM17 17h2v1h-2zM20 17h3v1h-3zM25 17h8v1h-8zM4 18h2v1h-2zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM24 18h3v1h-3zM28 18h3v1h-3zM32 18h1v1h-1zM4 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM14 19h3v1h-3zM18 19h1v1h-1zM21 19h2v1h-2zM25 19h1v1h-1zM27 19h2v1h-2zM31 19h2v1h-2zM7 20h1v1h-1zM10 20h6v1h-6zM17 20h3v1h-3zM21 20h2v1h-2zM24 20h2v1h-2zM31 20h1v1h-1zM4 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM21 21h2v1h-2zM25 21h5v1h-5zM31 21h2v1h-2zM6 22h2v1h-2zM9 22h4v1h-4zM14 22h1v1h-1zM17 22h3v1h-3zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM30 22h1v1h-1zM32 22h1v1h-1zM6 23h4v1h-4zM12 23h1v1h-1zM14 23h4v1h-4zM21 23h4v1h-4zM26 23h3v1h-3zM31 23h2v1h-2zM4 24h2v1h-2zM8 24h1v1h-1zM10 24h4v1h-4zM15 24h3v1h-3zM19 24h1v1h-1zM21 24h1v1h-1zM23 24h7v1h-7zM32 24h1v1h-1zM12 25h1v1h-1zM14 25h1v1h-1zM16 25h4v1h-4zM22 25h3v1h-3zM28 25h1v1h-1zM32 25h1v1h-1zM4 26h7v1h-7zM12 26h2v1h-2zM16 26h1v1h-1zM19 26h1v1h-1zM21 26h4v1h-4zM26 26h1v1h-1zM28 26h3v1h-3zM32 26h1v1h-1zM4 27h1v1h-1zM10 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM18 27h2v1h-2zM21 27h1v1h-1zM23 27h2v1h-2zM28 27h1v1h-1zM31 27h2v1h-2zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM12 28h2v1h-2zM16 28h4v1h-4zM21 28h1v1h-1zM23 28h7v1h-7zM4 29h1v1h-1zM6 29h3v1h-3zM10 29h1v1h-1zM13 29h1v1h-1zM16 29h1v1h-1zM19 29h2v1h-2zM23 29h1v1h-1zM25 29h1v1h-1zM32 29h1v1h-1zM4 30h1v1h-1zM6 30h3v1h-3zM10 30h1v1h-1zM13 30h3v1h-3zM17 30h3v1h-3zM23 30h3v1h-3zM29 30h4v1h-4zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h1v1h-1zM16 31h2v1h-2zM19 31h1v1h-1zM21 31h1v1h-1zM24 31h1v1h-1zM27 31h1v1h-1zM29 31h1v1h-1zM31 31h2v1h-2zM4 32h7v1h-7zM12 32h3v1h-3zM16 32h1v1h-1zM18 32h1v1h-1zM20 32h2v1h-2zM23 32h3v1h-3zM28 32h1v1h-1zM31 32h1v1h-1z"/></svg></div><div class="help">スマホやタブレットのカメラで読み取ると、このソフトを開けます。<br><a href="https://pikadrum.github.io/drum/" target="_blank" rel="noopener">https://pikadrum.github.io/drum/</a></div></div>
     </section>
-    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/31 21:32</div>
+    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/31 21:34</div>
     </div>
   </aside>
 </main>
@@ -1570,7 +1571,7 @@ function applySplitOut(){
   if (!S.splitOut){ outBus.music.connect(ctx.destination); outBus.click.connect(ctx.destination); return; }
   const mono=()=>{ const g=ctx.createGain(); g.channelCount=1; g.channelCountMode="explicit"; g.channelInterpretation="speakers"; return g; };
   const mL=mono(), mR=mono(), mg=ctx.createChannelMerger(2);
-  outBus.click.connect(mL).connect(mg,0,0); outBus.music.connect(mR).connect(mg,0,1); mg.connect(ctx.destination);
+  const cs=S.splitSide==="R"?1:0; /* クリックを出す側（初めは左） */ outBus.click.connect(mL).connect(mg,0,cs); outBus.music.connect(mR).connect(mg,0,1-cs); mg.connect(ctx.destination);
   splitNodes=[mL,mR,mg];
 }
 // 拍の間の音（ヤマハのメトロノーム風に、8分・3連・16分をそれぞれの音量で重ねて鳴らせる）
@@ -3200,7 +3201,8 @@ function showMetroVol(){ $("metroVolV").textContent=(mmSwap||S).metroVol+"%"; }
 $("metroVol").addEventListener("input",()=>setTimeout(showMetroVol));
 setTimeout(showMetroVol);
 $("metroVol").value=S.metroVol; $("metroVol").oninput=()=>{ const o=mT($("metroVol")); o.metroVol=+$("metroVol").value; if(o===S&&metroGain) metroGain.gain.value=metroLevel(); showMetroVol(); saveSettings(); };
-$("splitOut").checked=!!S.splitOut; $("splitOut").onchange=()=>{ S.splitOut=$("splitOut").checked; saveSettings(); applySplitOut(); flash(S.splitOut?"クリックを左、ほかの音を右から出します":"左右を元に戻しました","--ok",null); };
+$("splitOut").checked=!!S.splitOut; $("splitOut").onchange=()=>{ S.splitOut=$("splitOut").checked; saveSettings(); applySplitOut(); flash(S.splitOut?(S.splitSide==="R"?"クリックを右、ほかの音を左から出します":"クリックを左、ほかの音を右から出します"):"左右を元に戻しました","--ok",null); };
+$("splitSide").value=S.splitSide==="R"?"R":"L"; $("splitSide").onchange=()=>{ S.splitSide=$("splitSide").value; saveSettings(); applySplitOut(); if(S.splitOut) flash(S.splitSide==="R"?"クリックを右、ほかの音を左から出します":"クリックを左、ほかの音を右から出します","--ok",null); };
 $("hq").checked=S.hq; $("hq").onchange=()=>{ S.hq=$("hq").checked; saveSettings(); loadSoundfonts(); };
 $("sfBank").value=S.hq?sfBank():"off";
 $("sfBank").onchange=()=>{ const v=$("sfBank").value; S.hq=v!=="off"; if(S.hq) S.sfBank=v; $("hq").checked=S.hq; saveSettings(); if(song) loadSoundfonts(); };
