@@ -770,7 +770,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
     </div>
     <div id="results" hidden>
         <div class="card" role="dialog" aria-labelledby="resTitle">
-          <div class="resHead"><h2 id="resTitle">結果</h2><div class="cardBtns"><button id="retry">もう一度</button><button id="closeRes" title="閉じる（Escキー）">閉じる　Esc</button></div></div>
+          <div class="resHead"><h2 id="resTitle">結果</h2><div class="cardBtns"><button id="retry">もう一度</button><button id="resCont" hidden title="記録はそのまま。次に再生すると、止めた所から続けて数えます">続ける</button><button id="resReset" hidden title="数と印を消して、ループの頭（ループでなければ曲の頭）に戻ります">記録を消してやり直す</button><button id="closeRes" title="閉じる（Escキー）">閉じる　Esc</button></div></div>
           <div class="big resTop"> <!-- 上の段：スコアなど（ベストスコアは右端） -->
             <div><span>スコア</span><b id="rScore">0</b></div>
             <div><span>正確率</span><b id="rAcc">–</b></div>
@@ -939,6 +939,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
           <p style="margin:8px 0 2px"><b>■ 叩いた結果の判定</b></p>
           <ul>
             <li>判定は音符の位置に印で表示します。ジャストは緑◯（PERFECT）、わずかなずれは早ければ水色◯・遅ければ橙◯（GOOD。丸の下の線と同じ色）、叩いたが外れたら、叩いた位置に赤×（BAD：違うパッド・ずれすぎ・音符のない所を叩いた。×は叩いたその場所に出て、動きません）、叩くべき所を叩かなかったら薄い赤△（MISS）です。右上の欄では、今の小節の番号、再生ボタンを押してからの時間（分：秒）と、◎・○（早い）・○（遅い）・×・△ の数を出します。判定は、その再生で最初に叩いたところから始まります（叩く前の音符には△を付けません。一度も叩かずに終わったときは結果を出しません）。ハイハットは、オープンとクローズを区別して判定します（違うほうを叩くと×）。設定の「判定の色の付け方」で「DT-1風」にすると、正解を青◯、外れを赤×・赤△で表示します（強さのバーは表示しない設定になります）。</li>
+            <li>曲の途中やループ中に再生を止めると、叩いていれば「結果（途中）」が出ます。「続ける」で記録をそのまま次の再生に引き継ぎ、「記録を消してやり直す」で数と印を消してループ（または曲）の頭に戻ります。途中の結果はベストスコアに入れません。</li>
             <li>叩いた強さは、譜面の下に縦のバーで表示します。</li>
             <li>曲が終わると、スコア・正確率・◎○×△の数などの結果が出ます。譜面の左上の「結果」でもう一度見られます。</li>
             <li>難しさ（やさしい／ふつう／むずかしい）と遅延補正を設定できます。「MIDI入力がないときは判定しない」「ミス（叩かなかった音符）を判定しない」「左右のクラッシュはどちらで叩いても正解にする」も選べます。</li>
@@ -1025,7 +1026,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <h2>このソフトのURL</h2>
       <div class="qrBox"><div class="qrImg" role="img" aria-label="配布先URL（https://pikadrum.github.io/drum/）のQRコード"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><rect width="37" height="37" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM12 4h3v1h-3zM22 4h1v1h-1zM26 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h2v1h-2zM16 5h1v1h-1zM20 5h4v1h-4zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM13 6h2v1h-2zM16 6h2v1h-2zM19 6h3v1h-3zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h3v1h-3zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h5v1h-5zM18 7h3v1h-3zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h3v1h-3zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h3v1h-3zM20 8h3v1h-3zM26 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h2v1h-2zM15 9h5v1h-5zM21 9h1v1h-1zM23 9h2v1h-2zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h7v1h-7zM12 11h3v1h-3zM16 11h1v1h-1zM18 11h1v1h-1zM21 11h1v1h-1zM4 12h1v1h-1zM8 12h1v1h-1zM10 12h4v1h-4zM15 12h1v1h-1zM17 12h5v1h-5zM24 12h6v1h-6zM32 12h1v1h-1zM6 13h1v1h-1zM11 13h2v1h-2zM15 13h1v1h-1zM21 13h2v1h-2zM26 13h7v1h-7zM7 14h2v1h-2zM10 14h3v1h-3zM14 14h6v1h-6zM21 14h1v1h-1zM26 14h1v1h-1zM32 14h1v1h-1zM4 15h1v1h-1zM6 15h3v1h-3zM11 15h2v1h-2zM16 15h2v1h-2zM19 15h4v1h-4zM24 15h4v1h-4zM29 15h1v1h-1zM31 15h2v1h-2zM4 16h1v1h-1zM6 16h1v1h-1zM10 16h2v1h-2zM13 16h2v1h-2zM16 16h2v1h-2zM21 16h1v1h-1zM23 16h1v1h-1zM25 16h1v1h-1zM31 16h1v1h-1zM4 17h1v1h-1zM6 17h2v1h-2zM11 17h1v1h-1zM14 17h2v1h-2zM17 17h2v1h-2zM20 17h3v1h-3zM25 17h8v1h-8zM4 18h2v1h-2zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM24 18h3v1h-3zM28 18h3v1h-3zM32 18h1v1h-1zM4 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM14 19h3v1h-3zM18 19h1v1h-1zM21 19h2v1h-2zM25 19h1v1h-1zM27 19h2v1h-2zM31 19h2v1h-2zM7 20h1v1h-1zM10 20h6v1h-6zM17 20h3v1h-3zM21 20h2v1h-2zM24 20h2v1h-2zM31 20h1v1h-1zM4 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM21 21h2v1h-2zM25 21h5v1h-5zM31 21h2v1h-2zM6 22h2v1h-2zM9 22h4v1h-4zM14 22h1v1h-1zM17 22h3v1h-3zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM30 22h1v1h-1zM32 22h1v1h-1zM6 23h4v1h-4zM12 23h1v1h-1zM14 23h4v1h-4zM21 23h4v1h-4zM26 23h3v1h-3zM31 23h2v1h-2zM4 24h2v1h-2zM8 24h1v1h-1zM10 24h4v1h-4zM15 24h3v1h-3zM19 24h1v1h-1zM21 24h1v1h-1zM23 24h7v1h-7zM32 24h1v1h-1zM12 25h1v1h-1zM14 25h1v1h-1zM16 25h4v1h-4zM22 25h3v1h-3zM28 25h1v1h-1zM32 25h1v1h-1zM4 26h7v1h-7zM12 26h2v1h-2zM16 26h1v1h-1zM19 26h1v1h-1zM21 26h4v1h-4zM26 26h1v1h-1zM28 26h3v1h-3zM32 26h1v1h-1zM4 27h1v1h-1zM10 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM18 27h2v1h-2zM21 27h1v1h-1zM23 27h2v1h-2zM28 27h1v1h-1zM31 27h2v1h-2zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM12 28h2v1h-2zM16 28h4v1h-4zM21 28h1v1h-1zM23 28h7v1h-7zM4 29h1v1h-1zM6 29h3v1h-3zM10 29h1v1h-1zM13 29h1v1h-1zM16 29h1v1h-1zM19 29h2v1h-2zM23 29h1v1h-1zM25 29h1v1h-1zM32 29h1v1h-1zM4 30h1v1h-1zM6 30h3v1h-3zM10 30h1v1h-1zM13 30h3v1h-3zM17 30h3v1h-3zM23 30h3v1h-3zM29 30h4v1h-4zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h1v1h-1zM16 31h2v1h-2zM19 31h1v1h-1zM21 31h1v1h-1zM24 31h1v1h-1zM27 31h1v1h-1zM29 31h1v1h-1zM31 31h2v1h-2zM4 32h7v1h-7zM12 32h3v1h-3zM16 32h1v1h-1zM18 32h1v1h-1zM20 32h2v1h-2zM23 32h3v1h-3zM28 32h1v1h-1zM31 32h1v1h-1z"/></svg></div><div class="help">スマホやタブレットのカメラで読み取ると、このソフトを開けます。<br><a href="https://pikadrum.github.io/drum/" target="_blank" rel="noopener">https://pikadrum.github.io/drum/</a></div></div>
     </section>
-    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/11/01 19:35</div>
+    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/11/01 20:47</div>
     </div>
   </aside>
 </main>
@@ -1578,9 +1579,9 @@ function loopRange(){
   const a=Math.min(song.bars.length,Math.max(1,+$("loopA").value))-1, b=Math.min(song.bars.length,Math.max(a+1,+$("loopB").value))-1;
   return {start:song.bars[a].time,end:song.bars[b].end,a,b};
 }
-function resetJudge(from,to){
+function resetJudge(from,to,keep){ /* keep：止めた所から続けるとき。止める直前に叩いた印は消さない */
   song.notes.forEach(n=>{ if(n.time>=from-0.001&&n.time<to-0.001) n.judge=null; });
-  st.hits=st.hits.filter(h=>h.time<from-0.2||h.time>to);
+  st.hits=st.hits.filter(h=>h.time<(keep?from:from-0.2)||h.time>to);
 }
 function startAt(songPos,countIn){
   audio(); if (ctx.state==="suspended") ctx.resume(); ensureNodes();
@@ -1605,7 +1606,7 @@ function setIdx(pos){
 // 曲の始まり：設定がオンなら、音のない最初の小節（セットアップ用の空白小節など）を飛ばす
 function songStart(){ return (S.skipLead&&song.leadBars>0)?song.bars[song.leadBars].time:0; }
 function play(){
-  if (st.playing){ stop(); return; }
+  if (st.playing){ stop(); if(!REC.mode&&st.hitFrom!=null&&(st.hits.length||st.cnt.m)) showResults(true); return; } /* 自分で止めたとき、叩いていたら途中の結果を出す */
   elapsedStart();
   if (typeof SYNC!=="undefined") SYNC.pausedAt=null;
   $("results").hidden=true;
@@ -1614,8 +1615,8 @@ function play(){
   if (lr&&(pos<lr.start||pos>=lr.end)) pos=lr.start;
   if (pos>=song.length-1e-3) pos=songStart();
   if (!lr&&pos<songStart()) pos=songStart();
-  if (pos<=songStart()+1e-6||(lr&&pos===lr.start)) resetStats();
-  resetJudge(pos, lr?lr.end:song.length+1);
+  const fresh=pos<=songStart()+1e-6||(lr&&pos===lr.start); if (fresh) resetStats();
+  resetJudge(pos, lr?lr.end:song.length+1, !fresh);
   startAt(pos,true);
 }
 /* 再生ボタンを押してからの時間（MM:SS）。止めても最後の時間を残し、次に再生したら00:00から */
@@ -1734,12 +1735,13 @@ function updateStats(){
 // ================= 結果画面 =================
 function rankOf(a){ return a>=0.95?"S":a>=0.85?"A":a>=0.7?"B":a>=0.5?"C":"D"; }
 function getBest(){ try{ return JSON.parse(localStorage.getItem("drumScopeBest")||"{}"); }catch(e){ return {}; } }
-function showResults(){
+function showResults(paused){ /* paused：途中で止めたとき（続けるか、消してやり直すかを選べる。ベストスコアには入れない） */
+  $("resTitle").textContent=paused?"結果（途中）":"結果"; $("retry").hidden=!!paused; $("resCont").hidden=!paused; $("resReset").hidden=!paused;
   ["printDlg","settings"].forEach(id=>{ const el=$(id); if(el&&!el.hidden) el.hidden=true; }); // 結果を出すときは、ほかの重なる画面を閉じる
   const a=accuracy();
   $("rScore").textContent=st.score; $("rAcc").textContent=a===null?"–":Math.round(a*100)+"%";
   $("rank").textContent=a===null?"–":rankOf(a); $("rCombo").textContent=st.maxCombo; $("rP").textContent=st.cnt.p||0; $("rGe").textContent=st.cnt.ge||0; $("rGl").textContent=st.cnt.gl||0; $("rX").textContent=st.cnt.x||0; $("rMiss").textContent=st.cnt.m||0;
-  const best=getBest(), key=song.name, prev=best[key]||0, isNew=st.score>prev;
+  const best=getBest(), key=song.name, prev=best[key]||0, isNew=!paused&&st.score>prev;
   if (isNew){ best[key]=st.score; try{ localStorage.setItem("drumScopeBest",JSON.stringify(best)); }catch(e){} }
   $("rBest").textContent=Math.max(prev,st.score); $("newBest").hidden=!isNew;
   const offs=st.offsets.map(o=>o.ms), pw=perfWin()*1000;
@@ -2057,7 +2059,8 @@ function updateMeters(){
     s.hits=s.hits.filter(h=>h.t>now-1.5);
     let g=s.kind==="piece"?(ds?effGain(ds):1)*pieceGain(s):effGain(s);
     if (g===0&&s.el&&s.el.classList.contains("muted")) g=s.vol; // ミュート中も、薄いグレーでレベルを見せる
-    const v=Math.min(100,lv*g*110)+"%"; if (s.vertical) s.bar.style.height=v; else s.bar.style.width=v;
+    let u=0; if(s.kind==="piece"&&s.part&&st.lastIn[s.part]){ const age=(performance.now()-st.lastIn[s.part])/1000; if(age<1.5) u=(st.lastInVel[s.part]??100)/127*Math.exp(-age*4); } /* 自分が叩いた強さ（ドラムの音量に関係なく、そのままの強さで出す） */
+    const v=Math.min(100,Math.max(lv*g*110,u*100))+"%"; if (s.vertical) s.bar.style.height=v; else s.bar.style.width=v;
   }
 }
 // ---- 高音質の音色（FluidR3 GM サウンドフォント） ----
@@ -3154,6 +3157,8 @@ $("showRes").onclick=()=>{ if(st.playing) stop(); showResults(); };
 $("closeRes").onclick=()=>{ $("results").hidden=true; };
 $("results").addEventListener("click",e=>{ if(e.target.id==="results") $("results").hidden=true; });
 $("retry").onclick=()=>{ $("results").hidden=true; st.pos=songStart(); st.viewPage=pageOf(barAt(st.pos)); play(); };
+$("resCont").onclick=()=>{ $("results").hidden=true; }; /* 記録はそのまま。次の再生で止めた所から続けて数える */
+$("resReset").onclick=()=>{ $("results").hidden=true; resetStats(); st.hitFrom=null; st.playT0=null; elapsedShow(); const lr=loopRange(); st.pos=lr?lr.start:songStart(); st.viewPage=pageOf(barAt(st.pos)); };
 function fmtBpm(v){ return Math.abs(v-Math.round(v))<0.05?String(Math.round(v)):v.toFixed(1); }
 // 入力欄が原曲の値のままなら、小数点以下も含めた原曲テンポで再生する
 function bpmTarget(){ const v=+$("bpm").value, ex=+$("bpm").dataset.exact; return (ex&&Math.round(ex)===v)?ex:(v||song.baseBpm); }
