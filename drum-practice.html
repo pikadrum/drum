@@ -812,9 +812,10 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
         <div class="row"><label for="dupMs">無視する時間（叩いてから）</label><span><input type="number" id="dupMs" min="5" max="200" value="60" style="width:64px"> ms</span></div>
         <div class="help">パーツごとのしきい値（この強さ以下を無視。0＝無視しない）</div>
         <div id="dupParts" class="dupParts"></div>
-        <div class="row"><label for="rimMuteOn" title="リムショットのとき、ミュートするために手の付け根や小指側で打面にも触れると、打面の信号がもう1つ来ることがあります">スネアのリムショットのすぐ後の打面の信号を無視</label><input type="checkbox" id="rimMuteOn" checked></div>
-        <div class="row"><label for="rimMuteMs">リムショットから</label><span><input type="number" id="rimMuteMs" min="10" max="300" value="100" style="width:64px"> ms 以内</span></div>
+        <div class="row"><label for="rimMuteOn" title="リムショットのとき、ミュートするために手の付け根や小指側で打面にも触れると、打面の信号がもう1つ来ることがあります。リムと打面がほぼ同時に来たら、後から来た方を無視します（どちらが先でも）">スネアのリムショットと打面がほぼ同時に来たら、後の方を無視</label><input type="checkbox" id="rimMuteOn" checked></div>
+        <div class="row"><label for="rimMuteMs">2つの信号の間が</label><span><input type="number" id="rimMuteMs" min="10" max="300" value="100" style="width:64px"> ms 以内</span></div>
         <div class="help" id="dupLast">最後に無視した信号：－</div>
+        <div class="help">直近の信号（新しい順。番号・パーツ・強さ・前の信号からの時間）</div><pre id="midiLog" class="mono" style="margin:0;font-size:11px;white-space:pre-wrap;background:var(--sunk);border:1px solid var(--line);border-radius:6px;padding:4px 6px;min-height:3em">－</pre>
       </div></details>
     </section>
     <section>
@@ -954,7 +955,8 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
             <li>電子ドラムが叩き分けの信号を送ってくるときは、パッドの図と下のドラムの図に、どこを叩いたかが出ます（ライド・シンバルのカップは中心の点、エッジやリムショットはふちの輪、クロススティックはふちの線）。</li>
             <li>最初の画面の「✥ パッドの配置を変える」を押すと、パッドを引っぱって動かせます（ふちを引っぱると大きさが変わります）。配置は画面の向きごとに覚え、「標準に戻す」で元に戻せます。</li>
             <li>最初の画面のパッドは、押した場所で叩き分けます。ライドとクラッシュの真ん中はカップ、シンバル・ハイハットのふちはエッジ（ハイハットはふちを広くとり、真ん中の少しだけがふつうの音です）、スネアは下側（3時〜7時）のふちだけリムショットの音です（4時〜6時は、パッドの少し外側を押してもリムショットになります）。タムとフロアは、どこを押しても打面の音です（それ以外は、真ん中ほど強く鳴ります）。左右のクラッシュは別の音で鳴り、判定で◯にするときだけ、設定でどちらでも正解にできます。オープンHHの隣の「ハーフHH」は、ハーフオープン（少しだけ開いた「チー」という音）で鳴り、判定はオープンと同じに数えます。電子ドラムでオープンを叩いたときは、ペダルの開き具合（CC4）が境目以下なら「オープンHH」、それより大きければ「ハーフHH」が光ります。境目は設定の「MIDI入力」で、ペダルの今の数を見ながら変えられます（初めは10）（ペダルの踏み具合 CC4 を送る機種のとき）。</li>
-            <li>電子ドラムが、叩いたすぐ後に小さな信号をもう一度出して×になってしまうときは、設定の「MIDI入力」の「ダブり（叩いたすぐ後の小さな信号）を無視する」で、無視する時間と、パーツごとのしきい値（この強さ以下を無視）を決められます。スネアのリムショットのすぐ後（初めは100ms以内）に来た打面の信号も、ミュートした手が当たったものとして無視します。</li>
+            <li>右下の「叩いた強さ（直近）」のグラフでは、叩き分けも見分けられます。斜線と白い頭＝リムショット・エッジ、白い点＝カップ、枠だけ＝クロススティックです。</li>
+            <li>電子ドラムが、叩いたすぐ後に小さな信号をもう一度出して×になってしまうときは、設定の「MIDI入力」の「ダブり（叩いたすぐ後の小さな信号）を無視する」で、無視する時間と、パーツごとのしきい値（この強さ以下を無視）を決められます。スネアのリムショットと打面の信号がほぼ同時（初めは100ms以内）に来たときは、どちらが先でも後の方を、ミュートした手が当たったものとして無視します。欄のいちばん下に、直近に来た信号が出るので、どんな信号が来ているか確かめられます。</li>
             <li>設定の「追加のパッド（AUX1〜6）」で、TD-17 のAUXや、上位機種の追加の入力（最大6つ）を使えます。役割はスプラッシュ・チャイナ・カウベル・タム4・タム0・スネア2・キック2から選べ、番号は「叩いて覚える」で合わせます。キーボードの試し打ちは G・H・T・Y・B・N です。最初の画面のパッドには、MIDI機器をつないでいないときはスプラッシュ・チャイナ・カウベル・タム4・キック2を設定に関係なく出し、つないでいるときはAUXでオンにしたものだけを出します。</li>
             <li>ゲーム表示の判定線の下は、指でもマウスのクリックでも叩けるパッドです。</li>
             <li>表示の「横スクロール」は、叩く位置の線が左に止まっていて、音符が右から左へ流れてくる表示です。</li>
@@ -1022,7 +1024,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <h2>このソフトのURL</h2>
       <div class="qrBox"><div class="qrImg" role="img" aria-label="配布先URL（https://pikadrum.github.io/drum/）のQRコード"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><rect width="37" height="37" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM12 4h3v1h-3zM22 4h1v1h-1zM26 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h2v1h-2zM16 5h1v1h-1zM20 5h4v1h-4zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM13 6h2v1h-2zM16 6h2v1h-2zM19 6h3v1h-3zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h3v1h-3zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h5v1h-5zM18 7h3v1h-3zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h3v1h-3zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h3v1h-3zM20 8h3v1h-3zM26 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h2v1h-2zM15 9h5v1h-5zM21 9h1v1h-1zM23 9h2v1h-2zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h7v1h-7zM12 11h3v1h-3zM16 11h1v1h-1zM18 11h1v1h-1zM21 11h1v1h-1zM4 12h1v1h-1zM8 12h1v1h-1zM10 12h4v1h-4zM15 12h1v1h-1zM17 12h5v1h-5zM24 12h6v1h-6zM32 12h1v1h-1zM6 13h1v1h-1zM11 13h2v1h-2zM15 13h1v1h-1zM21 13h2v1h-2zM26 13h7v1h-7zM7 14h2v1h-2zM10 14h3v1h-3zM14 14h6v1h-6zM21 14h1v1h-1zM26 14h1v1h-1zM32 14h1v1h-1zM4 15h1v1h-1zM6 15h3v1h-3zM11 15h2v1h-2zM16 15h2v1h-2zM19 15h4v1h-4zM24 15h4v1h-4zM29 15h1v1h-1zM31 15h2v1h-2zM4 16h1v1h-1zM6 16h1v1h-1zM10 16h2v1h-2zM13 16h2v1h-2zM16 16h2v1h-2zM21 16h1v1h-1zM23 16h1v1h-1zM25 16h1v1h-1zM31 16h1v1h-1zM4 17h1v1h-1zM6 17h2v1h-2zM11 17h1v1h-1zM14 17h2v1h-2zM17 17h2v1h-2zM20 17h3v1h-3zM25 17h8v1h-8zM4 18h2v1h-2zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM24 18h3v1h-3zM28 18h3v1h-3zM32 18h1v1h-1zM4 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM14 19h3v1h-3zM18 19h1v1h-1zM21 19h2v1h-2zM25 19h1v1h-1zM27 19h2v1h-2zM31 19h2v1h-2zM7 20h1v1h-1zM10 20h6v1h-6zM17 20h3v1h-3zM21 20h2v1h-2zM24 20h2v1h-2zM31 20h1v1h-1zM4 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM21 21h2v1h-2zM25 21h5v1h-5zM31 21h2v1h-2zM6 22h2v1h-2zM9 22h4v1h-4zM14 22h1v1h-1zM17 22h3v1h-3zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM30 22h1v1h-1zM32 22h1v1h-1zM6 23h4v1h-4zM12 23h1v1h-1zM14 23h4v1h-4zM21 23h4v1h-4zM26 23h3v1h-3zM31 23h2v1h-2zM4 24h2v1h-2zM8 24h1v1h-1zM10 24h4v1h-4zM15 24h3v1h-3zM19 24h1v1h-1zM21 24h1v1h-1zM23 24h7v1h-7zM32 24h1v1h-1zM12 25h1v1h-1zM14 25h1v1h-1zM16 25h4v1h-4zM22 25h3v1h-3zM28 25h1v1h-1zM32 25h1v1h-1zM4 26h7v1h-7zM12 26h2v1h-2zM16 26h1v1h-1zM19 26h1v1h-1zM21 26h4v1h-4zM26 26h1v1h-1zM28 26h3v1h-3zM32 26h1v1h-1zM4 27h1v1h-1zM10 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM18 27h2v1h-2zM21 27h1v1h-1zM23 27h2v1h-2zM28 27h1v1h-1zM31 27h2v1h-2zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM12 28h2v1h-2zM16 28h4v1h-4zM21 28h1v1h-1zM23 28h7v1h-7zM4 29h1v1h-1zM6 29h3v1h-3zM10 29h1v1h-1zM13 29h1v1h-1zM16 29h1v1h-1zM19 29h2v1h-2zM23 29h1v1h-1zM25 29h1v1h-1zM32 29h1v1h-1zM4 30h1v1h-1zM6 30h3v1h-3zM10 30h1v1h-1zM13 30h3v1h-3zM17 30h3v1h-3zM23 30h3v1h-3zM29 30h4v1h-4zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h1v1h-1zM16 31h2v1h-2zM19 31h1v1h-1zM21 31h1v1h-1zM24 31h1v1h-1zM27 31h1v1h-1zM29 31h1v1h-1zM31 31h2v1h-2zM4 32h7v1h-7zM12 32h3v1h-3zM16 32h1v1h-1zM18 32h1v1h-1zM20 32h2v1h-2zM23 32h3v1h-3zM28 32h1v1h-1zM31 32h1v1h-1z"/></svg></div><div class="help">スマホやタブレットのカメラで読み取ると、このソフトを開けます。<br><a href="https://pikadrum.github.io/drum/" target="_blank" rel="noopener">https://pikadrum.github.io/drum/</a></div></div>
     </section>
-    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/10/31 21:34</div>
+    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/11/01 19:03</div>
     </div>
   </aside>
 </main>
@@ -1036,7 +1038,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
     </div>
       <div id="kitStrips"></div>
       <div id="kitPanel"><div class="appTitle">ドラム練習スコープ（仮）</div><canvas id="kitView" aria-label="ドラムを上から見た図（叩くと光ります）"></canvas></div>
-      <div class="velBox" id="velBox"><button id="velToggle" class="velTab" title="叩いた強さのグラフを隠す／出す">▶</button><div class="velIn"><div class="help">叩いた強さ（直近）</div><canvas id="velMini"></canvas></div></div>
+      <div class="velBox" id="velBox"><button id="velToggle" class="velTab" title="叩いた強さのグラフを隠す／出す">▶</button><div class="velIn"><div class="help" title="斜線と白い頭＝リムショット・エッジ、白い点＝カップ、枠だけ＝クロススティック">叩いた強さ（直近）<span style="opacity:.75">　斜線＝リム</span></div><canvas id="velMini"></canvas></div></div>
     </div>
 <script>
 "use strict";
@@ -1691,7 +1693,7 @@ function hit(part,ctxTime,vel,open,note){ /* open：ハイハットのオープ�
   if (recHit(part,ctxTime,vel,open,note)){ st.lastHit[part]={at:performance.now(),judge:"free"}; st.vels.push({part,vel}); return; } /* 採譜で録音中 */
   if (mm.running) mmHit(ctxTime);
   st.lastHit[part]={at:performance.now(),judge:"bad"};
-  st.vels.push({part,vel}); if(st.vels.length>2000) st.vels.shift();
+  st.vels.push({part,vel,art:note!=null?ART[note]:undefined}); if(st.vels.length>2000) st.vels.shift(); /* art：叩き分け（リム・エッジなど。強さのグラフで区別する） */
   if (!st.playing||!judgeActive()){ st.lastHit[part].judge="free"; return; }
   const t=(ctxTime-S.latency/1000-st.origin)*st.rate;
   const w=win()*st.rate, pw=perfWin()*st.rate; if (st.hitFrom==null) st.hitFrom=t;
@@ -1856,10 +1858,15 @@ $("hhOpenMax").value=hhOpenMax(); $("hhOpenMax").onchange=()=>{ const v=Math.max
 /* ---- ダブり（叩いたすぐ後の小さな信号）を無視する：同じパーツで、時間内・しきい値以下の強さなら無視 ---- */
 const DUP_LAST={}; const dupThr=p=>{ const d=(S.dupThr||{})[p]; return Number.isFinite(+d)?+d:25; };
 let RIM_AT=-1e9; /* スネアのリムショットの時刻（その直後の打面の信号は、ミュートした手が当たったものとして無視） */
-function rimMuteIgnore(part,note,vel,ts){ if(part!=="snare") return false; const a=ART[note];
-  if (a==="rim"){ RIM_AT=ts; return false; }
-  if (S.rimMuteOn!==false&&a!=="xstick"&&ts-RIM_AT>=0&&ts-RIM_AT<=(+S.rimMuteMs||100)){ const el=$("dupLast"); if(el) el.textContent=`最後に無視した信号：スネアの打面 強さ ${vel}（リムショットの ${Math.round(ts-RIM_AT)}ms 後）`; return true; }
-  return false; }
+let SN_LAST=null; /* スネアの直前の信号 {t,a}（a＝"rim" か "head"） */
+/* 直近のMIDIの信号（設定の「ダブり」の欄に出す。どんな信号が来ているか確かめる用） */
+const MIDI_LOG=[]; let MIDI_LOG_T=null;
+function midiLogAdd(note,vel,ts,ign){ const part=noteToPart[note], gap=MIDI_LOG_T==null?"":"+"+Math.round(ts-MIDI_LOG_T)+"ms"; MIDI_LOG_T=ts; MIDI_LOG.unshift(`${String(note).padStart(3)} ${part&&PARTS[part]?PARTS[part].name:"－"}${ART[note]&&ART[note]!=="bow"&&ART[note]!=="head"?"（"+({rim:"リム",edge:"エッジ",bell:"カップ",xstick:"クロス"}[ART[note]]||ART[note])+"）":""} 強さ${vel} ${gap}${ign?" → 無視":""}`); if(MIDI_LOG.length>8) MIDI_LOG.pop(); const el=$("midiLog"); if(el&&$("dupBox").open) el.textContent=MIDI_LOG.join("\n"); }
+function rimMuteIgnore(part,note,vel,ts){ if(part!=="snare") return false; const a=ART[note]==="rim"?"rim":ART[note]==="xstick"?"x":"head"; if(a==="x") return false;
+  /* リムショットと打面が、決めた時間の中にほぼ同時に来たら、後から来た方を無視する（リムショットのとき、ミュートした手が打面に当たる分。どちらが先に来ても1回にする） */
+  const L=SN_LAST, ms=+S.rimMuteMs||100;
+  if (S.rimMuteOn!==false&&L&&L.a!==a&&ts-L.t>=0&&ts-L.t<=ms){ const el=$("dupLast"); if(el) el.textContent=`最後に無視した信号：スネアの${a==="rim"?"リム":"打面"} 強さ ${vel}（${L.a==="rim"?"リムショット":"打面"}の ${Math.round(ts-L.t)}ms 後）`; return true; }
+  SN_LAST={t:ts,a}; return false; }
 function dupIgnore(part,vel,ts){ if(S.dupOn===false) return false; const L=DUP_LAST[part], ms=+S.dupMs||60;
   if (L&&ts-L.t>=0&&ts-L.t<=ms&&vel<=dupThr(part)){ const el=$("dupLast"); if(el) el.textContent=`最後に無視した信号：${PARTS[part]?PARTS[part].name:part} 強さ ${vel}（${Math.round(ts-L.t)}ms 後。前の強さ ${L.v}）`; return true; }
   DUP_LAST[part]={t:ts,v:vel}; return false; }
@@ -1876,7 +1883,7 @@ function onMidi(e){
   const [s,a,b]=e.data; if((s&0xf0)===0xB0&&a===4){ HH_CC=b; const el=$("hhCcNow"); if(el) el.textContent="ペダル："+b; return; } if((s&0xf0)!==0x90||!b) return;
   if (AUX_LEARN>=0){ const i=AUX_LEARN; AUX_LEARN=-1; const c=auxCfg(i); c.note=a; c.on=true; saveSettings(); applyAux(); auxUI(); buildPads(); if(song) renderStrips(); flash(`AUX${i+1}の番号を ${a} にしました`,"--ok",null); return; } /* 「叩いて覚える」 */
   const part=noteToPart[a]; if(!part) return;
-  { const ts=e.timeStamp||performance.now(); if (rimMuteIgnore(part,a,b,ts)||dupIgnore(part,b,ts)) return; } /* リムショット直後の打面・叩いたすぐ後の小さな信号（ダブり）は無視 */
+  { const ts=e.timeStamp||performance.now(), ign=rimMuteIgnore(part,a,b,ts)||dupIgnore(part,b,ts); midiLogAdd(a,b,ts,ign); if (ign) return; } /* リムショット直後の打面・叩いたすぐ後の小さな信号（ダブり）は無視 */
   st.lastIn[part]=performance.now(); st.lastInVel[part]=b;
   const op=part==="hh"?PARTS.hh.open.includes(a):undefined, art=noteArt(part,a); st.lastArt=st.lastArt||{}; st.lastArt[part]=art?{art,at:performance.now()}:null; padLight(op?(HH_CC!=null&&HH_CC>hhOpenMax()?"hhHalf":"hhOpen"):part,b,art);
   audio(); hit(part, ctx.currentTime-(performance.now()-e.timeStamp)/1000, b, op, a);
@@ -2549,7 +2556,12 @@ function drawVelMini(){
   x.strokeStyle=C["--line"]; x.lineWidth=1;
   [0.25,0.5,0.75,1].forEach(v=>{ const y=Math.round(h-v*(h-2))+.5; x.beginPath(); x.moveTo(0,y); x.lineTo(w,y); x.stroke(); });
   const n=Math.max(8,Math.floor(w/7)), list=st.vels.slice(-n), bw=w/n;
-  list.forEach((v,j)=>{ const bh=v.vel/127*(h-2); x.fillStyle=PARTS[v.part].color; x.fillRect(j*bw+0.5,h-bh,bw-1,bh); });
+  /* 叩き分け：リム・エッジは斜線と白い頭、カップは白い点、クロススティックは中を抜いた枠だけ */
+  list.forEach((v,j)=>{ const bh=v.vel/127*(h-2), bx=j*bw+0.5, ww=bw-1, col=(PARTS[v.part]||{}).color||"#888", a=v.art;
+    if (a==="xstick"){ x.strokeStyle=col; x.lineWidth=1.5; x.strokeRect(bx+0.75,h-bh+0.75,ww-1.5,bh-1.5); return; }
+    x.fillStyle=col; x.fillRect(bx,h-bh,ww,bh);
+    if (a==="rim"||a==="edge"){ x.save(); x.beginPath(); x.rect(bx,h-bh,ww,bh); x.clip(); x.strokeStyle="rgba(255,255,255,.75)"; x.lineWidth=1.2; for(let yy=h-bh-ww;yy<h+ww;yy+=4){ x.beginPath(); x.moveTo(bx,yy+ww); x.lineTo(bx+ww,yy); x.stroke(); } x.restore(); x.fillStyle="#fff"; x.fillRect(bx,h-bh,ww,2); }
+    else if (a==="bell"){ x.fillStyle="#fff"; x.beginPath(); x.arc(bx+ww/2,h-bh+Math.min(4,ww/2),Math.max(1.5,ww/2-1),0,Math.PI*2); x.fill(); } });
 }
 
 // ================= ゲーム画面 =================
