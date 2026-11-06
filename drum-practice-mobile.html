@@ -1058,7 +1058,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
           <ul>
             <li>判定は音符の位置に印で表示します。ジャストは緑◯（PERFECT）、わずかなずれは早ければ水色◯・遅ければ橙◯（GOOD。丸の下の線と同じ色）、叩いたが外れたら、叩いた位置に赤×（BAD：違うパッド・ずれすぎ・音符のない所を叩いた。×は叩いたその場所に出て、動きません）、叩くべき所を叩かなかったら薄い赤△（MISS）です。右上の欄では、今の小節の番号、再生ボタンを押してからの時間（分：秒）と、◎・○（早い）・○（遅い）・×・△ の数を出します。判定は、その再生で最初に叩いたところから始まります（叩く前の音符には△を付けません。一度も叩かずに終わったときは結果を出しません）。ハイハットは、オープンとクローズを区別して判定します（違うほうを叩くと×）。設定の「判定の色の付け方」で「DT-1風」にすると、正解を青◯、外れを赤×・赤△で表示します（強さのバーは表示しない設定になります）。</li>
             <li>曲の途中やループ中に再生を止めると、叩いていれば「結果（途中）」が出ます。「続ける」で記録をそのまま次の再生に引き継ぎ、「記録を消してやり直す」で数と印を消してループ（または曲）の頭に戻ります。途中の結果はベストスコアに入れません。</li>
-            <li>曲や練習パターンを開いた直後は、曲全体のループがオンになっています。そのまま再生すると、止めるまで繰り返します。1回だけ通したいときは、ループを押してオフにしてください。</li>
+            <li>「▶ 再生」の右の「⟳ ループ再生」を押すと、ループしながら再生します（範囲を決めていなければ曲全体）。再生中はこのボタンが「ループ」に変わり、押すとループのオン・オフを切り替えます。「▶ 再生」はループなしで1回通します（譜面をドラッグしてループの範囲を決めてあるときは、その範囲をループします）。</li>
             <li>叩いた強さは、譜面の下に縦のバーで表示します。</li>
             <li>曲が終わると、スコア・正確率・◎○×△の数などの結果が出ます。譜面の左上の「結果」でもう一度見られます。</li>
             <li>難しさ（やさしい／ふつう／むずかしい）と遅延補正を設定できます。「MIDI入力がないときは判定しない」「ミス（叩かなかった音符）を判定しない」「左右のクラッシュはどちらで叩いても正解にする」も選べます。</li>
@@ -1148,7 +1148,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <h2>このソフトのURL</h2>
       <div class="qrBox"><div class="qrImg" role="img" aria-label="配布先URL（https://pikadrum.github.io/drum/）のQRコード"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><rect width="37" height="37" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM12 4h3v1h-3zM22 4h1v1h-1zM26 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h2v1h-2zM16 5h1v1h-1zM20 5h4v1h-4zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM13 6h2v1h-2zM16 6h2v1h-2zM19 6h3v1h-3zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h3v1h-3zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h5v1h-5zM18 7h3v1h-3zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h3v1h-3zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h3v1h-3zM20 8h3v1h-3zM26 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h2v1h-2zM15 9h5v1h-5zM21 9h1v1h-1zM23 9h2v1h-2zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h7v1h-7zM12 11h3v1h-3zM16 11h1v1h-1zM18 11h1v1h-1zM21 11h1v1h-1zM4 12h1v1h-1zM8 12h1v1h-1zM10 12h4v1h-4zM15 12h1v1h-1zM17 12h5v1h-5zM24 12h6v1h-6zM32 12h1v1h-1zM6 13h1v1h-1zM11 13h2v1h-2zM15 13h1v1h-1zM21 13h2v1h-2zM26 13h7v1h-7zM7 14h2v1h-2zM10 14h3v1h-3zM14 14h6v1h-6zM21 14h1v1h-1zM26 14h1v1h-1zM32 14h1v1h-1zM4 15h1v1h-1zM6 15h3v1h-3zM11 15h2v1h-2zM16 15h2v1h-2zM19 15h4v1h-4zM24 15h4v1h-4zM29 15h1v1h-1zM31 15h2v1h-2zM4 16h1v1h-1zM6 16h1v1h-1zM10 16h2v1h-2zM13 16h2v1h-2zM16 16h2v1h-2zM21 16h1v1h-1zM23 16h1v1h-1zM25 16h1v1h-1zM31 16h1v1h-1zM4 17h1v1h-1zM6 17h2v1h-2zM11 17h1v1h-1zM14 17h2v1h-2zM17 17h2v1h-2zM20 17h3v1h-3zM25 17h8v1h-8zM4 18h2v1h-2zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM24 18h3v1h-3zM28 18h3v1h-3zM32 18h1v1h-1zM4 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM14 19h3v1h-3zM18 19h1v1h-1zM21 19h2v1h-2zM25 19h1v1h-1zM27 19h2v1h-2zM31 19h2v1h-2zM7 20h1v1h-1zM10 20h6v1h-6zM17 20h3v1h-3zM21 20h2v1h-2zM24 20h2v1h-2zM31 20h1v1h-1zM4 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM21 21h2v1h-2zM25 21h5v1h-5zM31 21h2v1h-2zM6 22h2v1h-2zM9 22h4v1h-4zM14 22h1v1h-1zM17 22h3v1h-3zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM30 22h1v1h-1zM32 22h1v1h-1zM6 23h4v1h-4zM12 23h1v1h-1zM14 23h4v1h-4zM21 23h4v1h-4zM26 23h3v1h-3zM31 23h2v1h-2zM4 24h2v1h-2zM8 24h1v1h-1zM10 24h4v1h-4zM15 24h3v1h-3zM19 24h1v1h-1zM21 24h1v1h-1zM23 24h7v1h-7zM32 24h1v1h-1zM12 25h1v1h-1zM14 25h1v1h-1zM16 25h4v1h-4zM22 25h3v1h-3zM28 25h1v1h-1zM32 25h1v1h-1zM4 26h7v1h-7zM12 26h2v1h-2zM16 26h1v1h-1zM19 26h1v1h-1zM21 26h4v1h-4zM26 26h1v1h-1zM28 26h3v1h-3zM32 26h1v1h-1zM4 27h1v1h-1zM10 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM18 27h2v1h-2zM21 27h1v1h-1zM23 27h2v1h-2zM28 27h1v1h-1zM31 27h2v1h-2zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM12 28h2v1h-2zM16 28h4v1h-4zM21 28h1v1h-1zM23 28h7v1h-7zM4 29h1v1h-1zM6 29h3v1h-3zM10 29h1v1h-1zM13 29h1v1h-1zM16 29h1v1h-1zM19 29h2v1h-2zM23 29h1v1h-1zM25 29h1v1h-1zM32 29h1v1h-1zM4 30h1v1h-1zM6 30h3v1h-3zM10 30h1v1h-1zM13 30h3v1h-3zM17 30h3v1h-3zM23 30h3v1h-3zM29 30h4v1h-4zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h1v1h-1zM16 31h2v1h-2zM19 31h1v1h-1zM21 31h1v1h-1zM24 31h1v1h-1zM27 31h1v1h-1zM29 31h1v1h-1zM31 31h2v1h-2zM4 32h7v1h-7zM12 32h3v1h-3zM16 32h1v1h-1zM18 32h1v1h-1zM20 32h2v1h-2zM23 32h3v1h-3zM28 32h1v1h-1zM31 32h1v1h-1z"/></svg></div><div class="help">スマホやタブレットのカメラで読み取ると、このソフトを開けます。<br><a href="https://pikadrum.github.io/drum/" target="_blank" rel="noopener">https://pikadrum.github.io/drum/</a></div></div>
     </section>
-    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/11/03 20:19</div>
+    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/11/06 13:03</div>
     </div>
   </aside>
 </main>
@@ -1537,7 +1537,7 @@ function selectSong(val){
   $("bpm").value=$("bpmRange").value=Math.round(song.baseBpm);
   $("bpm").dataset.exact=song.baseBpm;
   $("origBpm").textContent="原曲"+fmtBpm(song.baseBpm);
-  { const a=(S.skipLead&&song.leadBars>0)?song.leadBars:0; $("loopA").value=a+1; $("loopB").value=song.bars.length; $("loop").checked=true; st.loopManual=false; if($("loopBtn")) applyLoopBtn(); } /* 開いた直後は曲全体のループをオンにしておく（練習パターンをずっと続けたいときに、ループを押す手間をなくす） */
+  $("loopA").value=1; $("loopB").value=Math.min(4,song.bars.length); $("loop").checked=false; st.loopManual=false; if($("loopBtn")) applyLoopBtn();
   try{ if(kind==="ex") localStorage.setItem("drumScopeLastSong",val); }catch(e){}
   /* 練習パターンに切り替えたときは伴奏（ドラム以外）をミュート・音量80にする。MIDIファイルに戻すと元の設定に戻す */
   if (kind==="ex"){ if(!st.inEx){ if(S.backMode!=="ex") S.backVolFile=S.backVol??100; st.backMuteFile=!!st.backMute; S.backMode="ex"; S.backVol=80; st.backMute=true; st.inEx=true; saveSettings(); } }
@@ -1760,7 +1760,7 @@ function startAt(songPos,countIn){
   }
   st.origin=ctx.currentTime+lead-songPos/st.rate; st.hitFrom=null; /* この再生で最初に叩いた位置（叩くまでは判定しない） */
   setIdx(songPos); midiSetup();
-  st.playing=true; $("play").textContent="■ 停止";
+  st.playing=true; $("play").textContent="■ 停止"; applyLoopBtn();
 }
 function setIdx(pos){
   const f=arr=>{ const i=arr.findIndex(x=>x.time>=pos-1e-4); return i<0?arr.length:i; };
@@ -1788,7 +1788,7 @@ function elapsedShow(){ const el=$("elapsed"); if(!el) return; const sec=st.play
 setInterval(()=>{ if(st.playing) elapsedShow(); const bn=$("barNo"); if(bn&&song&&song.bars){ const t=String(barAt(Math.max(0,st.playing?songNow():st.pos))+1); if(bn.textContent!==t) bn.textContent=t; } },150); /* 今の小節の番号 */
 function stop(){
   midiAllOff();
-  st.pos=Math.max(0,Math.min(songNow(),song.length)); st.playing=false; $("play").textContent="▶ 再生";
+  st.pos=Math.max(0,Math.min(songNow(),song.length)); st.playing=false; $("play").textContent="▶ 再生"; applyLoopBtn();
   st.viewPage=pageOf(barAt(st.pos));
   recAudioStop(); if (REC.on) recFinish();
 }
@@ -3300,7 +3300,7 @@ S.velOpen=!!currentInput; applyVelBox(); // 起動時：MIDI入力がつなが�
 $("viewGrid").onclick=()=>{ S.view="grid"; saveSettings(); applyView(); };
 $("gridMode").onclick=()=>{ if(!S.gridScroll&&st.edit){ setEdit(false); flash("横スクロールでは編集できないため、編集を終了しました","--ok",null); } S.gridScroll=!S.gridScroll; saveSettings(); applyView(); };
 if (S.view==="scroll"){ S.view="grid"; S.gridScroll=true; } /* 前の版の「横スクロール」の設定を引き継ぐ */
-$("play").onclick=play;
+$("play").onclick=()=>{ if(!st.playing&&!st.loopManual) $("loop").checked=false; play(); }; /* 「再生」はループなしで1回。譜面で範囲を決めてあるときはその範囲をループ */
 $("rewind").onclick=()=>{ const was=st.playing; if(was) stop(); st.pos=songStart(); st.viewPage=pageOf(barAt(st.pos)); if(was) play(); };
 $("showRes").onclick=()=>{ if(st.playing) stop(); showResults(); };
 $("closeRes").onclick=()=>{ $("results").hidden=true; };
@@ -3444,9 +3444,9 @@ function barFromPoint(e){
   const b0=slotBases(songNow())[row]; if(b0<0) return -1; const bi=b0+col; return bi<song.bars.length?bi:-1;
 }
 function jumpToBar(bi){ const was=st.playing; if(was) stop(); st.pos=song.bars[bi].time; st.viewPage=pageOf(bi); if(was) play(); }
-function setLoop(a,b,on){ $("loopA").value=a+1; $("loopB").value=b+1; $("loop").checked=on; applyLoopBtn(); }
+function setLoop(a,b,on){ $("loopA").value=a+1; $("loopB").value=b+1; $("loop").checked=on; if(on) st.loopManual=true; applyLoopBtn(); }
 function applyLoopBtn(){ const on=$("loop").checked; $("loopBtn").classList.toggle("on",on); $("loopBtn").setAttribute("aria-pressed",String(on));
-  $("loopBtn").textContent=on?`⟳${$("loopA").value}-${$("loopB").value}`:(window.innerWidth<460?"⟳":"⟳ ループ"); $("loopBtn").title=on?`ループ中：${$("loopA").value}〜${$("loopB").value}小節（押すと解除）`:"押すと曲全体をループ。譜面上で小節をなぞるとその範囲"; } // スマホは入力欄を隠すので、ボタンに範囲を出す
+  $("loopBtn").textContent=!st.playing?(window.innerWidth<460?"⟳再生":"⟳ ループ再生"):on?`⟳${$("loopA").value}-${$("loopB").value}`:(window.innerWidth<460?"⟳":"⟳ ループ"); /* 止まっているときは「ループ再生」 */ $("loopBtn").title=!st.playing?"押すとループして再生（範囲を決めていなければ曲全体）":on?`ループ中：${$("loopA").value}〜${$("loopB").value}小節（押すと解除）`:"押すと曲全体をループ。譜面上で小節をなぞるとその範囲"; } // スマホは入力欄を隠すので、ボタンに範囲を出す
 cv.addEventListener("pointerdown",e=>{
   if (S.view==="game"||(S.view==="grid"&&S.gridScroll)||e.button>0||st.edit) return;
   if (touchPts.size>1) return; // 2本指はピンチ
@@ -3508,6 +3508,9 @@ $("zoomIn").onclick=()=>zoomStep(-1); $("zoomOut").onclick=()=>zoomStep(1);
 });
 // ループボタンだけを押したときは曲全体をループ（小節番号を自分で入力していたときはその範囲）
 $("loopBtn").onclick=()=>{
+  if (!st.playing){ /* 止まっているとき：ループをオンにして再生 */
+    if (!st.loopManual&&song&&song.bars.length){ const a=(S.skipLead&&song.leadBars>0)?song.leadBars:0; $("loopA").value=a+1; $("loopB").value=song.bars.length; }
+    $("loop").checked=true; play(); return; }
   const on=!$("loop").checked;
   if (on&&!st.loopManual&&song&&song.bars.length){ const a=(S.skipLead&&song.leadBars>0)?song.leadBars:0; $("loopA").value=a+1; $("loopB").value=song.bars.length; flash("曲全体をループします","--ok",null); }
   $("loop").checked=on; applyLoopBtn(); };
@@ -3552,7 +3555,7 @@ window.addEventListener("keydown",e=>{
     if (e.key==="ArrowUp"||e.key==="ArrowRight"){ e.preventDefault(); mmSetBpm(S.mBpm+(e.shiftKey?10:1)); return; }
     if (e.key==="ArrowDown"||e.key==="ArrowLeft"){ e.preventDefault(); mmSetBpm(S.mBpm-(e.shiftKey?10:1)); return; }
   }
-  if (e.code==="Space"){ e.preventDefault(); play(); return; }
+  if (e.code==="Space"){ e.preventDefault(); $("play").click(); return; }
   if ((e.key==="ArrowRight"||e.key==="ArrowLeft")&&e.target.type!=="range"){ e.preventDefault(); seekBars((e.key==="ArrowRight"?1:-1)*(e.shiftKey?S.barsPerRow:1)); return; }
   if (e.key==="Escape"){ $("results").hidden=true; return; }
   const part=KEYS[e.key.toLowerCase()]; if(part&&!e.repeat){ st.lastIn[part]=performance.now(); st.lastInVel[part]=100; audio(); if(!st.kbdUsed){ st.kbdUsed=true; applyJudgeState(); } padLight(part,100); hit(part,ctx.currentTime,100);
