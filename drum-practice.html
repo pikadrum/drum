@@ -230,6 +230,7 @@ main.partsHide #partsCol{display:none}
 .partsTab{flex:none;width:16px;padding:0;border-radius:0;border:0;border-right:1px solid var(--line);background:var(--panel);color:var(--dim);font-size:11px;writing-mode:vertical-rl;letter-spacing:.1em}
 .partsTab:hover{color:var(--fg);background:var(--btn)}main.sideRight .partsTab{order:1;border-right:0;border-left:1px solid var(--line)}
 @media (max-width:900px){ .partsTab{display:none} main.partsHide #partsCol{display:flex} } /* 狭い画面では欄が下に回るので、つまみは出さない */
+#kitBar{position:relative}#kitGrip{position:absolute;left:0;right:0;top:-5px;height:10px;cursor:ns-resize;z-index:6;touch-action:none}#kitGrip::after{content:"";position:absolute;left:50%;top:3px;width:46px;height:4px;margin-left:-23px;border-radius:3px;background:var(--line)}#kitGrip:hover::after,#kitGrip.drag::after{background:var(--accent)} /* 下の欄の高さを変えるつまみ */
 #kitStrips{display:flex;gap:6px;overflow-x:auto;min-width:0;flex:1}
 .kstrip{width:78px;flex:none;display:grid;grid-template-rows:auto 1fr auto auto;gap:4px;justify-items:center;background:var(--sunk);border:1px solid var(--line);border-radius:6px;padding:5px 4px}
 .kstrip.master{border-color:var(--staff)}
@@ -950,7 +951,7 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
           <ul>
             <li>市販のMIDIファイル（ヤマハ・ローランド形式、GS/XG）を読み込んで再生できます。曲の選択欄の先頭「📂 MIDIファイルを開く…」から開きます。</li>
             <li>MIDIファイルがなくても、内蔵の練習パターン（入門〜中級の21種類。どれも8小節以上で、ベースとピアノの伴奏つき）で練習できます。曲を開くと、ドラムの音量は10%で始まります（自分で叩く練習向け）。練習パターンを選ぶと、伴奏はミュート（音量80）の状態で始まります。左の音量欄の「ドラム以外」を押すと伴奏が鳴ります。MIDIファイルに切り替えると、元の音量に戻ります。</li>
-            <li>画面の左下の音量欄で、全体・ドラム・ドラム以外・カウント・メトロノームの音量を変えられます。名前を押すとミュートです。パートごとの音量の欄は、欄の端の細い「◀」つまみで隠せます（隠すと譜面が広くなります。「▶ パート」で戻せます）。</li>
+            <li>画面の左下の音量欄で、全体・ドラム・ドラム以外・カウント・メトロノームの音量を変えられます。名前を押すとミュートです。パートごとの音量の欄は、欄の端の細い「◀」つまみで隠せます（隠すと譜面が広くなります。「▶ パート」で戻せます）。下の欄の上の端にあるつまみを上下にドラッグすると、下の欄の高さを変えられます（ダブルクリックで元の高さ）。</li>
             <li>ドラムのパーツごと・伴奏のパートごとに音量とソロを設定できます。名前を押すとミュート、数字を押すと音量のスライダーが出ます。ミュート中もレベルは薄いグレーで動きます。</li>
             <li>ドラムの各パーツは色分けされていて、叩くとミキサーが叩いた強さに合わせて光ります。曲で使っていないパーツも表示します。</li>
             <li>テンポは−／＋で変えられます（初めは1回で±10。長押しで出る「1・5・10」から選ぶと、そのあとはその幅で変わります）。テンポの数字を押すとスライダーが出て、「テンポ／原曲」の文字を押すと原曲のテンポに戻ります。</li>
@@ -1028,11 +1029,12 @@ details.syncBox{margin:6px 0}details.syncBox>summary{list-style:none;cursor:poin
       <h2>このソフトのURL</h2>
       <div class="qrBox"><div class="qrImg" role="img" aria-label="配布先URL（https://pikadrum.github.io/drum/）のQRコード"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges"><rect width="37" height="37" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM12 4h3v1h-3zM22 4h1v1h-1zM26 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h2v1h-2zM16 5h1v1h-1zM20 5h4v1h-4zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM13 6h2v1h-2zM16 6h2v1h-2zM19 6h3v1h-3zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h3v1h-3zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h5v1h-5zM18 7h3v1h-3zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h3v1h-3zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h3v1h-3zM20 8h3v1h-3zM26 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h2v1h-2zM15 9h5v1h-5zM21 9h1v1h-1zM23 9h2v1h-2zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h7v1h-7zM12 11h3v1h-3zM16 11h1v1h-1zM18 11h1v1h-1zM21 11h1v1h-1zM4 12h1v1h-1zM8 12h1v1h-1zM10 12h4v1h-4zM15 12h1v1h-1zM17 12h5v1h-5zM24 12h6v1h-6zM32 12h1v1h-1zM6 13h1v1h-1zM11 13h2v1h-2zM15 13h1v1h-1zM21 13h2v1h-2zM26 13h7v1h-7zM7 14h2v1h-2zM10 14h3v1h-3zM14 14h6v1h-6zM21 14h1v1h-1zM26 14h1v1h-1zM32 14h1v1h-1zM4 15h1v1h-1zM6 15h3v1h-3zM11 15h2v1h-2zM16 15h2v1h-2zM19 15h4v1h-4zM24 15h4v1h-4zM29 15h1v1h-1zM31 15h2v1h-2zM4 16h1v1h-1zM6 16h1v1h-1zM10 16h2v1h-2zM13 16h2v1h-2zM16 16h2v1h-2zM21 16h1v1h-1zM23 16h1v1h-1zM25 16h1v1h-1zM31 16h1v1h-1zM4 17h1v1h-1zM6 17h2v1h-2zM11 17h1v1h-1zM14 17h2v1h-2zM17 17h2v1h-2zM20 17h3v1h-3zM25 17h8v1h-8zM4 18h2v1h-2zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM24 18h3v1h-3zM28 18h3v1h-3zM32 18h1v1h-1zM4 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM14 19h3v1h-3zM18 19h1v1h-1zM21 19h2v1h-2zM25 19h1v1h-1zM27 19h2v1h-2zM31 19h2v1h-2zM7 20h1v1h-1zM10 20h6v1h-6zM17 20h3v1h-3zM21 20h2v1h-2zM24 20h2v1h-2zM31 20h1v1h-1zM4 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM21 21h2v1h-2zM25 21h5v1h-5zM31 21h2v1h-2zM6 22h2v1h-2zM9 22h4v1h-4zM14 22h1v1h-1zM17 22h3v1h-3zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM30 22h1v1h-1zM32 22h1v1h-1zM6 23h4v1h-4zM12 23h1v1h-1zM14 23h4v1h-4zM21 23h4v1h-4zM26 23h3v1h-3zM31 23h2v1h-2zM4 24h2v1h-2zM8 24h1v1h-1zM10 24h4v1h-4zM15 24h3v1h-3zM19 24h1v1h-1zM21 24h1v1h-1zM23 24h7v1h-7zM32 24h1v1h-1zM12 25h1v1h-1zM14 25h1v1h-1zM16 25h4v1h-4zM22 25h3v1h-3zM28 25h1v1h-1zM32 25h1v1h-1zM4 26h7v1h-7zM12 26h2v1h-2zM16 26h1v1h-1zM19 26h1v1h-1zM21 26h4v1h-4zM26 26h1v1h-1zM28 26h3v1h-3zM32 26h1v1h-1zM4 27h1v1h-1zM10 27h1v1h-1zM13 27h1v1h-1zM15 27h1v1h-1zM18 27h2v1h-2zM21 27h1v1h-1zM23 27h2v1h-2zM28 27h1v1h-1zM31 27h2v1h-2zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM12 28h2v1h-2zM16 28h4v1h-4zM21 28h1v1h-1zM23 28h7v1h-7zM4 29h1v1h-1zM6 29h3v1h-3zM10 29h1v1h-1zM13 29h1v1h-1zM16 29h1v1h-1zM19 29h2v1h-2zM23 29h1v1h-1zM25 29h1v1h-1zM32 29h1v1h-1zM4 30h1v1h-1zM6 30h3v1h-3zM10 30h1v1h-1zM13 30h3v1h-3zM17 30h3v1h-3zM23 30h3v1h-3zM29 30h4v1h-4zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h1v1h-1zM16 31h2v1h-2zM19 31h1v1h-1zM21 31h1v1h-1zM24 31h1v1h-1zM27 31h1v1h-1zM29 31h1v1h-1zM31 31h2v1h-2zM4 32h7v1h-7zM12 32h3v1h-3zM16 32h1v1h-1zM18 32h1v1h-1zM20 32h2v1h-2zM23 32h3v1h-3zM28 32h1v1h-1zM31 32h1v1h-1z"/></svg></div><div class="help">スマホやタブレットのカメラで読み取ると、このソフトを開けます。<br><a href="https://pikadrum.github.io/drum/" target="_blank" rel="noopener">https://pikadrum.github.io/drum/</a></div></div>
     </section>
-    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/11/06 13:03</div>
+    <div id="buildInfo" class="help mono" style="text-align:right;font-size:11px">ビルド 2026/11/06 14:52</div>
     </div>
   </aside>
 </main>
 <div id="kitBar"> <!-- 画面のいちばん下：全体ミキサー（左）・ドラムミキサー・ドラムの図 -->
+<div id="kitGrip" title="上下にドラッグすると、下の欄の高さを変えられます（ダブルクリックで元の高さ）" aria-label="下の欄の高さを変える"></div>
     <div class="volGroup" id="volGroup">
     <div class="row"><button id="vgAll" class="vgMute" aria-pressed="false" title="押すと全体をミュート／解除">全体</button><span class="volWrap"><input type="range" id="masterVol" min="0" max="100" value="80"><span id="masterVolV" class="mono volv"></span></span></div>
     <div class="row"><button id="vgDrum" class="vgMute" aria-pressed="false" title="押すとドラムをミュート／解除">ドラム</button><span class="volWrap"><input type="range" id="drumVol" min="0" max="127" value="100" title="ダブルクリックで曲の初期値に戻す"><span id="drumVolV" class="mono volv"></span></span></div>
@@ -1443,7 +1445,7 @@ function beatPlan(idx,bar){ const out=[], ha=mvv("mvBar"), ura4=mvU("mvBeat")&&i
 function click(t,kind,gainMul,lvl){
   if (kind===true) kind="bar"; else if (kind===false) kind="beat";
   if (kind==="bar"&&!S.mAccent&&lvl==null) kind="beatAsBar";
-  const vol=(lvl!=null?lvl:kind==="bar"?mvv("mvBar"):kind==="beat"||kind==="beatAsBar"?mvv("mvBeat"):S.mvSub)/100; // 頭の音を変えないときは、1拍目も4分と同じ音・音量
+  const v0=(lvl!=null?lvl:kind==="bar"?mvv("mvBar"):kind==="beat"||kind==="beatAsBar"?mvv("mvBeat"):S.mvSub)/100, vol=v0*v0; // 頭の音を変えないときは、1拍目も4分と同じ音・音量。耳に聞こえる大きさが数字に合うように2乗（小さい数字で急に大きく聞こえないように）
   if (vol<=0) return;
   const hi=kind==="bar", lo=kind==="sub"; // 頭は高く、拍の間は低く短く
   const pm=hi?1.5:lo?0.8:1, dm=lo?0.7:1, out=ctx.createGain(); out.gain.value=vol; out.connect(gainMul==="count"?countNode:metroGain);
@@ -3056,6 +3058,14 @@ function showMetroVol(){ $("metroVolV").textContent=(mmSwap||S).metroVol+"%"; }
 $("metroVol").addEventListener("input",()=>setTimeout(showMetroVol));
 setTimeout(showMetroVol);
 $("metroVol").value=S.metroVol; $("metroVol").oninput=()=>{ const o=mT($("metroVol")); o.metroVol=+$("metroVol").value; if(o===S&&metroGain) metroGain.gain.value=metroLevel(); showMetroVol(); saveSettings(); };
+/* 下の欄（全体ミキサー・ドラムミキサー）の高さ：上の端のつまみをドラッグで変える。S.kitH に覚える */
+function applyKitH(){ $("kitBar").style.height=S.kitH?S.kitH+"px":""; }
+{ const g=$("kitGrip"); let y0=0,h0=0,raf=0; const lim=h=>Math.max(90,Math.min(Math.round(innerHeight*0.6),Math.round(h)));
+  g.addEventListener("pointerdown",e=>{ e.preventDefault(); g.setPointerCapture(e.pointerId); y0=e.clientY; h0=$("kitBar").getBoundingClientRect().height; g.classList.add("drag"); });
+  g.addEventListener("pointermove",e=>{ if(!g.classList.contains("drag")) return; S.kitH=lim(h0-(e.clientY-y0)); applyKitH(); if(!raf) raf=requestAnimationFrame(()=>{ raf=0; window.dispatchEvent(new Event("resize")); }); });
+  const end=()=>{ if(!g.classList.contains("drag")) return; g.classList.remove("drag"); saveSettings(); window.dispatchEvent(new Event("resize")); };
+  g.addEventListener("pointerup",end); g.addEventListener("pointercancel",end);
+  g.addEventListener("dblclick",()=>{ delete S.kitH; applyKitH(); saveSettings(); window.dispatchEvent(new Event("resize")); }); applyKitH(); }
 /* パートミキサー（左の列）の表示・非表示。隠すと譜面が広くなる */
 function applyPartsHide(){ const h=!!S.partsHide, r=!!S.sideRight, t=$("partsTab"); $("main").classList.toggle("partsHide",h); t.setAttribute("aria-pressed",h?"false":"true"); t.textContent=h?(r?"◀ パート":"▶ パート"):(r?"▶":"◀"); t.title=h?"パートごとの音量の欄を出す":"パートごとの音量の欄を隠す（隠すと譜面が広くなります）"; window.dispatchEvent(new Event("resize")); }
 $("partsTab").onclick=()=>{ S.partsHide=!S.partsHide; saveSettings(); applyPartsHide(); }; applyPartsHide();
